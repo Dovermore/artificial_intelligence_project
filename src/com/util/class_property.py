@@ -1,4 +1,8 @@
 class classproperty(property):
+    """
+    Class property decorator. Attribution to Aaron Hall♦ in
+    https://stackoverflow.com/questions/128573/using-property-on-classmethods
+    """
     def __get__(self, obj, objtype=None):
         return super(classproperty, self).__get__(objtype)
 

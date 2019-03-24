@@ -8,10 +8,17 @@ Authors:
 import sys
 import json
 
+from com.util.json_parser import parse
+from com.state import State
 
 def main():
+
     with open(sys.argv[1]) as file:
-        data = json.load(file)
+        json_loader = json.load(file)
+
+        forward_dict, backward_dict = parse(json_loader, State.code_map, "A")
+
+        state = State(forward_dict, backward_dict)
 
 
 # when this module is executed, run the `main` function:
