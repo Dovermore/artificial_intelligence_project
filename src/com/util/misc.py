@@ -1,39 +1,53 @@
-"""
-COMP30024 Artificial Intelligence, Semester 1 2019
-Solution to Project Part A: Searching
-
-Authors: Team Artificial Idiots; Chuanyuan Liu (884140); Zhuoqun Huang (908525)
-"""
-
-import sys
-import json
-
-def main():
-    with open(sys.argv[1]) as file:
-        data = json.load(file)
-
-    # TODO: Search for and output winning sequence of moves
-    # ...
+from functools import lru_cache
 
 
-def print_board(board_dict, message="", debug=False, **kwargs):
+def memoize(fn, slot=None, maxsize=32):
+    """
+    This function is originally published as part of AIMA codes on:
+    https://github.com/aimacode/aima-python
+    by various authors. Under MIT Licence
+
+    The Code is (not) modified for this particular project
+
+    Memoize fn:
+    make it remember the computed value for any argument list.
+    If slot is specified, store result in that slot of first argument.
+        Eg: fn(problem, other_stuff) -> problem.slot == fn(problem,other_stuff)
+    If slot is false, use lru_cache for caching the values.
+    """
+    if slot:
+        def memoized_fn(obj, *args):
+            if hasattr(obj, slot):
+                return getattr(obj, slot)
+            else:
+                val = fn(obj, *args)
+                setattr(obj, slot, val)
+                return val
+    else:
+        @lru_cache(maxsize=maxsize)
+        def memoized_fn(*args):
+            return fn(*args)
+    return memoized_fn
+
+
+def print_board(board_dict, message="", debug=False, printed=True, **kwargs):
     """
     Helper function to print a drawing of a hexagonal board's contents.
-    
+
     Arguments:
 
     * `board_dict` -- dictionary with tuples for keys and anything printable
-    for values. The tuple keys are interpreted as hexagonal coordinates (using 
-    the axial coordinate system outlined in the project specification) and the 
-    values are formatted as strings and placed in the drawing at the corres- 
-    ponding location (only the first 5 characters of each string are used, to 
+    for values. The tuple keys are interpreted as hexagonal coordinates (using
+    the axial coordinate system outlined in the project specification) and the
+    values are formatted as strings and placed in the drawing at the corres-
+    ponding location (only the first 5 characters of each string are used, to
     keep the drawings small). Coordinates with missing values are left blank.
 
     Keyword arguments:
 
-    * `message` -- an optional message to include on the first line of the 
+    * `message` -- an optional message to include on the first line of the
     drawing (above the board) -- default `""` (resulting in a blank message).
-    * `debug` -- for a larger board drawing that includes the coordinates 
+    * `debug` -- for a larger board drawing that includes the coordinates
     inside each hex, set this to `True` -- default `False`.
     * Or, any other keyword arguments! They will be forwarded to `print()`.
     """
@@ -86,7 +100,7 @@ def print_board(board_dict, message="", debug=False, **kwargs):
     # prepare the provided board contents as strings, formatted to size.
     ran = range(-3, +3+1)
     cells = []
-    for qr in [(q,r) for q in ran for r in ran if -q-r in ran]:
+    for qr in [(q, r) for q in ran for r in ran if -q-r in ran]:
         if qr in board_dict:
             cell = str(board_dict[qr]).center(5)
         else:
@@ -95,9 +109,12 @@ def print_board(board_dict, message="", debug=False, **kwargs):
 
     # fill in the template to create the board drawing, then print!
     board = template.format(message, *cells)
-    print(board, **kwargs)
+    if printed:
+        print(board, **kwargs)
+    return board
 
 
-# when this module is executed, run the `main` function:
-if __name__ == '__main__':
-    main()
+def is_in(elt, seq):
+    """Similar to (elt in seq), but compares with 'is', not '=='."""
+    return any(x is elt for x in seq)
+
