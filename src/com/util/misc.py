@@ -1,39 +1,21 @@
-"""
-COMP30024 Artificial Intelligence, Semester 1 2019
-Solution to Project Part A: Searching
-
-Authors: Team Artificial Idiots; Chuanyuan Liu (884140); Zhuoqun Huang (908525)
-"""
-
-import sys
-import json
-
-def main():
-    with open(sys.argv[1]) as file:
-        data = json.load(file)
-
-    # TODO: Search for and output winning sequence of moves
-    # ...
-
-
 def print_board(board_dict, message="", debug=False, **kwargs):
     """
     Helper function to print a drawing of a hexagonal board's contents.
-    
+
     Arguments:
 
     * `board_dict` -- dictionary with tuples for keys and anything printable
-    for values. The tuple keys are interpreted as hexagonal coordinates (using 
-    the axial coordinate system outlined in the project specification) and the 
-    values are formatted as strings and placed in the drawing at the corres- 
-    ponding location (only the first 5 characters of each string are used, to 
+    for values. The tuple keys are interpreted as hexagonal coordinates (using
+    the axial coordinate system outlined in the project specification) and the
+    values are formatted as strings and placed in the drawing at the corres-
+    ponding location (only the first 5 characters of each string are used, to
     keep the drawings small). Coordinates with missing values are left blank.
 
     Keyword arguments:
 
-    * `message` -- an optional message to include on the first line of the 
+    * `message` -- an optional message to include on the first line of the
     drawing (above the board) -- default `""` (resulting in a blank message).
-    * `debug` -- for a larger board drawing that includes the coordinates 
+    * `debug` -- for a larger board drawing that includes the coordinates
     inside each hex, set this to `True` -- default `False`.
     * Or, any other keyword arguments! They will be forwarded to `print()`.
     """
@@ -96,8 +78,3 @@ def print_board(board_dict, message="", debug=False, **kwargs):
     # fill in the template to create the board drawing, then print!
     board = template.format(message, *cells)
     print(board, **kwargs)
-
-
-# when this module is executed, run the `main` function:
-if __name__ == '__main__':
-    main()
