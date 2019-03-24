@@ -1,11 +1,15 @@
-from com.util.class_property import classproperty
-from com.util.misc import print_board
+import os
+import sys
+sys.path.append("~/Project/artificial_intelligence_project/src/com")
+
+from util.class_property import classproperty
+from util.misc import print_board
 from copy import copy, deepcopy
 
 
 class State:
     """
-    State class stores states current node has, the state is represented
+    State class stores current node state, the state is represented
     as two dictionaries of forward position mapping and backward position
     mapping.
     piece_code -> [(x1, y1), (x2, y2), (x3, y3)...]
@@ -65,10 +69,10 @@ if __name__ == "__main__":
 
     forward_dict = {0: [(0, 0), (0, -1), (-2, 1)], 3: [(-1, 0), (-1, 1), (1, 1), (3, -1)]}
     backward_dict = {(0, 0): 0, (0, -1): 0, (-2, 1): 0, (-1, 0): 3, (-1, 1): 3, (1, 1): 3, (3, -1): 3}
-    state = State(forward_dict, backward_dict)
+    state = State(forward_dict, backward_dict, "red")
     print(state.forward_dict, state.backward_dict, state.code_map)
     assert State.code_map == {}
-    state2 = State(forward_dict, backward_dict)
+    state2 = State(forward_dict, backward_dict, "red")
     assert state == state2
 
 
