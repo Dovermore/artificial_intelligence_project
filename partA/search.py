@@ -2,7 +2,7 @@
 COMP30024 Artificial Intelligence, Semester 1 2019
 Solution to Project Part A: Searching
 
-Authors: 
+Authors: Team Artificial Idiots; Chuanyuan Liu (884140); Zhuoqun Huang (908525)
 """
 
 import sys
