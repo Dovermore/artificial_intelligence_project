@@ -1,5 +1,8 @@
-# ignore jupter notebook
+# ignore Chuan's file
 *.ipynb
+test.py
+tempCodeRunnerFile.py
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -198,3 +201,4 @@ fabric.properties
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+.vscode/settings.json
