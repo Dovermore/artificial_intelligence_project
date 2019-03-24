@@ -16,14 +16,12 @@ def parse(json_loader, mapping, phase):
             tuple_pos = tuple(pos)
             forward_dict[block_code].append(tuple_pos)
             backward_dict[tuple_pos] = block_code
-        return forward_dict, backward_dict
+        return forward_dict, backward_dict, json_loader["colour"]
 
 
 if __name__ == "__main__":
     # Test for phase
     import json
-    import os
-    import os.path as path
 
     with open("tests/part_a/test0.json") as f:
         json_loader = json.load(f)

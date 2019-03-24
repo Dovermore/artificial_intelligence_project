@@ -11,14 +11,16 @@ import json
 from com.util.json_parser import parse
 from com.state import State
 
-def main():
 
+def main():
     with open(sys.argv[1]) as file:
         json_loader = json.load(file)
+        forward_dict, backward_dict, color = parse(json_loader, State.code_map,
+                                                   "A")
+        state = State(forward_dict, backward_dict, color)
 
-        forward_dict, backward_dict = parse(json_loader, State.code_map, "A")
-
-        state = State(forward_dict, backward_dict)
+        print(str(state))
+        print(state.__str__(True))
 
 
 # when this module is executed, run the `main` function:
