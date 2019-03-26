@@ -69,6 +69,8 @@ class State:
             if self._backward_dict[i] == key:
                 del self.backward_dict[i] 
 
+    def copy(self):
+        return copy(self)
 
 if __name__ == "__main__":
     # Test for class property
