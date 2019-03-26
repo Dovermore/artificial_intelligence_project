@@ -13,7 +13,6 @@ class State:
     """
     _code_map = {"red": 0, "green": 1, "blue": 2, "blocks": 3}
     _rev_code_map = {value: key for key, value in _code_map.items()}
-    _goal_map = {}
 
     def __init__(self, forward_dict, backward_dict, color):
         self._forward_dict = forward_dict
@@ -55,6 +54,20 @@ class State:
         backward_dict = {key: self._rev_code_map[value][:3] for key, value
                          in backward_dict.items()}
         return print_board(backward_dict, debug=debug, printed=False)
+
+    def delete_color(self, color):
+        """
+        Removes all the pepies of that ceipcefrom the board
+        Color must be a string
+        """
+        if color not in State.code_map.keys():
+            raise ValueError("Color value is not defined in the state")
+        # remove the peices of the given color
+        key = State.code_map[color]
+        del self._forward_dict[key]
+        for i in self._backward_dict:
+            if self._backward_dict[i] == key:
+                del self.backward_dict[i] 
 
 
 if __name__ == "__main__":
