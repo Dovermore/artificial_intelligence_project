@@ -1,4 +1,4 @@
-from com.util.misc import is_in
+from artificial_idiot.util.misc import is_in
 import abc
 
 

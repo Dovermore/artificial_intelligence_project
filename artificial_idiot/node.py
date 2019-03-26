@@ -1,6 +1,5 @@
 
 
-
 class Node:
 
     """A node in a search tree. Contains a pointer to the parent (the node

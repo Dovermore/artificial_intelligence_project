@@ -8,8 +8,8 @@ Authors:
 import sys
 import json
 
-from com.util.json_parser import parse
-from com.state import State
+from artificial_idiot.util import parse
+from artificial_idiot.state import State
 
 
 def main():

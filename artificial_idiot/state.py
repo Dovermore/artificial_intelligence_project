@@ -1,10 +1,6 @@
-import os
-import sys
-sys.path.append("~/Project/artificial_intelligence_project/src/com")
-
-from util.class_property import classproperty
-from util.misc import print_board
-from copy import copy, deepcopy
+from artificial_idiot.util import class_property
+from artificial_idiot.util.misc import print_board
+from copy import copy
 
 
 class State:
@@ -44,7 +40,7 @@ class State:
     def color(self):
         return self._color
 
-    @classproperty
+    @class_property
     def code_map(cls):
         return copy(cls._code_map)
 
