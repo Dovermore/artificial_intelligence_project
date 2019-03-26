@@ -88,51 +88,85 @@ class StaticProblem(Problem):
         return copy.copy(cls._exit_positions)
 
     def __init__(self, initial, color):
+        """Initalize the problem
+        
+        Determine goal state which is inital state without any agent's piece
+
+        Arguments:
+            initial (State): supplied by the problem
+            color (int) : color of the agent
         """
-        inital state is supplied by the problem
-        goal state is inital state without any agent's pieces
-        """
+
         # remove all agent's pieces
         goal = initial.copy()
         goal.delete_color(color)
-        super(initial, goal)
+        super.__init__(initial, goal)
+
+    def validate(self, next_pos, state):
+        """Validates if this position on board can be moved to
+
+        Arguments:
+            next_pos (tuple) : (r, q) representation of the position
+            state (State) : current board state
+
+        Returns:
+            Boolean -- if move is possible or not
+        """
+        r, q = next_pos
+        # check if 
+        # check if moving out of bound
+        if r < -3 or r > 3:
+            return False
+        if q < -3 or q > 3:
+            return False
+        if abs(r+q) > 3:
+            return False
+        # check if position is unoccupied
+        return next_pos not in state.backward_dict
 
     def actions(self, state):
-        """
-        Yield all possible moves in a given state
-        If no movement is possible then returns null
-        Movement is encoding using (current pos, next pos)
-        0. Exit (current pos, (infinity, infinity))
-        1. Move 
-        2. Jump 
-        """
-        move = [(+1, -1), (0, -1), (-1, 0), (-1, +1), (0, +1)]
+        """Yield all possible moves in a given state
 
-        def validate(next_pos):
-            return next_pos not in state.backward_dict.keys()
+        Exit means moving to position (infinity, infinity)
+        Actions are eveluated in this order: Exit -> Move -> Jump
+        If no movement is possible then returns null
+
+        Arguments:
+            state (State) : current state of the board
+        
+        Yields:
+            action (tuple) -- encoded as ((from position), (to position))
+        """
+
+        move = [(+1, -1), (0, -1), (-1, 0), (-1, +1), (0, +1)]
 
         # for each piece try all possible moves
         for q, r in state.forward_dict[state.color]:
             # exit
-            if (q, r) in self.exit_positions:
+            if (q, r) in self._exit_positions:
                 yield ((q, r), (inf, inf))
             # move
             for i, j in move:
                 next_pos = (q+i, r+j)
-                if validate(next_pos):
+                if self.validate(next_pos, state):
                     yield ((q, r), next_pos)
             # jump
             for i, j in move:
                 next_pos = (q+i*2, r+j*2)
-                if validate(next_pos):
+                if self.validate(next_pos, state):
                     yield ((q, r), next_pos)
 
         def result(self, state, action):
+            """Enact the action on to current state
+            
+            Arguments:
+                state (State) : current state
+                action (tuple) : defined by self.actions(State) method
+            
+            Returns:
+                State -- state that results from executing the given action
             """
-            Return the state that results from executing the given
-            action in the given state. The action must be one of
-            self.actions(state).
-            """
+
             state = state.copy()
             fr, to = action
             color = state.color
