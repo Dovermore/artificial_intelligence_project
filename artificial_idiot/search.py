@@ -1,6 +1,6 @@
-from artificial_idiot.node import Node
-from artificial_idiot.util.misc import memoize
-from artificial_idiot.util.queue import PriorityQueue
+from node import Node
+from util.misc import memoize
+from util.queue import PriorityQueue
 
 
 def best_first_graph_search(problem, f):
@@ -55,7 +55,4 @@ def astar_search(problem, h=None):
 #                 elif result is not None:
 #                     return result
 #             return 'cutoff' if cutoff_occurred else None
-#
-#
-#
 

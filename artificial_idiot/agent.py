@@ -38,4 +38,3 @@ class SimpleProblemSolvingAgentProgram(abc.ABC):
     @abc.abstractmethod
     def search(self, problem):
         pass
-

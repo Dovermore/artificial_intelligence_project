@@ -8,16 +8,15 @@ Authors:
 import sys
 import json
 
-from artificial_idiot.util import parse
-from artificial_idiot.state import State
+from util.json_parser import parse
+from state import State
 
 
 def main():
     with open(sys.argv[1]) as file:
         json_loader = json.load(file)
-        forward_dict, backward_dict, color = parse(json_loader, State.code_map,
-                                                   "A")
-        state = State(forward_dict, backward_dict, color)
+        forward_dict, colour = parse(json_loader, "A")
+        state = State(forward_dict, colour)
 
         print(str(state))
         print(state.__str__(True))

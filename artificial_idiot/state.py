@@ -1,6 +1,7 @@
-from artificial_idiot.util import class_property
-from artificial_idiot.util.misc import print_board
-from copy import copy
+from util import class_property
+from util.misc import print_board
+from copy import copy, deepcopy
+from collections import defaultdict as dd
 
 
 class State:
@@ -14,30 +15,39 @@ class State:
     _code_map = {"red": 0, "green": 1, "blue": 2, "blocks": 3}
     _rev_code_map = {value: key for key, value in _code_map.items()}
 
-    def __init__(self, forward_dict, backward_dict, color):
+    def __init__(self, forward_dict, colour):
+        # Map from piece to positions
         self._forward_dict = forward_dict
-        self._backward_dict = backward_dict
-        self._color = self._code_map[color]
+        # Map from positions to pieces
+        self._backward_dict = dd(str)
+        # Derive the backward mapping
+        for colour, locations in self._forward_dict:
+            for location in locations:
+                self._backward_dict[location] = colour
+        self._colour = colour
 
     def __eq__(self, other):
+        # Has to first be same class
         if not isinstance(other, self.__class__):
             return False
+
         # Hash doesn't work on dictionary
         return (self._forward_dict == other._forward_dict and
                 self._backward_dict == other._backward_dict and
-                self._color == other._color)
+                self._colour == other._colour)
 
     @property
     def forward_dict(self):
-        return copy(self._forward_dict)
+        # Need to deepcopy this for there are mutable lists
+        return deepcopy(self._forward_dict)
 
     @property
     def backward_dict(self):
         return copy(self._backward_dict)
 
     @property
-    def color(self):
-        return self._color
+    def colour(self):
+        return self._colour
 
     @class_property
     def code_map(cls):
@@ -55,22 +65,28 @@ class State:
                          in backward_dict.items()}
         return print_board(backward_dict, debug=debug, printed=False)
 
-    def delete_color(self, color):
+    def delete_colour(self, colour):
         """
-        Removes all the pepies of that ceipcefrom the board
-        Color must be a string
+        Removes all the pieces of that colour from the board
+        colour must be a string
         """
-        if color not in State.code_map.keys():
-            raise ValueError("Color value is not defined in the state")
-        # remove the peices of the given color
-        key = State.code_map[color]
-        del self._forward_dict[key]
-        for i in self._backward_dict:
-            if self._backward_dict[i] == key:
-                del self.backward_dict[i] 
+        if colour not in State._code_map:
+            raise ValueError("colour value is not defined in the state")
+        # remove the pieces of the given colour
+        code = State._code_map[colour]
+        for location in self._forward_dict[code]:
+            del self.backward_dict[location]
+        del self._forward_dict[code]
 
     def copy(self):
         return copy(self)
+
+    def next_colour(self):
+        """
+        :return: The next active colour after current execution
+        """
+        return self._colour
+
 
 if __name__ == "__main__":
     # Test for class property
@@ -79,11 +95,10 @@ if __name__ == "__main__":
     assert State.code_map == {}
 
     forward_dict = {0: [(0, 0), (0, -1), (-2, 1)], 3: [(-1, 0), (-1, 1), (1, 1), (3, -1)]}
-    backward_dict = {(0, 0): 0, (0, -1): 0, (-2, 1): 0, (-1, 0): 3, (-1, 1): 3, (1, 1): 3, (3, -1): 3}
-    state = State(forward_dict, backward_dict, "red")
+    state = State(forward_dict, "red")
     print(state.forward_dict, state.backward_dict, state.code_map)
     assert State.code_map == {}
-    state2 = State(forward_dict, backward_dict, "red")
+    state2 = State(forward_dict, "red")
     assert state == state2
 
 
