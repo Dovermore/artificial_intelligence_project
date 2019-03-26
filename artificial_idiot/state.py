@@ -87,6 +87,14 @@ class State:
         """
         return self._colour
 
+    def occupied(self, pos):
+        return pos not in self._backward_dict
+
+    @staticmethod
+    def inboard(pos):
+        r, q = pos
+        return not (r < -3 or r > 3 or q < -3 or q > 3 or abs(r+q) > 3)
+
 
 if __name__ == "__main__":
     # Test for class property

@@ -2,8 +2,7 @@ from util.misc import is_in
 from util import class_property
 from state import State
 import abc
-import copy
-from math import inf
+from copy import copy
 
 
 class Problem(abc.ABC):
@@ -78,10 +77,16 @@ class StaticProblem(Problem):
     Static Search problem for project part A
     """
     _exit_positions = {
-        0: ((3, -3), (3, -2), (3, -1), (3, 0)),
-        1: ((-3, 3), (-2, 3), (-1, 3), (0, 3)),
-        2: ((0, -3), (-1, -2), (-2, -1), (-3, 0))
+        "red": ((3, -3), (3, -2), (3, -1), (3, 0)),
+        "green": ((-3, 3), (-2, 3), (-1, 3), (0, 3)),
+        "blue": ((0, -3), (-1, -2), (-2, -1), (-3, 0))
     }
+
+    # possible moves.
+    _move = (
+        (+1, -1), (0, -1), (-1, 0),
+        (-1, +1), (0, +1), (+1, 0)
+    )
 
     def __init__(self, initial, colour):
         """
@@ -93,38 +98,39 @@ class StaticProblem(Problem):
         self.goal = initial.copy()
         self.goal.delete_colour(colour)
 
-        # Keys: possible moves.   Values: State of current move
-        # 0: Not determined, 1: Can Move, 2: Can jump, 3: no action here
-        self._move = {
-            (+1, -1): 0, (0, -1): 0, (-1, 0): 0,
-            (-1, +1): 0, (0, +1): 0, (+1, 0): 0
-        }
+    @classmethod
+    def actions(cls, state):
+        """Yield all possible moves in a given state
 
-    def actions(self, state):
-        """
-        Yield all possible moves in a given state
+        Exit means moving to position (infinity, infinity)
+        Actions are eveluated in this order: Exit -> Move -> Jump
         If no movement is possible then returns null
-        Movement is encoding using (current pos, next pos)
-        0. Exit (current pos, (infinity, infinity))
-        1. Move 
-        2. Jump 
+
+        Arguments:
+            state (State) : current state of the board
+        
+        Yields:
+            action (tuple) -- encoded as ((from position), (to position))
         """
         # for each piece try all possible moves
         for q, r in state.forward_dict[state.colour]:
             # exit
-            if (q, r) in self.exit_positions:
-                yield ((q, r), (inf, inf))
+            if (q, r) in cls._exit_positions:
+                yield ((q, r), None)
 
-            for i, j in self._move:
-                next_pos = (q+i, r+j)
-                # FIXME this part is definitely bugged, You need to check if outside board as well.
+            for move in cls._move:
+                i, j = move
+                move_pos = (q+i, r+j)
+                jump_pos = (q+i*2, r+j*2)
+                # If that direction is possible to move
+                if not state.inboard(move_pos):
+                    continue
                 # Move
-                if next_pos not in state.backward_dict.keys():
-                    yield ((q, r), next_pos)
+                elif state.occupied(move_pos):
+                    yield ((q, r), move_pos)
                 # Jump
-                next_pos = (q+i*2, r+j*2)
-                if next_pos not in state.backward_dict.keys():
-                    yield ((q, r), next_pos)
+                elif state.occupied(jump_pos):
+                    yield ((q, r), jump_pos)
 
     def result(self, state, action):
         """
@@ -139,7 +145,9 @@ class StaticProblem(Problem):
 
         # update dictionary
         forward_dict[colour].remove(fr)
-        forward_dict[colour].add(to)
+        # If None then don't do anything
+        if to is not None:
+            forward_dict[colour].add(to)
 
         # Construct the new state
         return State(forward_dict, next_colour)
@@ -149,7 +157,7 @@ class StaticProblem(Problem):
 
     @class_property
     def exit_positions(cls):
-        return copy.copy(cls._exit_positions)
+        return copy(cls._exit_positions)
 
 
 if __name__ == "__main__":
