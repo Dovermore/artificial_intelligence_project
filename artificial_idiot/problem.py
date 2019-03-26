@@ -1,5 +1,8 @@
 from artificial_idiot.util.misc import is_in
+from artificial_idiot.state import State
 import abc
+import copy
+from math import inf
 
 
 class Problem(abc.ABC):
@@ -73,3 +76,75 @@ class StaticProblem(Problem):
     """
     Static Search problem for project part A
     """
+
+    _exit_positions = {
+        0: ((3, -3), (3, -2), (3, -1), (3, 0)),
+        1: ((-3, 3), (-2, 3), (-1, 3), (0, 3)),
+        2: ((0, -3), (-1, -2), (-2, -1), (-3, 0))
+    }
+
+    @class_property
+    def exit_positions(cls):
+        return copy.copy(cls._exit_positions)
+
+    def __init__(self, initial, color):
+        """
+        inital state is supplied by the problem
+        goal state is inital state without any agent's pieces
+        """
+        # remove all agent's pieces
+        goal = initial.copy()
+        goal.delete_color(color)
+        super(initial, goal)
+
+    def actions(self, state):
+        """
+        Yield all possible moves in a given state
+        If no movement is possible then returns null
+        Movement is encoding using (current pos, next pos)
+        0. Exit (current pos, (infinity, infinity))
+        1. Move 
+        2. Jump 
+        """
+        move = [(+1, -1), (0, -1), (-1, 0), (-1, +1), (0, +1)]
+
+        def validate(next_pos):
+            return next_pos not in state.backward_dict.keys()
+
+        # for each piece try all possible moves
+        for q, r in state.forward_dict[state.color]:
+            # exit
+            if (q, r) in self.exit_positions:
+                yield ((q, r), (inf, inf))
+            # move
+            for i, j in move:
+                next_pos = (q+i, r+j)
+                if validate(next_pos):
+                    yield ((q, r), next_pos)
+            # jump
+            for i, j in move:
+                next_pos = (q+i*2, r+j*2)
+                if validate(next_pos):
+                    yield ((q, r), next_pos)
+
+        def result(self, state, action):
+            """
+            Return the state that results from executing the given
+            action in the given state. The action must be one of
+            self.actions(state).
+            """
+            state = state.copy()
+            fr, to = action
+            color = state.color
+            # move 
+            state.forward_dict[color].remove(fr)
+            state.forward_dict[color].add(to)
+            del state.backward_dict[fr]
+            state.backward_dict[fr] = color
+            return state
+
+
+
+if __name__ == "__main__":
+    # test for static problme class
+    pass
