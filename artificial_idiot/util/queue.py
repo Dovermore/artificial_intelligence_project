@@ -1,6 +1,10 @@
 import heapq
 
 
+def f_null(x):
+    return x
+
+
 class PriorityQueue:
     """A Queue in which the minimum (or maximum) element (as determined by f and
     order) is returned first.
@@ -8,7 +12,7 @@ class PriorityQueue:
     returned first; if order is 'max', then it is the item with maximum f(x).
     Also supports dict-like lookup."""
 
-    def __init__(self, order='min', f=lambda x: x):
+    def __init__(self, order='min', f=f_null):
         self.heap = []
 
         if order == 'min':
@@ -58,3 +62,5 @@ class PriorityQueue:
         except ValueError:
             raise KeyError(str(key) + " is not in the priority queue")
         heapq.heapify(self.heap)
+
+

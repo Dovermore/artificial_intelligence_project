@@ -1,4 +1,4 @@
-from util import class_property
+from util.class_property import classproperty
 from util.misc import print_board
 from copy import copy, deepcopy
 from collections import defaultdict as dd
@@ -21,7 +21,7 @@ class State:
         # Map from positions to pieces
         self._backward_dict = dd(str)
         # Derive the backward mapping
-        for colour, locations in self._forward_dict:
+        for colour, locations in self._forward_dict.items():
             for location in locations:
                 self._backward_dict[location] = colour
         self._colour = colour
@@ -49,7 +49,7 @@ class State:
     def colour(self):
         return self._colour
 
-    @class_property
+    @classproperty
     def code_map(cls):
         return copy(cls._code_map)
 
@@ -61,7 +61,7 @@ class State:
         # need a copy here
         backward_dict = self.backward_dict
         # Make the name shorter so display normally
-        backward_dict = {key: self._rev_code_map[value][:3] for key, value
+        backward_dict = {key: value[:3] for key, value
                          in backward_dict.items()}
         return print_board(backward_dict, debug=debug, printed=False)
 

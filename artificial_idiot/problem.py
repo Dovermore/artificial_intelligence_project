@@ -1,5 +1,5 @@
 from util.misc import is_in
-from util import class_property
+from util.class_property import classproperty
 from state import State
 import abc
 from copy import copy
@@ -155,9 +155,14 @@ class StaticProblem(Problem):
     def value(self, state):
         raise NotImplementedError
 
-    @class_property
+    @classproperty
     def exit_positions(cls):
         return copy(cls._exit_positions)
+
+    @classmethod
+    def h(cls, node):
+        # state = node.state
+        return 0
 
 
 if __name__ == "__main__":

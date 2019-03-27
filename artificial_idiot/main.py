@@ -10,6 +10,8 @@ import json
 
 from util.json_parser import parse
 from state import State
+from problem import StaticProblem
+from search import best_first_graph_search, astar_search
 
 
 def main():
@@ -18,8 +20,13 @@ def main():
         forward_dict, colour = parse(json_loader, "A")
         state = State(forward_dict, colour)
 
+        print("----------------------------------------")
         print(str(state))
+        print("----------------------------------------")
         print(state.__str__(True))
+        print("----------------------------------------")
+        static_problem = StaticProblem(state, colour)
+        print(astar_search(static_problem))
 
 
 # when this module is executed, run the `main` function:

@@ -1,4 +1,6 @@
 
+def no_heuristic(state):
+    pass
 
-def manhattan_distance(self, pos1, pos2):
+def manhattan_distance(pos):
     pass
