@@ -95,8 +95,7 @@ class StaticProblem(Problem):
         """
         super().__init__(initial)
         # remove all agent's pieces
-        self.goal = initial.copy()
-        self.goal.delete_colour(colour)
+        self.goal = State.goal_state(initial, colour)
 
     @classmethod
     def actions(cls, state):
@@ -147,7 +146,7 @@ class StaticProblem(Problem):
         forward_dict[colour].remove(fr)
         # If None then don't do anything
         if to is not None:
-            forward_dict[colour].add(to)
+            forward_dict[colour].append(to)
 
         # Construct the new state
         return State(forward_dict, next_colour)

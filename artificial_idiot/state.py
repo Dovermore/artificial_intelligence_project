@@ -16,6 +16,8 @@ class State:
     _rev_code_map = {value: key for key, value in _code_map.items()}
 
     def __init__(self, forward_dict, colour):
+        # DO THIS FIRST, OR THE LOOP OVERRIDES IT
+        self._colour = colour
         # Map from piece to positions
         self._forward_dict = forward_dict
         # Map from positions to pieces
@@ -24,16 +26,12 @@ class State:
         for colour, locations in self._forward_dict.items():
             for location in locations:
                 self._backward_dict[location] = colour
-        self._colour = colour
 
     def __eq__(self, other):
         # Has to first be same class
         if not isinstance(other, self.__class__):
             return False
-
-        # Hash doesn't work on dictionary
-        return (self._forward_dict == other._forward_dict and
-                self._backward_dict == other._backward_dict and
+        return (self._backward_dict == other._backward_dict and
                 self._colour == other._colour)
 
     @property
@@ -63,23 +61,18 @@ class State:
         # Make the name shorter so display normally
         backward_dict = {key: value[:3] for key, value
                          in backward_dict.items()}
-        return print_board(backward_dict, debug=debug, printed=False)
+        return print_board(backward_dict, debug=debug, printed=False,
+                           message=f"Colour: {self._colour}")
 
     def delete_colour(self, colour):
         """
         Removes all the pieces of that colour from the board
         colour must be a string
         """
-        if colour not in State._code_map:
-            raise ValueError("colour value is not defined in the state")
         # remove the pieces of the given colour
-        code = State._code_map[colour]
-        for location in self._forward_dict[code]:
-            del self.backward_dict[location]
-        del self._forward_dict[code]
-
-    def copy(self):
-        return copy(self)
+        for location in self._forward_dict[colour]:
+            del self._backward_dict[location]
+        del self._forward_dict[colour]
 
     def next_colour(self):
         """
@@ -94,6 +87,26 @@ class State:
     def inboard(pos):
         r, q = pos
         return not (r < -3 or r > 3 or q < -3 or q > 3 or abs(r+q) > 3)
+
+    @classmethod
+    def goal_state(cls, state, goal_colour):
+        forward_dict = state.forward_dict
+        backward_dict = state.backward_dict
+
+        if goal_colour:
+            # remove the pieces of the given colour
+            for location in forward_dict[goal_colour]:
+                del backward_dict[location]
+            del forward_dict[goal_colour]
+        return cls(forward_dict, goal_colour)
+
+    def __hash__(self):
+        # only need hash those two
+        return hash(frozenset(self._backward_dict)) ^ hash(self._colour)
+
+    def __lt__(self, other):
+        # There is no preference between states with same path cost
+        return True
 
 
 if __name__ == "__main__":

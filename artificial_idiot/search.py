@@ -3,7 +3,7 @@ from util.misc import memoize
 from util.queue import PriorityQueue
 
 
-def best_first_graph_search(problem, f):
+def best_first_graph_search(problem, f, show=False):
     """Search the nodes with the lowest f scores first.
     You specify the function f(node) that you want to minimize; for example,
     if f is a heuristic estimate to the goal, then we have greedy best
@@ -18,6 +18,8 @@ def best_first_graph_search(problem, f):
     explored = set()
     while frontier:
         node = frontier.pop()
+        if show:
+            print(node)
         if problem.goal_test(node.state):
             return node
         explored.add(node.state)
@@ -31,12 +33,13 @@ def best_first_graph_search(problem, f):
     return None
 
 
-def astar_search(problem, h=None):
+def astar_search(problem, h=None, *args, **kwargs):
     """A* search is best-first graph search with f(n) = g(n)+h(n).
     You need to specify the h function when you call astar_search, or
     else in your Problem subclass."""
     h = memoize(h or problem.h, 'h')
-    return best_first_graph_search(problem, lambda n: n.path_cost + h(n))
+    return best_first_graph_search(problem, lambda n: n.path_cost + h(n),
+                                   *args, **kwargs)
 
 
 # def depth_limited_search(problem, limit=50):

@@ -26,7 +26,7 @@ def main():
         print(state.__str__(True))
         print("----------------------------------------")
         static_problem = StaticProblem(state, colour)
-        print(astar_search(static_problem))
+        print(astar_search(static_problem, show=True))
 
 
 # when this module is executed, run the `main` function:

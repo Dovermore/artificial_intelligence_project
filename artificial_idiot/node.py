@@ -21,8 +21,16 @@ class Node:
         if parent:
             self.depth = parent.depth + 1
 
-    def __repr__(self):
-        return "<Node {}>".format(self.state)
+    def __repr__(self, transition=False):
+        if not transition:
+            return "<Node {}>".format(self.state)
+        else:
+            return "========================================\n" \
+                   "<Pare {}>\n" \
+                   "<Action: {}>\n" \
+                   "<Node {}>\n" \
+                   "========================================" \
+                .format(self.parent, self.action, self.state)
 
     def __lt__(self, node):
         return self.state < node.state
