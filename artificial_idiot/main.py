@@ -11,7 +11,9 @@ import json
 from util.json_parser import parse
 from state import State
 from problem import StaticProblem
-from search import best_first_graph_search, astar_search
+from search import (best_first_graph_search, astar_search,
+                    depth_first_tree_search)
+from util.misc import format_action
 
 
 def main():
@@ -26,7 +28,12 @@ def main():
         print(state.__str__(True))
         print("----------------------------------------")
         static_problem = StaticProblem(state, colour)
-        print(astar_search(static_problem, show=True))
+        final_node = astar_search(static_problem, show=True)
+        # final_node = depth_first_tree_search(static_problem, show=True)
+        print("----------------------------------------")
+        print("----------------------------------------")
+        print(final_node.path)
+        print([format_action(i) for i in final_node.solution])
 
 
 # when this module is executed, run the `main` function:

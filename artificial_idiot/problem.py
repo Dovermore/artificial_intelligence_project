@@ -113,9 +113,10 @@ class StaticProblem(Problem):
         """
         # for each piece try all possible moves
         for q, r in state.forward_dict[state.colour]:
+            exit_ready_pos = cls._exit_positions[state.colour]
             # exit
-            if (q, r) in cls._exit_positions:
-                yield ((q, r), None)
+            if (q, r) in exit_ready_pos:
+                yield ((q, r), None, "EXIT")
 
             for move in cls._move:
                 i, j = move
@@ -126,10 +127,10 @@ class StaticProblem(Problem):
                     continue
                 # Move (No need to check inboard)
                 elif state.occupied(move_pos):
-                    yield ((q, r), move_pos)
+                    yield ((q, r), move_pos, "MOVE")
                 # Jump (still need to check inboard)
                 elif state.occupied(jump_pos) and state.inboard(move_pos):
-                    yield ((q, r), jump_pos)
+                    yield ((q, r), jump_pos, "JUMP")
 
     def result(self, state, action):
         """
@@ -137,7 +138,7 @@ class StaticProblem(Problem):
         action in the given state. The action must be one of
         self.actions(state).
         """
-        fr, to = action
+        fr, to, mv = action
         forward_dict = state.forward_dict
         colour = state.colour
         next_colour = state.next_colour()

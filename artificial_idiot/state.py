@@ -86,7 +86,7 @@ class State:
     @staticmethod
     def inboard(pos):
         r, q = pos
-        return not (r < -3 or r > 3 or q < -3 or q > 3 or abs(r+q) > 3)
+        return not (abs(r) > 3 or abs(q) > 3 or abs(r+q) > 3)
 
     @classmethod
     def goal_state(cls, state, goal_colour):
@@ -97,7 +97,8 @@ class State:
             # remove the pieces of the given colour
             for location in forward_dict[goal_colour]:
                 del backward_dict[location]
-            del forward_dict[goal_colour]
+            # Make the forward dict empty but still player in it
+            forward_dict[goal_colour] = []
         return cls(forward_dict, goal_colour)
 
     def __hash__(self):
