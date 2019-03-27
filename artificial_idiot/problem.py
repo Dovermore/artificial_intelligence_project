@@ -125,11 +125,11 @@ class StaticProblem(Problem):
                 # If that direction is possible to move
                 if not state.inboard(move_pos):
                     continue
-                # Move
+                # Move (No need to check inboard)
                 elif state.occupied(move_pos):
                     yield ((q, r), move_pos)
-                # Jump
-                elif state.occupied(jump_pos):
+                # Jump (still need to check inboard)
+                elif state.occupied(jump_pos) and state.inboard(move_pos):
                     yield ((q, r), jump_pos)
 
     def result(self, state, action):
