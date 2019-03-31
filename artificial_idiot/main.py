@@ -35,7 +35,8 @@ def main():
         print(final_node.path)
         path_action = zip(final_node.path, final_node.solution)
         for path, action in path_action:
-            print(path.__repr__(message=format_action(action), debug=True))
+            print(path.__repr__(message=format_action(action), debug=True,
+                                printed=False))
 
         # print([format_action(i) for i in final_node.solution])
         # print(len(final_node.solution))
