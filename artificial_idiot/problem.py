@@ -3,6 +3,7 @@ from util.class_property import classproperty
 from state import State
 import abc
 from copy import copy
+from collections import defaultdict as dd
 
 
 class Problem(abc.ABC):
@@ -84,8 +85,8 @@ class StaticProblem(Problem):
 
     # possible moves.
     _move = (
-        (+1, -1), (0, -1), (-1, 0),
-        (-1, +1), (0, +1), (+1, 0)
+        (+1, -1), (1, 0), (0, 1),
+        (-1, +1), (-1, 0), (0, -1)
     )
 
     def __init__(self, initial, colour):
@@ -96,6 +97,8 @@ class StaticProblem(Problem):
         super().__init__(initial)
         # remove all agent's pieces
         self.goal = State.goal_state(initial, colour)
+        # A mapping for heuristic distances
+        self.heuristic_distance = dd(float)
 
     @classmethod
     def actions(cls, state):
@@ -161,8 +164,32 @@ class StaticProblem(Problem):
 
     @classmethod
     def h(cls, node):
-        # state = node.state
-        return 0
+        state = node.state
+        colour = node.state.colour
+
+        dists = 0
+        for position in state.forward_dict[state.colour]:
+            dists += (min([cls.grid_dist(position, exit_position) for
+                           exit_position in cls._exit_positions[colour]
+                           if exit_position not in
+                           state.forward_dict["block"]])
+                      + 1) // 2
+        return dists
+
+    @staticmethod
+    def grid_dist(pos1, pos2):
+        x1, y1 = pos1
+        x2, y2 = pos2
+
+        dy = y2 - y1
+        dx = x2 - x1
+
+        # If different sign, take the max of difference in position
+        if dy * dx < 0:
+            return max([abs(dy), abs(dx)])
+        # Same sign or zero just take sum
+        else:
+            return abs(dy + dx)
 
 
 if __name__ == "__main__":

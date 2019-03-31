@@ -55,14 +55,20 @@ class State:
     def code_map(cls, code_map):
         cls._code_map = code_map
 
-    def __str__(self, debug=False):
+    def __repr__(self, **kwargs):
         # need a copy here
         backward_dict = self.backward_dict
         # Make the name shorter so display normally
         backward_dict = {key: value[:3] for key, value
                          in backward_dict.items()}
-        return print_board(backward_dict, debug=debug, printed=False,
-                           message=f"Colour: {self._colour}")
+
+        msg = f"Colour: {self._colour}"
+        if "message" in kwargs:
+            kwargs["message"] += msg
+        else:
+            kwargs["message"] = msg
+
+        return print_board(backward_dict, **kwargs)
 
     def delete_colour(self, colour):
         """

@@ -23,21 +23,13 @@ class Node:
         if parent:
             self.depth = parent.depth + 1
 
-    def __repr__(self, transition=False):
-        if not transition:
-            return "<Node {}>".format(self.state)
-        else:
-            return "========================================\n" \
-                   "<Pare {}>\n" \
-                   "<Action: {}>\n" \
-                   "<Node {}>\n" \
-                   "========================================" \
-                .format(self.parent, self.action, self.state)
+    def __repr__(self, transition=False, **kwargs):
+        return "<Node {}>".format(self.state.__repr__(**kwargs))
 
     def __lt__(self, node):
         return self.state < node.state
 
-    def expand(self, problem):
+    def expand(self, problem): 
         """List the nodes reachable in one step from this node."""
         children = [self.child_node(problem, action)
                     for action in problem.actions(self.state)]

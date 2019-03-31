@@ -7,6 +7,10 @@ def parse(json_loader, phase):
         block = "block"
         forward_dict = dd(list)
 
+        # Initialise the blocks and pieces no matter what.
+        forward_dict[colour] = []
+        forward_dict[block] = []
+
         for pos in json_loader["pieces"]:
             forward_dict[colour].append(tuple(pos))
         for pos in json_loader["blocks"]:

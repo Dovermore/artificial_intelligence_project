@@ -116,7 +116,7 @@ def print_board(board_dict, message="", debug=False, printed=True, **kwargs):
 
 def format_action(action):
     fr, to, mv = action
-    return f"{mv} from {fr}{' to' + str(to) if to else ''}."
+    return f"{mv} from {fr}{' to ' + str(to) if to else ''}."
 
 
 def is_in(elt, seq):

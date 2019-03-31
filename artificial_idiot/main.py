@@ -25,7 +25,7 @@ def main():
         print("----------------------------------------")
         print(str(state))
         print("----------------------------------------")
-        print(state.__str__(True))
+        print(state.__repr__(debug=True))
         print("----------------------------------------")
         static_problem = StaticProblem(state, colour)
         final_node = astar_search(static_problem, show=True)
@@ -33,7 +33,12 @@ def main():
         print("----------------------------------------")
         print("----------------------------------------")
         print(final_node.path)
-        print([format_action(i) for i in final_node.solution])
+        path_action = zip(final_node.path, final_node.solution)
+        for path, action in path_action:
+            print(path.__repr__(message=format_action(action), debug=True))
+
+        # print([format_action(i) for i in final_node.solution])
+        # print(len(final_node.solution))
 
 
 # when this module is executed, run the `main` function:

@@ -19,6 +19,8 @@ def best_first_graph_search(problem, f, show=False):
     while frontier:
         node = frontier.pop()
         if show:
+            print(f"Depth: {node.depth}")
+            print(f"Heuristic: {problem.h(node)}")
             print(node)
         if problem.goal_test(node.state):
             return node
