@@ -14,8 +14,9 @@ class State:
     """
     _code_map = {"red": 0, "green": 1, "blue": 2, "blocks": 3}
     _rev_code_map = {value: key for key, value in _code_map.items()}
+    # TODO need to move the exit position to here
 
-    def __init__(self, forward_dict, colour):
+    def __init__(self, forward_dict, colour, h_map=None):
         # DO THIS FIRST, OR THE LOOP OVERRIDES IT
         self._colour = colour
         # Map from piece to positions
@@ -26,6 +27,11 @@ class State:
         for colour, locations in self._forward_dict.items():
             for location in locations:
                 self._backward_dict[location] = colour
+        # If heuristic map is not specified, construct it from scratch
+
+        # TODO construct map here (dynamic update) or in problem (static global map)
+        if not h_map:
+            pass
 
     def __eq__(self, other):
         # Has to first be same class

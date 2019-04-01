@@ -162,15 +162,14 @@ class StaticProblem(Problem):
     def exit_positions(cls):
         return copy(cls._exit_positions)
 
-    @classmethod
-    def h(cls, node):
+    def h(self, node):
         state = node.state
         colour = node.state.colour
 
         dists = 0
         for position in state.forward_dict[state.colour]:
-            dists += (min([cls.grid_dist(position, exit_position) for
-                           exit_position in cls._exit_positions[colour]
+            dists += (min([self.grid_dist(position, exit_position) for
+                           exit_position in self._exit_positions[colour]
                            if exit_position not in
                            state.forward_dict["block"]])
                       + 1) // 2
@@ -178,6 +177,12 @@ class StaticProblem(Problem):
 
     @staticmethod
     def grid_dist(pos1, pos2):
+        """
+        Get the grid distance between two different grid locations
+        :param pos1: first position (tuple)
+        :param pos2: second position (tuple)
+        :return: The `manhattan` distance between those two positions
+        """
         x1, y1 = pos1
         x2, y2 = pos2
 

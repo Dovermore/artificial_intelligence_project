@@ -35,7 +35,7 @@ class Node:
                     for action in problem.actions(self.state)]
         # filter visited
         children = list(filter(self.not_visited, children))
-        # add unvisited
+        # add unvisited to the set
         self.visited_states.update((child.state for child in children))
         return children
 
