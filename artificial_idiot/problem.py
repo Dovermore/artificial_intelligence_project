@@ -113,13 +113,14 @@ class PathFindingProblem(BoardProblem):
         for pos in self._exit_positions[self.colour]:
             if pos not in goal.pos_to_piece:
                 self.heuristic_distance[pos] = 1
-                start.append([1, pos])
+                start.append(pos)
 
-        frontier = PriorityQueue('min')
+        frontier = PriorityQueue('min', f=self.heuristic_distance.__getitem__)
         frontier.extend(start)
         while frontier:
-            cost, pos = frontier.pop()
+            pos = frontier.pop()
             q, r = pos
+            cost = self.heuristic_distance[pos]
             for dq, dr in self._move:
                 for move in range(1, 3):
                     next_pos = (q + dq * move, r + dr * move)
@@ -131,11 +132,11 @@ class PathFindingProblem(BoardProblem):
                     # Not yet navigated to
                     if h_val is None:
                         self.heuristic_distance[next_pos] = cost + 1
-                        frontier.append([cost + 1, next_pos])
+                        frontier.append(next_pos)
                     # Can be updated
                     elif h_val > cost + 1:
                         self.heuristic_distance[next_pos] = cost + 1
-                        frontier.update(cost + 1, next_pos)
+                        frontier.update(next_pos)
 
     @classmethod
     def actions(cls, state):

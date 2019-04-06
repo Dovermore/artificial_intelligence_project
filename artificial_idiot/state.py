@@ -20,7 +20,11 @@ class State:
 
     def __new__(cls, pos_to_piece, colour):
         """
-        Use new to cache the instances for faster comparison
+        Return the same instance if the positions indicated are completely the
+        same as some previously created instances
+
+        Use new to cache the instances for faster comparison,
+        and also used for a better find in queue
         """
         frozen_pos = frozenset(pos_to_piece.keys())
         if frozenset(pos_to_piece.keys()) in cls.generated_states:
@@ -106,13 +110,13 @@ class State:
         return self._hash
 
     def __eq__(self, other):
-        # Has to first be same class
-        # if not isinstance(other, self.__class__):
-        #     return False
-        return self is other
-        # return self._hash == hash(other) and \
-        #        (self._frozen == other._frozen and
-        #         self._colour == other._colour)
+        # First compare hash, if hash is successful, compare id
+        # last compare the content for a fast comparison
+        # (This is based on experimental result of comparison speed)
+        return (self._hash == hash(other) and
+                (self is other or
+                 self._frozen == other._frozen and
+                 self._colour == other._colour))
 
     def __lt__(self, other):
         # There is no preference between states with same path cost

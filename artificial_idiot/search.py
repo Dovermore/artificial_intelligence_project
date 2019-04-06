@@ -27,11 +27,12 @@ def best_first_graph_search(problem, f, show=False, **kwargs):
             return node
         explored.add(node.state)
         for child in node.expand(problem):
-            if child.state not in explored and child not in frontier:
-                frontier.append(child)
-            elif child in frontier:
+            if child in frontier:
+                f_val = f(child)
                 if f(child) < frontier[child]:
-                    del frontier[child]
+                    frontier.update(f_val, child)
+            else:
+                if child.state not in explored:
                     frontier.append(child)
     return None
 
