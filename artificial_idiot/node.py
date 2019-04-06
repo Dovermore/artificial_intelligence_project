@@ -11,8 +11,6 @@ class Node:
     an explanation of how the f and h values are handled. You will not need to
     subclass this class."""
 
-    visited_states = set()
-
     def __init__(self, state, parent=None, action=None, path_cost=0):
         """Create a search tree Node, derived from a parent by an action."""
         self.state = state
@@ -31,17 +29,10 @@ class Node:
 
     def expand(self, problem): 
         """List the nodes reachable in one step from this node."""
-        children = [self.child_node(problem, action)
-                    for action in problem.actions(self.state)]
-        # filter visited
-        children = list(filter(self.not_visited, children))
-        # add unvisited to the set
-        self.visited_states.update((child.state for child in children))
+        # Generator of children nodes
+        children = (self.child_node(problem, action)
+                    for action in problem.actions(self.state))
         return children
-
-    @classmethod
-    def not_visited(cls, node):
-        return node.state not in cls.visited_states
 
     def child_node(self, problem, action):
         """[Figure 3.10]"""

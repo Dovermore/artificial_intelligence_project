@@ -24,7 +24,7 @@ class PriorityQueue:
 
     def append(self, item):
         """Insert item at its correct position."""
-        heapq.heappush(self.heap, (self.f(item), item))
+        heapq.heappush(self.heap, [self.f(item), item])
 
     def extend(self, items):
         """Insert each item in items at its correct position."""
@@ -38,6 +38,28 @@ class PriorityQueue:
             return heapq.heappop(self.heap)[1]
         else:
             raise Exception('Trying to pop from empty PriorityQueue.')
+
+    def find(self, item):
+        # Simply use a linear search
+        for pos, pair in enumerate(self.heap):
+            if pair[1] == item:
+                return pos, pair
+        return -1, None
+
+    def update(self, new_key, item):
+        # Find then update
+        pos, pair = self.find(item)
+        assert pair is not None and pos is not -1
+        # Update the key
+        old_key = pair[0]
+        pair[0] = new_key
+
+        # update the position
+        # NOTE: Python's Fking implementation reverses sift up and down.
+        if new_key < old_key:
+            heapq._siftdown(self.heap, 0, pos)
+        else:
+            heapq._siftup(self.heap, pos)
 
     def __len__(self):
         """Return current capacity of PriorityQueue."""
@@ -63,4 +85,18 @@ class PriorityQueue:
             raise KeyError(str(key) + " is not in the priority queue")
         heapq.heapify(self.heap)
 
+    def __repr__(self):
+        return f"Priority Queue at {id(self)}:\nf={self.f}\n{self.heap}"
 
+
+if __name__ == "__main__":
+    elements = [1, 2, 3, 4, 5, 6, 7, 1, 3, 4, 43, 3, 42345, 6253, 23451,
+                1, 23, 423, 4]
+
+    q = PriorityQueue()
+    q.extend(elements)
+    print(q)
+    q.update(100, 1)
+    print(q)
+    q.update(0, 42345)
+    print(q)

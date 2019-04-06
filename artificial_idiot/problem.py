@@ -5,6 +5,8 @@ import abc
 from copy import copy
 from collections import defaultdict as dd
 
+from util.queue import PriorityQueue
+
 
 class Problem(abc.ABC):
     """
@@ -73,10 +75,7 @@ class Problem(abc.ABC):
         pass
 
 
-class StaticProblem(Problem):
-    """
-    Static Search problem for project part A
-    """
+class BoardProblem(Problem, abc.ABC):
     _exit_positions = {
         "red": ((3, -3), (3, -2), (3, -1), (3, 0)),
         "green": ((-3, 3), (-2, 3), (-1, 3), (0, 3)),
@@ -89,6 +88,11 @@ class StaticProblem(Problem):
         (-1, +1), (-1, 0), (0, -1)
     )
 
+
+class PathFindingProblem(BoardProblem):
+    """
+    Static Search problem for project part A
+    """
     def __init__(self, initial, colour):
         """
         initial state is supplied by the problem
@@ -97,12 +101,46 @@ class StaticProblem(Problem):
         super().__init__(initial)
         # remove all agent's pieces
         self.goal = State.goal_state(initial, colour)
+
         # A mapping for heuristic distances
+        self.colour = colour
         self.heuristic_distance = dd(float)
+        self._build_heuristic_distance()
+
+    def _build_heuristic_distance(self):
+        goal = self.goal
+        start = []
+        for pos in self._exit_positions[self.colour]:
+            if pos not in goal.pos_to_piece:
+                self.heuristic_distance[pos] = 1
+                start.append((1, pos))
+
+        frontier = PriorityQueue('min')
+        frontier.extend(start)
+        while frontier:
+            cost, pos = frontier.pop()
+            q, r = pos
+            for dq, dr in self._move:
+                for move in range(1, 3):
+                    next_pos = (q + dq * move, r + dr * move)
+                    if (not State.inboard(next_pos) or
+                            next_pos in goal.pos_to_piece):
+                        continue
+                    # Get value in dictionary
+                    h_val = self.heuristic_distance.get(next_pos, None)
+                    # Not yet navigated to
+                    if h_val is None:
+                        self.heuristic_distance[next_pos] = cost + 1
+                        frontier.append([cost + 1, next_pos])
+                    # Can be updated
+                    elif h_val > cost + 1:
+                        self.heuristic_distance[next_pos] = cost + 1
+                        frontier.update(cost + 1, next_pos)
 
     @classmethod
     def actions(cls, state):
-        """Yield all possible moves in a given state
+        """
+        Yield all possible moves in a given state
 
         Exit means moving to position (infinity, infinity)
         Actions are eveluated in this order: Exit -> Move -> Jump
@@ -115,7 +153,7 @@ class StaticProblem(Problem):
             action (tuple) -- encoded as ((from position), (to position))
         """
         # for each piece try all possible moves
-        for q, r in state.forward_dict[state.colour]:
+        for q, r in state.piece_to_pos[state.colour]:
             exit_ready_pos = cls._exit_positions[state.colour]
             # exit
             if (q, r) in exit_ready_pos:
@@ -132,7 +170,7 @@ class StaticProblem(Problem):
                 elif state.occupied(move_pos):
                     yield ((q, r), move_pos, "MOVE")
                 # Jump (still need to check inboard)
-                elif state.occupied(jump_pos) and state.inboard(move_pos):
+                elif state.occupied(jump_pos) and state.inboard(jump_pos):
                     yield ((q, r), jump_pos, "JUMP")
 
     def result(self, state, action):
@@ -142,7 +180,7 @@ class StaticProblem(Problem):
         self.actions(state).
         """
         fr, to, mv = action
-        forward_dict = state.forward_dict
+        forward_dict = state.piece_to_pos
         colour = state.colour
         next_colour = state.next_colour()
 
@@ -167,11 +205,11 @@ class StaticProblem(Problem):
         colour = node.state.colour
 
         dists = 0
-        for position in state.forward_dict[state.colour]:
+        for position in state.piece_to_pos[state.colour]:
             dists += (min([self.grid_dist(position, exit_position) for
                            exit_position in self._exit_positions[colour]
                            if exit_position not in
-                           state.forward_dict["block"]])
+                           state.piece_to_pos["block"]])
                       + 1) // 2
         return dists
 
@@ -195,6 +233,11 @@ class StaticProblem(Problem):
         # Same sign or zero just take sum
         else:
             return abs(dy + dx)
+
+    def h(self, node):
+        state = node.state
+        return sum((self.heuristic_distance[pos] for pos in
+                    node.state.piece_to_pos[state.colour]))
 
 
 if __name__ == "__main__":

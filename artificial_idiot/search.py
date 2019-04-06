@@ -3,7 +3,7 @@ from util.misc import memoize
 from util.queue import PriorityQueue
 
 
-def best_first_graph_search(problem, f, show=False):
+def best_first_graph_search(problem, f, show=False, **kwargs):
     """Search the nodes with the lowest f scores first.
     You specify the function f(node) that you want to minimize; for example,
     if f is a heuristic estimate to the goal, then we have greedy best
@@ -21,7 +21,7 @@ def best_first_graph_search(problem, f, show=False):
         if show:
             print(f"Depth: {node.depth}")
             print(f"Heuristic: {problem.h(node)}")
-            print(node)
+            print(node.__repr__(**kwargs))
         if problem.goal_test(node.state):
             return node
         explored.add(node.state)
@@ -51,14 +51,18 @@ def depth_first_tree_search(problem, show=False):
         Repeats infinitely in case of loops. [Figure 3.7]"""
 
     frontier = [Node(problem.initial)]  # Stack
+    explored = set()
 
     while frontier:
         node = frontier.pop()
+        explored.add(node.state)
         if show:
             print(node)
         if problem.goal_test(node.state):
             return node
-        frontier.extend(node.expand(problem))
+        for child in node.expand(problem):
+            if child.state not in explored:
+                frontier.append(child)
     return None
 
 
