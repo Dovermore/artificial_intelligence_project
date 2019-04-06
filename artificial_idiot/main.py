@@ -43,7 +43,7 @@ def animate_path(final_node, wait: float = 1):
     path_action = zip(final_node.path, final_node.solution)
     prev_len = 0
     for path, action in path_action:
-        print("\b"*prev_len)
+        sys.stdout.write("\b"*prev_len)
         message = path.__repr__(message=format_action(action), debug=True,
                                 printed=False)
         prev_len = len(message)

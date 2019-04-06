@@ -113,7 +113,7 @@ class PathFindingProblem(BoardProblem):
         for pos in self._exit_positions[self.colour]:
             if pos not in goal.pos_to_piece:
                 self.heuristic_distance[pos] = 1
-                start.append((1, pos))
+                start.append([1, pos])
 
         frontier = PriorityQueue('min')
         frontier.extend(start)
