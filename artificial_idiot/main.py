@@ -20,19 +20,23 @@ from time import sleep
 def main():
     with open(sys.argv[1]) as file:
         animate = False
+        detailed = False
         if len(sys.argv) > 2:
-            animate = sys.argv[2]
+            animate = bool(sys.argv[2])
+        if len(sys.argv) > 3:
+            detailed = bool(sys.argv[3])
 
         json_loader = json.load(file)
         forward_dict, colour = parse(json_loader, "A")
         state = State(forward_dict, colour)
 
         path_finding_problem = PathFindingProblem(state, colour)
-        print_board(path_finding_problem.heuristic_distance)
-        print_board(path_finding_problem.goal.pos_to_piece)
-        final_node = astar_search(path_finding_problem, show=False)
+        if detailed:
+            print_board(path_finding_problem.heuristic_distance)
+            print_board(path_finding_problem.goal.pos_to_piece)
+        final_node = astar_search(path_finding_problem, show=detailed,
+                                  printed=False)
         if animate:
-            # final_node = depth_first_tree_search(static_problem, show=True)
             print(final_node.path)
             animate_path(final_node, 0.5)
         else:

@@ -21,6 +21,7 @@ def best_first_graph_search(problem, f, show=False, **kwargs):
         if show:
             print(f"Depth: {node.depth}")
             print(f"Heuristic: {problem.h(node)}")
+            print(len(explored))
             print(node.__repr__(**kwargs))
         if problem.goal_test(node.state):
             return node

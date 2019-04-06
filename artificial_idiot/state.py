@@ -29,8 +29,8 @@ class State:
 
     def __eq__(self, other):
         # Has to first be same class
-        if not isinstance(other, self.__class__):
-            return False
+        # if not isinstance(other, self.__class__):
+        #     return False
         return (self._pos_to_piece == other._pos_to_piece and
                 self._colour == other._colour)
 

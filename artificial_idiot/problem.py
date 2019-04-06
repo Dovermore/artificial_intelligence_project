@@ -239,6 +239,9 @@ class PathFindingProblem(BoardProblem):
         return sum((self.heuristic_distance[pos] for pos in
                     node.state.piece_to_pos[state.colour]))
 
+    def goal_test(self, state):
+        return state == self.goal
+
 
 if __name__ == "__main__":
     # test for static problem class
