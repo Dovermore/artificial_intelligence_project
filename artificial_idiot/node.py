@@ -64,7 +64,7 @@ class Node:
     # want in other contexts.]
 
     def __eq__(self, other):
-        return isinstance(other, Node) and self.state == other.state
+        return self.state == other.state
 
     def __hash__(self):
         return hash(self.state)

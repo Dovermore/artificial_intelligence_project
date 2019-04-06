@@ -180,18 +180,16 @@ class PathFindingProblem(BoardProblem):
         self.actions(state).
         """
         fr, to, mv = action
-        forward_dict = state.piece_to_pos
+        pos_to_piece = state.pos_to_piece
         colour = state.colour
         next_colour = state.next_colour()
-
         # update dictionary
-        forward_dict[colour].remove(fr)
-        # If None then don't do anything
+        pos_to_piece.pop(fr)
         if to is not None:
-            forward_dict[colour].append(to)
+            pos_to_piece[to] = colour
 
         # Construct the new state
-        return State(forward_dict, next_colour)
+        return State(pos_to_piece, next_colour)
 
     def value(self, state):
         raise NotImplementedError

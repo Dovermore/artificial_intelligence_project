@@ -8,7 +8,7 @@ Authors:
 import sys
 import json
 
-from util.json_parser import parse
+from util.json_parser import JsonParser
 from state import State
 from problem import PathFindingProblem
 from search import (best_first_graph_search, astar_search,
@@ -27,8 +27,11 @@ def main():
             detailed = bool(sys.argv[3])
 
         json_loader = json.load(file)
-        forward_dict, colour = parse(json_loader, "A")
-        state = State(forward_dict, colour)
+
+        json_parser = JsonParser(json_loader, "A")
+
+        pos_dict, colour = json_parser.parse(True)
+        state = State(pos_dict, colour)
 
         path_finding_problem = PathFindingProblem(state, colour)
         if detailed:

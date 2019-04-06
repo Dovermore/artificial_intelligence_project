@@ -1,4 +1,5 @@
 import heapq
+from collections import deque, defaultdict
 
 
 def f_null(x):
@@ -86,7 +87,7 @@ class PriorityQueue:
         heapq.heapify(self.heap)
 
     def __repr__(self):
-        return f"Priority Queue at {id(self)}:\nf={self.f}\n{self.heap}"
+        return f"Priority Queue at: {id(self)} [f{self.f} heap:{self.heap}]"
 
 
 if __name__ == "__main__":
