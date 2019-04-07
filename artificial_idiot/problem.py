@@ -154,7 +154,8 @@ class PathFindingProblem(BoardProblem):
             action (tuple) -- encoded as ((from position), (to position))
         """
         # for each piece try all possible moves
-        for q, r in state.piece_to_pos[state.colour]:
+        # Not using deepcopy here because no need to
+        for q, r in state._piece_to_pos[state.colour]:
             exit_ready_pos = cls._exit_positions[state.colour]
             # exit
             if (q, r) in exit_ready_pos:
@@ -199,7 +200,7 @@ class PathFindingProblem(BoardProblem):
     def exit_positions(cls):
         return copy(cls._exit_positions)
 
-    def h(self, node):
+    def h0(self, node):
         state = node.state
         colour = node.state.colour
 
@@ -236,7 +237,7 @@ class PathFindingProblem(BoardProblem):
     def h(self, node):
         state = node.state
         return sum((self.heuristic_distance[pos] for pos in
-                    node.state.piece_to_pos[state.colour]))
+                    node.state._piece_to_pos[state.colour]))
 
     def goal_test(self, state):
         return state == self.goal

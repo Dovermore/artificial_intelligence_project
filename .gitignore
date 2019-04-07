@@ -203,5 +203,10 @@ fabric.properties
 !.vscode/extensions.json
 .vscode/settings.json
 
+# Production files
+# output/... Not ignored yet
+
+# Trivial
+*.mov
 
 .DS_Store
