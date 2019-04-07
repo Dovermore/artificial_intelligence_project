@@ -16,6 +16,8 @@ class State:
     generated_states = {}
 
     _code_map = {"red": 0, "green": 1, "blue": 2, "block": 3}
+    _print_map = {"red": "\U0001F6BC", "green": "\U0001F4B9",
+                  "blue": "\u267F", "block": "\U0001F4A3"}
     _rev_code_map = {value: key for key, value in _code_map.items()}
 
     def __new__(cls, pos_to_piece, colour):
@@ -72,7 +74,9 @@ class State:
         # need a copy here
         pos_to_piece = self.pos_to_piece
         # Make the name shorter so display normally
-        pos_to_piece = {key: value[:3] for key, value
+        # pos_to_piece = {key: value[:3] for key, value
+        #                 in pos_to_piece.items()}
+        pos_to_piece = {key: self._print_map[value] for key, value
                         in pos_to_piece.items()}
 
         msg = f"Colour: {self._colour}"

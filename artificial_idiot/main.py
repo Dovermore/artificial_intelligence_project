@@ -21,8 +21,12 @@ def main():
     with open(sys.argv[1]) as file:
         animate = False
         detailed = False
+        brief = False
         if len(sys.argv) > 2:
-            animate = bool(sys.argv[2])
+            if sys.argv[2] == "brief":
+                brief = True
+            else:
+                animate = bool(sys.argv[2])
         if len(sys.argv) > 3:
             detailed = bool(sys.argv[3])
 
@@ -39,12 +43,19 @@ def main():
             print_board(path_finding_problem.goal.pos_to_piece)
         final_node = astar_search(path_finding_problem, show=detailed,
                                   printed=False)
+        if final_node is None:
+            print("Final Node is None!")
+            return
+
         if animate:
             print(final_node.path)
             animate_path(final_node, 0.5)
         else:
-            for action in final_node.solution:
-                print(format_action(action))
+            if brief:
+                print(len(final_node.solution))
+            else:
+                for action in final_node.solution:
+                    print(format_action(action))
 
 
 def animate_path(final_node, wait: float = 1):

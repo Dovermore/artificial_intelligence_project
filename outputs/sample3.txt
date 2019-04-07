@@ -1,0 +1,6 @@
+MOVE from (-2, 3) to (-1, 2).
+MOVE from (-1, 2) to (0, 2).
+JUMP from (0, 2) to (2, 0).
+MOVE from (2, 0) to (3, 0).
+EXIT from (3, 0).
+EXIT from (3, -2).
