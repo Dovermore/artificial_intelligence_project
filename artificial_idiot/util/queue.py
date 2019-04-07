@@ -144,15 +144,10 @@ class PriorityQueueImproved:
         if self.key_to_values:
             # find and pop the least cost
             items = self.key_to_values[self.min]
-            item = items.pop()
-            # find the next min if the current list exhausted
-            if not len(items):
-                del self.key_to_values[self.min]
-                # move it to the new min
-                self.min += 1
-                while self.min not in self.key_to_values:
-                    self.min += 1
-            # Remove from node_to_cost
+            # Get the first value
+            item = None
+            for item in items: break
+            self._remove_from_key_to_values(self.min, item)
             del self.value_to_key[item]
 
             return item
@@ -175,6 +170,7 @@ class PriorityQueueImproved:
                         self.min += 1
                 elif not len(self.key_to_values):
                     self.min = self.MOCK_MAX
+            return value
         else:
             raise Exception
 
@@ -240,5 +236,5 @@ if __name__ == "__main__":
 
     q2.update(2, 1)
     print(q2.key_to_values, q2.value_to_key)
-
     print(q2.pop())
+    print(q2.key_to_values, q2.value_to_key)

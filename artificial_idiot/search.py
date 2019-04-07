@@ -1,6 +1,6 @@
 from node import Node
 from util.misc import memoize
-from util.queue import PriorityQueue
+from util.queue import PriorityQueue, PriorityQueueImproved
 
 
 def best_first_graph_search(problem, f, show=False, **kwargs):
@@ -13,7 +13,7 @@ def best_first_graph_search(problem, f, show=False, **kwargs):
     a best first search you can examine the f values of the path returned."""
     f = memoize(f, 'f')
     node = Node(problem.initial)
-    frontier = PriorityQueue('min', f)
+    frontier = PriorityQueueImproved('min', f)
     frontier.append(node)
     explored = set()
     while frontier:
