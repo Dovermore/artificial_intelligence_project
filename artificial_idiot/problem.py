@@ -99,7 +99,7 @@ class PathFindingProblem(BoardProblem):
         goal state is initial state without any agent's pieces
         """
         super().__init__(initial)
-        # remove all agent's pieces
+        # Goal state is the absence of all agent's pieces
         self.goal = State.goal_state(initial, colour)
 
         # A mapping for heuristic distances
@@ -110,30 +110,35 @@ class PathFindingProblem(BoardProblem):
     def _build_heuristic_distance(self):
         goal = self.goal
         start = []
+
         for pos in self._exit_positions[self.colour]:
             if pos not in goal.pos_to_piece:
                 self.heuristic_distance[pos] = 1
                 start.append(pos)
 
+        # Expand the node with lowest cost first
         frontier = PriorityQueue('min', f=self.heuristic_distance.__getitem__)
         frontier.extend(start)
         while frontier:
             pos = frontier.pop()
             q, r = pos
             cost = self.heuristic_distance[pos]
+            # dq, dr: change in q coordinates, change in r coordinates
             for dq, dr in self._move:
                 for move in range(1, 3):
+                    # Try moving 1 step or jumping 2 steps
                     next_pos = (q + dq * move, r + dr * move)
+                    # Do not explore next position if out of bound or hits an block
                     if (not State.inboard(next_pos) or
                             next_pos in goal.pos_to_piece):
                         continue
-                    # Get value in dictionary
+                    # Get the heuristic of next position, return None if not found
                     h_val = self.heuristic_distance.get(next_pos, None)
-                    # Not yet navigated to
+                    # Next position have not been visited
                     if h_val is None:
                         self.heuristic_distance[next_pos] = cost + 1
                         frontier.append(next_pos)
-                    # Can be updated
+                    # Found a better path to next position
                     elif h_val > cost + 1:
                         self.heuristic_distance[next_pos] = cost + 1
                         frontier.update(next_pos)
