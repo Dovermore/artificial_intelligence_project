@@ -5,7 +5,7 @@ import abc
 from copy import copy
 from collections import defaultdict as dd
 
-from util.queue import PriorityQueue
+from util.queue import PriorityQueue, PriorityQueueImproved
 
 
 class Problem(abc.ABC):
@@ -115,7 +115,8 @@ class PathFindingProblem(BoardProblem):
                 self.heuristic_distance[pos] = 1
                 start.append(pos)
 
-        frontier = PriorityQueue('min', f=self.heuristic_distance.__getitem__)
+        frontier = PriorityQueueImproved('min',
+                                         f=self.heuristic_distance.__getitem__)
         frontier.extend(start)
         while frontier:
             pos = frontier.pop()
