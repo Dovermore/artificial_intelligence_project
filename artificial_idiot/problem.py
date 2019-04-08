@@ -161,6 +161,7 @@ class PathFindingProblem(BoardProblem):
             # exit
             if (q, r) in exit_ready_pos:
                 yield ((q, r), None, "EXIT")
+                return  # End the function if can exit
 
             for move in cls._move:
                 i, j = move
