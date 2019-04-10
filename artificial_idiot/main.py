@@ -2,7 +2,7 @@
 COMP30024 Artificial Intelligence, Semester 1 2019
 Solution to Project Part A: Searching
 
-Authors: 
+Authors: Chuanyuan Liu, Zhuoqun Huang
 """
 
 import sys
@@ -43,6 +43,7 @@ def main():
             print_board(path_finding_problem.goal.pos_to_piece)
         final_node = astar_search(path_finding_problem, show=detailed,
                                   printed=False)
+
         if final_node is None:
             print("Final Node is None!")
             return

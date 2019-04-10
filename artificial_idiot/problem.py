@@ -5,7 +5,7 @@ import abc
 from copy import copy
 from collections import defaultdict as dd
 
-from util.queue import PriorityQueue
+from util.queue import PriorityQueueImproved
 
 
 class Problem(abc.ABC):
@@ -99,7 +99,7 @@ class PathFindingProblem(BoardProblem):
         goal state is initial state without any agent's pieces
         """
         super().__init__(initial)
-        # Goal state is the absence of all agent's pieces
+        # remove all agent's pieces
         self.goal = State.goal_state(initial, colour)
 
         # A mapping for heuristic distances
@@ -108,40 +108,43 @@ class PathFindingProblem(BoardProblem):
         self._build_heuristic_distance()
 
     def _build_heuristic_distance(self):
+        """
+        Build the heuristic map used for searching by Dijkstra's Algorithm
+        """
         goal = self.goal
-        start = []
-
+        frontier = PriorityQueueImproved('min',
+                                         f=self.heuristic_distance.__getitem__)
+        # For all exit positions
         for pos in self._exit_positions[self.colour]:
+            # If the exit position is not occupied by other pieces
             if pos not in goal.pos_to_piece:
+                # Set initial heuristic to 1, and add to start
                 self.heuristic_distance[pos] = 1
-                start.append(pos)
+                frontier.append(pos)
 
-        # Expand the node with lowest cost first
-        frontier = PriorityQueue('min', f=self.heuristic_distance.__getitem__)
-        frontier.extend(start)
+        # While search is not ended
         while frontier:
             pos = frontier.pop()
             q, r = pos
+            # Explore all space near current place
             cost = self.heuristic_distance[pos]
-            # dq, dr: change in q coordinates, change in r coordinates
             for dq, dr in self._move:
                 for move in range(1, 3):
-                    # Try moving 1 step or jumping 2 steps
                     next_pos = (q + dq * move, r + dr * move)
-                    # Do not explore next position if out of bound or hits an block
+                    # If the moved position is valid, update it with cost + 1,
+                    # Else simply continue next loop
                     if (not State.inboard(next_pos) or
                             next_pos in goal.pos_to_piece):
                         continue
-                    # Get the heuristic of next position, return None if not found
+                    # Get value in dictionary
                     h_val = self.heuristic_distance.get(next_pos, None)
-                    # Next position have not been visited
-                    if h_val is None:
+
+                    # Not yet navigated to or can be updated
+                    if h_val is None or h_val > cost + 1:
+                        # Update dictionary entry
                         self.heuristic_distance[next_pos] = cost + 1
+                        # Update the value in queue
                         frontier.append(next_pos)
-                    # Found a better path to next position
-                    elif h_val > cost + 1:
-                        self.heuristic_distance[next_pos] = cost + 1
-                        frontier.update(next_pos)
 
     @classmethod
     def actions(cls, state):
@@ -165,6 +168,7 @@ class PathFindingProblem(BoardProblem):
             # exit
             if (q, r) in exit_ready_pos:
                 yield ((q, r), None, "EXIT")
+                return  # End the function if can exit
 
             for move in cls._move:
                 i, j = move

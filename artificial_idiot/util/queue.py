@@ -99,17 +99,25 @@ class PriorityQueue:
 
 
 class PriorityQueueImproved:
-    """A Queue in which the minimum (or maximum) element (as determined by f and
-    order) is returned first.
+    """
+    A Queue in which the minimum (or maximum) element (as determined by
+    f and order) is returned first.
     If order is 'min', the item with minimum f(x) is
     returned first; if order is 'max', then it is the item with maximum f(x).
-    Also supports dict-like lookup."""
+    Also supports dict-like lookup.
+
+    This queue is optimised so that all operations are expected to be
+    O(1) time complexity
+    """
 
     MOCK_MAX = 9999
 
     def __init__(self, order='min', f=f_null):
+        # Keep track of the key in the queue
         self.min = self.MOCK_MAX
+        # Track key -> {set of values}
         self.key_to_values = defaultdict(set)
+        # Track value -> key
         self.value_to_key = {}
 
         if order == 'min':
@@ -120,17 +128,21 @@ class PriorityQueueImproved:
             raise ValueError("order must be either 'min' or 'max'.")
 
     def append(self, value):
-        """insert item at its correct position."""
+        """ insert item at its correct position."""
+        # Compute key
         key = self.f(value)
+
+        # If already exists, update the current key, value pair
         if value in self.value_to_key:
             self.update(key, value)
-
-        if key < self.min:
-            self.min = key
         # First mapping
         self.key_to_values[key].add(value)
         # Second mapping
         self.value_to_key[value] = key
+
+        # If the new key is less than the current min, update the current min
+        if key < self.min:
+            self.min = key
 
     def extend(self, items):
         """insert each item in items at its correct position."""
@@ -138,15 +150,20 @@ class PriorityQueueImproved:
             self.append(item)
 
     def pop(self):
-        """pop and return the item (with min or max f(x) value)
-        depending on the order."""
+        """
+        pop and return the item (with min or max f(x) value)
+        depending on the order.
+        """
         # If not empty
         if self.key_to_values:
             # find and pop the least cost
             items = self.key_to_values[self.min]
-            # Get the first value
+
+            # Get the first value in the set
             item = None
             for item in items: break
+
+            # Remove from both dictionaries and update min
             self._remove_from_key_to_values(self.min, item)
             del self.value_to_key[item]
 
@@ -155,6 +172,14 @@ class PriorityQueueImproved:
             raise Exception('trying to pop from empty PriorityQueue.')
 
     def _remove_from_key_to_values(self, key, value):
+        """
+        Remove a entry in from_key_to_values entry by the key,value pair.
+        Automatically updates the new min if the set corresponds to the key
+        is empty to the new key (that's larger)
+        :param key: The key to be found with
+        :param value: The value object to be removed
+        :return: The removed value object
+        """
         if key in self.key_to_values and value in self.key_to_values[key]:
             # Remove from key to value
             values = self.key_to_values[key]
@@ -175,15 +200,25 @@ class PriorityQueueImproved:
             raise Exception
 
     def update(self, new_key, value):
+        """
+        Update the value with some new key
+        :param new_key: The key to update to
+        :param value: The value to be updated
+        """
         assert value in self.value_to_key
+        # Find old key
         old_key = self.value_to_key[value]
+        # If no update needed, simply return
         if new_key == old_key:
             return
+        # Update both dictionaries
         self.value_to_key[value] = new_key
-        if new_key < self.min:
-            self.min = new_key
         self.key_to_values[new_key].add(value)
         self._remove_from_key_to_values(old_key, value)
+
+        # Update min
+        if new_key < self.min:
+            self.min = new_key
 
     def __len__(self):
         """Return current capacity of PriorityQueue."""

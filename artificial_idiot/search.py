@@ -1,6 +1,6 @@
 from node import Node
 from util.misc import memoize
-from util.queue import PriorityQueue, PriorityQueueImproved
+from util.queue import PriorityQueueImproved
 
 
 def best_first_graph_search(problem, f, show=False, **kwargs):
@@ -11,7 +11,7 @@ def best_first_graph_search(problem, f, show=False, **kwargs):
     There is a subtlety: the line "f = memoize(f, 'f')" means that the f
     values will be cached on the nodes as they are computed. So after doing
     a best first search you can examine the f values of the path returned."""
-    f = memoize(f, 'f')
+    # f = memoize(f, 'f')
     node = Node(problem.initial)
     frontier = PriorityQueueImproved('min', f)
     frontier.append(node)
@@ -29,11 +29,10 @@ def best_first_graph_search(problem, f, show=False, **kwargs):
         for child in node.expand(problem):
             if child in frontier:
                 f_val = f(child)
-                if f(child) < frontier[child]:
+                if f_val < frontier[child]:
                     frontier.update(f_val, child)
-            else:
-                if child.state not in explored:
-                    frontier.append(child)
+            elif child.state not in explored:
+                frontier.append(child)
     return None
 
 
@@ -41,7 +40,8 @@ def astar_search(problem, h=None, *args, **kwargs):
     """A* search is best-first graph search with f(n) = g(n)+h(n).
     You need to specify the h function when you call astar_search, or
     else in your Problem subclass."""
-    h = memoize(h or problem.h, 'h')
+    h = h or problem.h
+    # h = memoize(h or problem.h, 'h')
     return best_first_graph_search(problem, lambda n: n.path_cost + h(n),
                                    *args, **kwargs)
 
