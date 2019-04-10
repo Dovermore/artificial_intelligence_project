@@ -46,6 +46,15 @@ def astar_search(problem, h=None, *args, **kwargs):
                                    *args, **kwargs)
 
 
+def dijkstra_search(problem):
+    """
+    Best first search that uses g(n) to evaluate cost
+    :param problem:
+    :return: final node
+    """
+    return best_first_graph_search(problem, lambda n: n.path_cost)
+
+
 def depth_first_tree_search(problem, show=False):
     """Search the deepest nodes in the search tree first.
         Search through the successors of a problem to find a goal.

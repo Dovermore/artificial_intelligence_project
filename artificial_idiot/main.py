@@ -11,10 +11,11 @@ import json
 from util.json_parser import JsonParser
 from state import State
 from problem import PathFindingProblem
-from search import (best_first_graph_search, astar_search,
+from search import (dijkstra_search, astar_search,
                     depth_first_tree_search)
 from util.misc import format_action, print_board
 from time import sleep
+from node import Node
 
 
 def main():
@@ -41,8 +42,9 @@ def main():
         if detailed:
             print_board(path_finding_problem.heuristic_distance)
             print_board(path_finding_problem.goal.pos_to_piece)
-        final_node = astar_search(path_finding_problem, show=detailed,
-                                  printed=False)
+
+        final_node = astar_search(path_finding_problem, show=detailed, printed=False)
+        # final_node = dijkstra_search(path_finding_problem)
 
         if final_node is None:
             print("Final Node is None!")
@@ -57,6 +59,9 @@ def main():
             else:
                 for action in final_node.solution:
                     print(format_action(action))
+
+        if brief:
+            print('#nodes created', Node.total_nodes_created)
 
 
 def animate_path(final_node, wait: float = 1):
