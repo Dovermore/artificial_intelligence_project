@@ -1,96 +1,84 @@
+"""
+COMP30024 Artificial Intelligence, Semester 1 2019
+Solution to Project Part A: Searching
+
+Authors: Chuanyuan Liu, Zhuoqun Huang
+"""
+
+import sys
+import json
+
+from util.json_parser import JsonParser
+from state import State
+from problem import PathFindingProblem
+from algorithm import (dijkstra_search, astar_search,
+                       depth_first_tree_search)
+from util.misc import format_action, print_board
+from time import sleep
 from node import Node
-from util.misc import memoize
-from util.queue import PriorityQueueImproved
 
 
-def best_first_graph_search(problem, f, show=False, **kwargs):
-    """Search the nodes with the lowest f scores first.
-    You specify the function f(node) that you want to minimize; for example,
-    if f is a heuristic estimate to the goal, then we have greedy best
-    first search; if f is node.depth then we have breadth-first search.
-    There is a subtlety: the line "f = memoize(f, 'f')" means that the f
-    values will be cached on the nodes as they are computed. So after doing
-    a best first search you can examine the f values of the path returned."""
-    # f = memoize(f, 'f')
-    node = Node(problem.initial)
-    frontier = PriorityQueueImproved('min', f)
-    frontier.append(node)
-    explored = set()
-    while frontier:
-        node = frontier.pop()
-        if show:
-            print(f"Depth: {node.depth}")
-            print(f"Heuristic: {problem.h(node)}")
-            print(len(explored))
-            print(node.__repr__(**kwargs))
-        if problem.goal_test(node.state):
-            return node
-        explored.add(node.state)
-        for child in node.expand(problem):
-            if child in frontier:
-                f_val = f(child)
-                if f_val < frontier[child]:
-                    frontier.update(f_val, child)
-            elif child.state not in explored:
-                frontier.append(child)
-    return None
+def main():
+    with open(sys.argv[1]) as file:
+        animate = False
+        detailed = False
+        brief = False
+        if len(sys.argv) > 2:
+            if sys.argv[2] == "brief":
+                brief = True
+            else:
+                animate = bool(sys.argv[2])
+        if len(sys.argv) > 3:
+            detailed = bool(sys.argv[3])
 
+        json_loader = json.load(file)
 
-def astar_search(problem, h=None, *args, **kwargs):
-    """A* search is best-first graph search with f(n) = g(n)+h(n).
-    You need to specify the h function when you call astar_search, or
-    else in your Problem subclass."""
-    h = h or problem.h
-    # h = memoize(h or problem.h, 'h')
-    return best_first_graph_search(problem, lambda n: n.path_cost + h(n),
-                                   *args, **kwargs)
+        json_parser = JsonParser(json_loader, "A")
 
+        pos_dict, colour = json_parser.parse(True)
+        state = State(pos_dict, colour)
 
-def dijkstra_search(problem):
-    """
-    Best first search that uses g(n) to evaluate cost
-    :param problem:
-    :return: final node
-    """
-    return best_first_graph_search(problem, lambda n: n.path_cost)
+        path_finding_problem = PathFindingProblem(state, colour)
+        if detailed:
+            print_board(path_finding_problem.heuristic_distance)
+            print_board(path_finding_problem.goal.pos_to_piece)
 
+        final_node = depth_first_tree_search(path_finding_problem)
+        # final_node = astar_search(path_finding_problem, show=detailed, printed=False)
+        # final_node = dijkstra_search(path_finding_problem)
 
-def depth_first_tree_search(problem, show=False):
-    """Search the deepest nodes in the search tree first.
-        Search through the successors of a problem to find a goal.
-        The argument frontier should be an empty queue.
-        Repeats infinitely in case of loops. [Figure 3.7]"""
+        if final_node is None:
+            print("Final Node is None!")
+            return
 
-    frontier = [Node(problem.initial)]  # Stack
-    explored = set()
-
-    while frontier:
-        node = frontier.pop()
-        explored.add(node.state)
-        if show:
-            print(node)
-        if problem.goal_test(node.state):
-            return node
-        for child in node.expand(problem):
-            if child.state not in explored:
-                frontier.append(child)
-    return None
-
-
-def depth_limited_search(problem, limit=50):
-    """[Figure 3.17]"""
-    def recursive_dls(node, problem, limit):
-        if problem.goal_test(node.state):
-            return node
-        elif limit == 0:
-            return 'cutoff'
+        if animate:
+            print(final_node.path)
+            animate_path(final_node, 0.5)
         else:
-            cutoff_occurred = False
-            for child in node.expand(problem):
-                result = recursive_dls(child, problem, limit - 1)
-                if result == 'cutoff':
-                    cutoff_occurred = True
-                elif result is not None:
-                    return result
-            return 'cutoff' if cutoff_occurred else None
+            if brief:
+                print(len(final_node.solution))
+            else:
+                for action in final_node.solution:
+                    print(format_action(action))
 
+        if brief:
+            print('#nodes created', Node.total_nodes_created)
+
+
+def animate_path(final_node, wait: float = 1):
+    path_action = zip(final_node.path, final_node.solution)
+    prev_len = 0
+    for path, action in path_action:
+        sys.stdout.write("\b"*prev_len)
+        message = path.__repr__(message=format_action(action), debug=True,
+                                printed=False)
+        prev_len = len(message)
+        print(message)
+        sleep(wait)
+    print([format_action(i) for i in final_node.solution])
+    print(len(final_node.solution))
+
+
+# when this module is executed, run the `main` function:
+if __name__ == '__main__':
+    main()

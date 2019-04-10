@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 command=$(which python3)
-main_path="../artificial_idiot/main.py"
+main_path="../artificial_idiot/search.py"
 outputf="../outputs/step.txt"
 
 timeit=$1
