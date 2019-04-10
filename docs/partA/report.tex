@@ -1,0 +1,99 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{setspace}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{listings}
+\usepackage[left=1cm, right=1cm, top=1cm]{geometry}
+\setstretch{0.6}
+
+\algdef{SE}[SUBALG]{Indent}{EndIndent}{}{\algorithmicend\ }%
+\algtext*{Indent}
+\algtext*{EndIndent}
+
+\newlength\myindent % define a new length \myindent
+\setlength\myindent{6em} % assign the length 2em to \myindet
+\newcommand\bindent{%
+    \begingroup % starts a group (to keep changes local)
+    \setlength{\itemindent}{\myindent} % set itemindent (algorithmic internally uses a list) to the value of \mylength
+    \addtolength{\algorithmicindent}{\myindent} % adds \mylength to the default indentation used by algorithmic
+}
+\newcommand\eindent{\endgroup} % closes a group
+
+\begin{document}
+    \begin{center}
+        \large Problem, Search and beyond
+        
+        \normalsize Chuanyuna Liu 884140, Zhuoqun Huang 908525
+    \end{center}
+    \section{Problem}
+    \subsection{General Problem}
+    We formulate our problem with the following five concepts:
+    \begin{itemize}
+        \item \textbf{State($\mathbb{S}$)} including a \textbf{initial state ($s_0$)} the agent begins with
+        \item \textbf{Actions($\mathbb{A}$)} available to agent at each State
+        \item \textbf{Transition function ($F:\mathbb{S}\times \mathbb{A}\rightarrow \mathbb{S}$)} that takes a (state, action) pair and return a new state
+        \item \textbf{Goal Test($GT:S\rightarrow \{True, False\}$)} that takes a state $s$ and return true if $s\in S_{goal}$, the \textbf{Goal State} of the problem.
+        \item \textbf{Path Cost ($C:\mathbb{S}\times \mathbb{S}\rightarrow \mathbb{R}$)} That takes two states and return cost moving from one to another
+    \end{itemize}
+    \subsection{Single-player Chexers}
+    In this section, we formally describe how the above framework fits the Chexers game. 
+    \begin{itemize}
+        \item Denote set of pieces with $\mathbb{P}=\{(r, q, t)\}$. \\
+        where
+        \begin{align*}
+            \text{$r, q, -(r+q)\in [-3, 3]$ denotes the location on board.}\\
+            \text{$t\in \{red, blue, green, block\}$ stands for type of piece.}    
+        \end{align*}
+        
+        \item $\mathbb{S} = \{p_i\in \mathbb{P}, t_b|i\le n\}$ where $n$ is number of pieces on board, where $t_b$ is the searching type.
+        \item $\mathbb{A} = \{(Move,p_i), (Jump, p_i), (Exit, p_i)\}, \forall\ p_i $ where$\ t(p_i)=t_b. | \mathbb{A}_s| \le 6n_p\ \forall s$.
+        \item $f(s, a) = s'$. where $s'$ differs exactly by one piece $r(p_{i,s}), q(p_{i,s}) \ne r(p_{i,s'}), q(p_{i,s'})$ or $p_i\notin s'$
+        \item $c(s, s') = 1, \forall s, s'\ \text{if}\ \exists a\ \text{such that} f(s, a) = s'$
+    \end{itemize}
+    
+    \section{Search}
+    \subsection{preliminary}
+    We define the following algorithm \ref{a_star} General A* search.
+    \paragraph{Applying A*} Based on our problem specification, we have all required operations except for H(node)
+    \begin{algorithm}
+        \caption{General A* algorithm}\label{a_star}
+        \begin{algorithmic}[1]
+            \Statex PRIORITY-QUEUE \Comment{\textbf{Min} Priority Queue (min key)}
+            \Statex  \hskip2.0em ADD($q$, $key$, $value$), \Comment{Add (key, value) to q. If value exists, update the key}
+            \Statex  \hskip2.0em POP($q$) \Comment{Pop the value with \textbf{least} key}
+            \Statex  \hskip2.0em GET($q$, $value$) \Comment{Get the key associated with a value}
+            \Statex \Comment{All above Queue operations can operate in $\Theta(1)$}
+            \Statex NODE \Comment{stores associated \textbf{state} and its \textbf{parent}}
+            \Require EXPAND(node)\Comment{expand a \textbf{node} to get it's \textbf{children}}
+            \Require G(node)\Comment{get \textbf{total cost} arriving this node}
+            \Require H(node) \Comment{Computes an \textbf{admissible estimation} of cost to goal state}
+            \Require PATH(node1, node2) \Comment{Path Cost arriving node2 from node 1}
+            \Procedure{A*}{$problem$, $initial$}
+            \State $openSet \gets$ PRIORITY-QUEUE(H($initial$),  $initial$)
+            \State $closedSet \gets$ \{\}
+            \While{$openSet$ is not empty} 
+                \State $node \gets POP(openSet)$
+                \State $ADD(closedSet, node)$
+                \If {GOAL-TEST($node$) is True}
+                    \State \textbf{return} $node$
+                \EndIf
+                \For {$child$ in EXPAND($node$)}
+                    \State $cost$ = G($node$) + PATH($node$, $child$) + H($child$)
+                    \If {$child$ in $closedSet$}
+                        continue
+                    \ElsIf {$child$ not in $openSet$ or cost $<$ GET($openSet$, $child$)}
+                        \State ADD(openSet, cost, child)
+                    \EndIf
+                \EndFor
+            \EndWhile
+            \State \textbf{return} no solution
+            \EndProcedure\\
+            All operations $O(1)$ unless explicitly stated
+        \end{algorithmic}
+    \end{algorithm}
+\end{document}
