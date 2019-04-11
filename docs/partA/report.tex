@@ -8,9 +8,12 @@
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 \usepackage{listings}
+\usepackage{wrapfig}
 \usepackage{hyperref}
 \usepackage[left=1cm, right=1cm, top=1cm, bottom=2cm]{geometry}
-\setstretch{0.5}
+
+%\setlength{\parskip}{0em}
+\setstretch{0.3}
 
 \algdef{SE}[SUBALG]{Indent}{EndIndent}{}{\algorithmicend\ }%
 \algtext*{Indent}
@@ -20,7 +23,7 @@
 
 \begin{document}
     \begin{center}
-        \large Problem, Search and beyond
+        \large \textbf{Problem, Search and beyond}
         
         \normalsize Chuanyuna Liu 884140, Zhuoqun Huang 908525
     \end{center}
@@ -57,7 +60,7 @@
     \vspace{-5pt}
     \section{Search}
         \subsection{preliminary}
-        We use the following \autoref{a_star}, to search for our goal. Based on our problem specification, we have all required components except for \textbf{H($node$)}, so we will propose one type of \textbf{H} we found to be most effective of all and compare it against \textbf{Null $H=0$} and \textbf{bad H $H_{bad}$($node$)}.
+        We use the following \autoref{a_star}, to search for our goal. Based on our problem specification, we have all required components except for \textbf{H($node$)}, so we will propose one type of \textbf{H} we found to be most effective of all and compare it against \textbf{Null $H=0$} and \textbf{bad H $H_{bad}$($node$)}\footnote{In following analysis, $b$ for \textbf{branching factor}, $d$ \textbf{for depth}}.
         \begin{algorithm}[ht]
             \footnotesize
             \caption{General A* algorithm}\label{a_star}
@@ -76,13 +79,13 @@
                 \Procedure{A*}{$problem$, $initial$}
                 \State $openSet \gets$ PRIORITY-QUEUE(H($initial$),  $initial$)
                 \State $closedSet \gets$ \{\}
-                \While{$openSet$ \textbf{is not} empty} 
+                \While{$openSet$ \textbf{is not} empty} \Comment{$O(d)$}
                     \State $node \gets POP(openSet)$
                     \State $ADD(closedSet, node)$
                     \If {GOAL-TEST($node$) \textbf{is} True}
                         \State \textbf{return} $node$
                     \EndIf
-                    \For {$child$ \textbf{in} EXPAND($node$)}
+                    \For {$child$ \textbf{in} EXPAND($node$)}  \Comment{$O(b)$}
                         \State $cost$ = G($node$) + C($node$, $child$) + H($child$)
                         \If {$child$ \textbf{in} $closedSet$}
                             continue
@@ -98,7 +101,7 @@
         \end{algorithm}
     \vspace{-10pt}
     \subsection{Heuristic}
-        \paragraph{As a Problem} We propose the following problem definition for mapping a good heuristic value for each pieces and we define $H(s) = \sum_{p_i}h(p_i), \forall p_i$ that $t(p_i) = t_b$ after relaxing the problem to be: a piece can choose freely between \textbf{move}, \textbf{jump} regardless normal constrains and \textbf{cannot} move on blocks.
+        \paragraph{As a Problem} We propose wing problem definition for mapping a good heuristic value for each pieces and we define $H(s) = \sum_{p_i}h(p_i), \forall p_i$ that $t(p_i) = t_b$ after relaxing the problem to be: a piece can choose freely between \textbf{move}, \textbf{jump} regardless normal constrains and \textbf{cannot} move on blocks.
         \begin{itemize}
             \itemsep0em   
             \item $\mathbb{S} := \{(cost_i, position_i)|location_i\in board\}$*,
@@ -110,17 +113,28 @@
         \vspace{-10pt}
         \paragraph{Heuristic problem solution} Finding heuristic is straight forward with the given above problem definition. Supporting all the given operations to \ref{a_star}, and you should end up with a complete heuristic map.
         \vspace{-10pt}
-        \paragraph{Admissible?} The algorithm is guaranteed to provide us with a admissible cost estimation for each game state for the following reason:\\
-    - The relaxed rule let pieces always able to jump. This will in all cases reduce the number of action taken.
+        \paragraph{Admissible?} The algorithm is guaranteed to provide us with a admissible cost estimation for each game state:\\
+    - The relaxed rule let pieces always able to jump.\\
+    - This will in all cases reduce the number of action taken, by always increasing the distance a piece can move.
     \vspace{-10pt}
     \subsection{Property of search}
-        \paragraph{Efficiency} The efficiency of A* algorithm heavily depends on how accurate the heuristic is. As we can see from the example below. Our heuristic is very close to the real cost. (Add an example of heuristic if we have space) 
+        \paragraph{Efficiency} The efficiency of A* algorithm heavily depends on how accurate the heuristic is. As we can see from the example below. Our heuristic is very close to the real cost.    
+        \begin{wrapfigure}{r}{0.3\textwidth}
+            \vspace{-35pt}
+                \begin{center}
+                    \includegraphics[width=0.3\textwidth]{heuristic.png}
+                    \label{fig:heurstics}
+                \end{center}
+            \caption{Map formed by heuristic}
+            \vspace{-100pt}
+        \end{wrapfigure}
+        \vspace{-40pt}
         \paragraph{Optimality} A* algorithm can only find the optimal solution if the heuristic is admissible. We relaxed the rule to allow pieces to jump freely without the need to leapfrog another piece. Because jump move allows pieces to move twice the normal move, our heuristic at most underestimates the real cost by a factor of 2, and cannot be faster the real cost. This satisfied admissibility. Monotonicity is also satisfied because each move adds 1 unit of cost. Hence our program is optimal.
         \vspace{-10pt}
         \paragraph{Completeness} A* algorithm is complete if the graph contains finite nodes. For our problem, both the board and the number of pieces are finite therefore the state space must also be finite. Hence we can conclude that our program is complete.
     \section{Beyond}
         The number of moving pieces affects the complexity of the problem exponentially. This because with more pieces we have more possible moves and higher branching factors.\\
         The further pieces are from the goal, deeper the program has to search.\\
-        A* algorithm stores each layer of nodes in a priority queue and only expend the $node$ $n$ with the $f(n)$. In the worst case, it expands all the nodes fully, store and sort them in order of cost. Which gives $O(b^d)$\footnote{b for branching factor, d for depth}. In the best case, our heuristic matches the real cost, and A only expand nodes with the correct path. This gives us $O(bd)$. The high memory cost can be avoided by using iterative \textbf{deepening A search}. This would reduce A* algorithm's space complexity to $O(bd)$.
+        A* algorithm stores each layer of nodes in a priority queue and only expend the $node$ $n$ with the $f(n)$. In the worst case, it expands all the nodes fully, store and sort them in order of cost. Which gives $O(b^d)$. In the best case, our heuristic matches the real cost, and A only expand nodes with the correct path. This gives us $O(bd)$. The high memory cost can be avoided by using iterative \textbf{deepening A search}. This would reduce A* algorithm's space complexity to $O(bd)$.
         
 \end{document}
