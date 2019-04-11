@@ -43,8 +43,9 @@ def main():
             print_board(path_finding_problem.heuristic_distance)
             print_board(path_finding_problem.goal.pos_to_piece)
 
-        final_node = depth_first_tree_search(path_finding_problem)
-        # final_node = astar_search(path_finding_problem, show=detailed, printed=False)
+        # final_node = depth_first_tree_search(path_finding_problem)
+        final_node = astar_search(path_finding_problem, show=detailed,
+                                  printed=False)
         # final_node = dijkstra_search(path_finding_problem)
 
         if final_node is None:
