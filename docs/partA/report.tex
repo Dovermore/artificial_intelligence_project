@@ -1,4 +1,4 @@
-\documentclass[12pt,a4paper]{article}
+\documentclass[11pt,a4paper]{article}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{amsfonts}
@@ -10,7 +10,7 @@
 \usepackage{listings}
 \usepackage{hyperref}
 \usepackage[left=1cm, right=1cm, top=1cm, bottom=2cm]{geometry}
-\setstretch{0.6}
+\setstretch{0.5}
 
 \algdef{SE}[SUBALG]{Indent}{EndIndent}{}{\algorithmicend\ }%
 \algtext*{Indent}
@@ -56,6 +56,7 @@
     \subsection{preliminary}
     We use the following \autoref{a_star}, to search for our goal. Based on our problem specification, we have all required components except for \textbf{H($node$)}, so we will propose one type of \textbf{H} we found to be most effective of all and compare it against \textbf{Null $H=0$} and \textbf{bad H $H_{bad}$($node$)}.
     \begin{algorithm}[ht]
+        \footnotesize
         \caption{General A* algorithm}\label{a_star}
         \begin{algorithmic}[1]
             \Statex PRIORITY-QUEUE \Comment{\textbf{Min} Priority Queue (min key)}
