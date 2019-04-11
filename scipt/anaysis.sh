@@ -13,7 +13,7 @@ fi
 out=""
 > $outputf
 
-for number in {1..21} ; do
+for number in {1..23} ; do
     echo $command $main_path ../tests/part_a/sample$number.json analysis
     val=$($command $main_path ../tests/part_a/sample$number.json analysis)
     echo -e "$val" >> $outputf
