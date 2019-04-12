@@ -23,9 +23,12 @@ def main():
         animate = False
         detailed = False
         brief = False
+        analysis = False
         if len(sys.argv) > 2:
             if sys.argv[2] == "brief":
                 brief = True
+            elif sys.argv[2] == "analysis":
+                analysis = True
             else:
                 animate = bool(sys.argv[2])
         if len(sys.argv) > 3:
@@ -48,6 +51,12 @@ def main():
                                   printed=False)
         # final_node = dijkstra_search(path_finding_problem)
 
+        if analysis:
+            print(path_finding_problem.initial)
+            print('name:', sys.argv[1])
+            print('n_steps:', len(final_node.solution))
+            print('n_nodes:', Node.total_nodes_created)
+
         if final_node is None:
             print("Final Node is None!")
             return
@@ -61,9 +70,6 @@ def main():
             else:
                 for action in final_node.solution:
                     print(format_action(action))
-
-        if brief:
-            print('#nodes created', Node.total_nodes_created)
 
 
 def animate_path(final_node, wait: float = 1):

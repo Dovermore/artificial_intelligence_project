@@ -16,8 +16,8 @@ class State:
     generated_states = {}
 
     _code_map = {"red": 0, "green": 1, "blue": 2, "block": 3}
-    _print_map = {"red": "\U0001F6BC", "green": "\U0001F4B9",
-                  "blue": "\u267F", "block": "\U0001F4A3"}
+    _print_map = {"red": "🔴", "green": "✅",
+                  "blue": "🔵", "block": "⬛"}
     _rev_code_map = {value: key for key, value in _code_map.items()}
 
     def __new__(cls, pos_to_piece, colour):
