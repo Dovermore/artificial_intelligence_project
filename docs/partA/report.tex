@@ -10,7 +10,7 @@
 \usepackage{listings}
 \usepackage{wrapfig}
 \usepackage{hyperref}
-\usepackage[left=1cm, right=1cm, top=1cm, bottom=2cm]{geometry}
+\usepackage[left=1cm, right=1cm, top=1.5cm, bottom=1.5cm]{geometry}
 \usepackage[font=small]{caption, subcaption}
 
 %\setlength{\parskip}{0em}
@@ -62,7 +62,7 @@
     \vspace{-5pt}
     \section{Search}
         \subsection{preliminary}
-        We use the following \autoref{a_star}, to search for our goal. Based on our problem specification, we have all required components except for \textbf{H($node$)}, so we will propose one type of \textbf{H} we found to be most effective of all and compare it against \textbf{Null $H=0$} and \textbf{bad H $H_{bad}$($node$)}\footnote{In the following analysis, $b$ for \textbf{branching factor}, $d$ for \textbf{depth to optimal solution}}.
+        We use the following \autoref{a_star}, to search for our goal. Based on our problem specification, we have all required components except for \textbf{H($node$)}, so we will propose one type of \textbf{H} we found to be most effective of all and compare\ref{fig:moves} it against \textbf{Null $H=0$} and \textbf{depth first search}\footnote{In the following analysis, $b$ for \textbf{branching factor}, $d$ for \textbf{depth to optimal solution}}.
         \begin{algorithm}[ht]
             \footnotesize
             \caption{General A* algorithm}\label{a_star}
@@ -121,7 +121,7 @@
     - This will in all cases reduce the number of action taken, by always increasing the distance a piece can move.
     \vspace{-10pt}
     \subsection{Property of search}
-        \paragraph{Efficiency} The efficiency of A* algorithm heavily depends on how accurate the heuristic is. As we can see from the example below. Our heuristic (shown in \refname{fig:heurstics}) is very close to the real cost.
+        \paragraph{Efficiency} The efficiency of A* algorithm heavily depends on how accurate the heuristic is. As we can see from the example below. Our heuristic (shown in \hyperref[fig:heurstics]{this figure}) is very close to the real cost.
         \begin{wrapfigure}{r}{0.3\textwidth}
             \vspace{-32pt}
                 \begin{center}
@@ -142,20 +142,20 @@
         The \textbf{further} pieces are from the \textbf{goal}, deeper the program has to search.\\
         A* algorithm stores each layer of nodes in a priority queue and only expend the $node$ $n$ with the $f(n)$. In the \textbf{worst case}, it expands all the nodes fully, store and sort them in order of cost, giving $O(b^d)$ complexity for both \textbf{space and time}. In the best case, our heuristic matches the real cost, and A only expand nodes with the correct path. This gives us $O(bd)$. The \textbf{high memory complexity} of A* ($O(b^d)$) can be avoided by using \textbf{iterative deepening A search}. This would reduce A* algorithm's \textbf{space complexity} to $O(bd)$ (by trading off some time complexity).\\
         The amount of free space on the board also affects the complexity of algorithm. From \ref{fig:moves} we can see that as the board becomes more empty, we have more actions to consider. Despite the low cost solution of \ref{fig:more_move}, its free space is drastically larger, leading to a significantly higher number of expanded nodes than that of \ref{fig:less_move}.
-        \begin{wrapfigure}{r}{0.45\textwidth}
-    \begin{center}
-        \begin{subfigure}[b]{0.2\textwidth}
-            \includegraphics[width=\textwidth]{SpaceComplexity1.png}
-            \caption{More options}
-            \label{fig:more_move}
-        \end{subfigure}
-        \begin{subfigure}[b]{0.2\textwidth}
-            \includegraphics[width=\textwidth]{SpaceComplexity2.png}
-            \caption{Less Options}
-            \label{fig:less_move}
-        \end{subfigure}
-    \end{center}
-    \vspace{-10pt}
-    \caption{Search space illustration}\label{fig:moves}
-\end{wrapfigure}
+        \begin{wrapfigure}[b]{r}{0.7\textwidth}
+            \begin{center}
+                \begin{subfigure}[b]{0.25\textwidth}
+                    \includegraphics[width=\textwidth]{SpaceComplexity1.png}
+                    \caption{More options}
+                    \label{fig:more_move}
+                \end{subfigure}
+                \begin{subfigure}[b]{0.25\textwidth}
+                    \includegraphics[width=\textwidth]{SpaceComplexity2.png}
+                    \caption{Less Options}
+                    \label{fig:less_move}
+                \end{subfigure}
+            \end{center}
+            \vspace{-10pt}
+            \caption{Search space illustration}\label{fig:moves}
+        \end{wrapfigure}
 \end{document}
