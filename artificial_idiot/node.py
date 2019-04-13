@@ -10,9 +10,11 @@ class Node:
     may add an f and h value; see best_first_graph_search and astar_search for
     an explanation of how the f and h values are handled. You will not need to
     subclass this class."""
+    total_nodes_created = 0
 
     def __init__(self, state, parent=None, action=None, path_cost=0):
         """Create a search tree Node, derived from a parent by an action."""
+        Node.total_nodes_created += 1
         self.state = state
         self.parent = parent
         self.action = action
@@ -64,7 +66,8 @@ class Node:
     # want in other contexts.]
 
     def __eq__(self, other):
-        return isinstance(other, Node) and self.state == other.state
+        return self.__hash__() == other.__hash__() and \
+               self.state == other.state
 
     def __hash__(self):
-        return hash(self.state)
+        return self.state.__hash__()

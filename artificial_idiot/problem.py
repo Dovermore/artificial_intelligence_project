@@ -5,7 +5,7 @@ import abc
 from copy import copy
 from collections import defaultdict as dd
 
-from util.queue import PriorityQueue
+from util.queue import PriorityQueueImproved
 
 
 class Problem(abc.ABC):
@@ -108,34 +108,43 @@ class PathFindingProblem(BoardProblem):
         self._build_heuristic_distance()
 
     def _build_heuristic_distance(self):
+        """
+        Build the heuristic map used for searching by Dijkstra's Algorithm
+        """
         goal = self.goal
-        start = []
+        frontier = PriorityQueueImproved('min',
+                                         f=self.heuristic_distance.__getitem__)
+        # For all exit positions
         for pos in self._exit_positions[self.colour]:
+            # If the exit position is not occupied by other pieces
             if pos not in goal.pos_to_piece:
+                # Set initial heuristic to 1, and add to start
                 self.heuristic_distance[pos] = 1
-                start.append([1, pos])
+                frontier.append(pos)
 
-        frontier = PriorityQueue('min')
-        frontier.extend(start)
+        # While search is not ended
         while frontier:
-            cost, pos = frontier.pop()
+            pos = frontier.pop()
             q, r = pos
+            # Explore all space near current place
+            cost = self.heuristic_distance[pos]
             for dq, dr in self._move:
                 for move in range(1, 3):
                     next_pos = (q + dq * move, r + dr * move)
+                    # If the moved position is valid, update it with cost + 1,
+                    # Else simply continue next loop
                     if (not State.inboard(next_pos) or
                             next_pos in goal.pos_to_piece):
                         continue
                     # Get value in dictionary
                     h_val = self.heuristic_distance.get(next_pos, None)
-                    # Not yet navigated to
-                    if h_val is None:
+
+                    # Not yet navigated to or can be updated
+                    if h_val is None or h_val > cost + 1:
+                        # Update dictionary entry
                         self.heuristic_distance[next_pos] = cost + 1
-                        frontier.append([cost + 1, next_pos])
-                    # Can be updated
-                    elif h_val > cost + 1:
-                        self.heuristic_distance[next_pos] = cost + 1
-                        frontier.update(cost + 1, next_pos)
+                        # Update the value in queue
+                        frontier.append(next_pos)
 
     @classmethod
     def actions(cls, state):
@@ -153,11 +162,13 @@ class PathFindingProblem(BoardProblem):
             action (tuple) -- encoded as ((from position), (to position))
         """
         # for each piece try all possible moves
-        for q, r in state.piece_to_pos[state.colour]:
+        # Not using deepcopy here because no need to
+        for q, r in state._piece_to_pos[state.colour]:
             exit_ready_pos = cls._exit_positions[state.colour]
             # exit
             if (q, r) in exit_ready_pos:
                 yield ((q, r), None, "EXIT")
+                return  # End the function if can exit
 
             for move in cls._move:
                 i, j = move
@@ -180,18 +191,16 @@ class PathFindingProblem(BoardProblem):
         self.actions(state).
         """
         fr, to, mv = action
-        forward_dict = state.piece_to_pos
+        pos_to_piece = state.pos_to_piece
         colour = state.colour
         next_colour = state.next_colour()
-
         # update dictionary
-        forward_dict[colour].remove(fr)
-        # If None then don't do anything
+        pos_to_piece.pop(fr)
         if to is not None:
-            forward_dict[colour].append(to)
+            pos_to_piece[to] = colour
 
         # Construct the new state
-        return State(forward_dict, next_colour)
+        return State(pos_to_piece, next_colour)
 
     def value(self, state):
         raise NotImplementedError
@@ -200,7 +209,7 @@ class PathFindingProblem(BoardProblem):
     def exit_positions(cls):
         return copy(cls._exit_positions)
 
-    def h(self, node):
+    def h0(self, node):
         state = node.state
         colour = node.state.colour
 
@@ -237,7 +246,10 @@ class PathFindingProblem(BoardProblem):
     def h(self, node):
         state = node.state
         return sum((self.heuristic_distance[pos] for pos in
-                    node.state.piece_to_pos[state.colour]))
+                    node.state._piece_to_pos[state.colour]))
+
+    def goal_test(self, state):
+        return state == self.goal
 
 
 if __name__ == "__main__":

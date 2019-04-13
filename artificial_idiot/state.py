@@ -1,7 +1,7 @@
 from util.class_property import classproperty
 from util.misc import print_board
-from copy import copy, deepcopy
-from collections import defaultdict as dd
+from copy import copy
+from util.mycopy import deepcopy
 
 
 class State:
@@ -12,27 +12,42 @@ class State:
     piece_code -> [(x1, y1), (x2, y2), (x3, y3)...]
     (x1, y1) -> piece_code
     """
-    _code_map = {"red": 0, "green": 1, "blue": 2, "blocks": 3}
+    # Records all generated states
+    generated_states = {}
+
+    _code_map = {"red": 0, "green": 1, "blue": 2, "block": 3}
+    _print_map = {"red": "🔴", "green": "✅",
+                  "blue": "🔵", "block": "⬛"}
     _rev_code_map = {value: key for key, value in _code_map.items()}
 
-    def __init__(self, forward_dict, colour):
+    def __new__(cls, pos_to_piece, colour):
+        """
+        Return the same instance if the positions indicated are completely the
+        same as some previously created instances
+
+        Use new to cache the instances for faster comparison,
+        and also used for a better find in queue
+        """
+        frozen_pos = frozenset(pos_to_piece.keys())
+        if frozenset(pos_to_piece.keys()) in cls.generated_states:
+            return cls.generated_states[frozen_pos]
+        else:
+            return super(State, cls).__new__(cls)
+
+    def __init__(self, pos_to_piece, colour, frozen=None):
         # DO THIS FIRST, OR THE LOOP OVERRIDES IT
         self._colour = colour
-        # Map from piece to positions
-        self._piece_to_pos = forward_dict
         # Map from positions to pieces
-        self._pos_to_piece = dd(str)
-        # Derive the backward mapping
-        for colour, locations in self._piece_to_pos.items():
-            for location in locations:
-                self._pos_to_piece[location] = colour
+        self._pos_to_piece = pos_to_piece
+        self._piece_to_pos = {col: [] for col in self._code_map}
+        for location, colour in self._pos_to_piece.items():
+            self._piece_to_pos[colour].append(location)
 
-    def __eq__(self, other):
-        # Has to first be same class
-        if not isinstance(other, self.__class__):
-            return False
-        return (self._pos_to_piece == other._pos_to_piece and
-                self._colour == other._colour)
+        if frozen is not None:
+            self._frozen = frozen
+        else:
+            self._frozen = frozenset(self._pos_to_piece.keys())
+        self._hash = hash(self._frozen)
 
     @property
     def piece_to_pos(self):
@@ -59,7 +74,9 @@ class State:
         # need a copy here
         pos_to_piece = self.pos_to_piece
         # Make the name shorter so display normally
-        pos_to_piece = {key: value[:3] for key, value
+        # pos_to_piece = {key: value[:3] for key, value
+        #                 in pos_to_piece.items()}
+        pos_to_piece = {key: self._print_map[value] for key, value
                         in pos_to_piece.items()}
 
         msg = f"Colour: {self._colour}"
@@ -69,16 +86,6 @@ class State:
             kwargs["message"] = msg
 
         return print_board(pos_to_piece, **kwargs)
-
-    def delete_colour(self, colour):
-        """
-        Removes all the pieces of that colour from the board
-        colour must be a string
-        """
-        # remove the pieces of the given colour
-        for location in self._piece_to_pos[colour]:
-            del self._pos_to_piece[location]
-        del self._piece_to_pos[colour]
 
     def next_colour(self):
         """
@@ -96,38 +103,25 @@ class State:
 
     @classmethod
     def goal_state(cls, state, goal_colour):
-        forward_dict = state.piece_to_pos
-        backward_dict = state.pos_to_piece
-
-        if goal_colour:
-            # remove the pieces of the given colour
-            for location in forward_dict[goal_colour]:
-                del backward_dict[location]
-            # Make the forward dict empty but still player in it
-            forward_dict[goal_colour] = []
-        return cls(forward_dict, goal_colour)
+        pos_to_piece = state.pos_to_piece
+        # remove goal colour
+        pos_to_piece = {k: v for k, v in pos_to_piece.items()
+                        if v != goal_colour}
+        return cls(pos_to_piece, goal_colour)
 
     def __hash__(self):
         # only need hash those two
-        return hash(frozenset(self._pos_to_piece)) ^ hash(self._colour)
+        return self._hash
+
+    def __eq__(self, other):
+        # First compare hash, if hash is successful, compare id
+        # last compare the content for a fast comparison
+        # (This is based on experimental result of comparison speed)
+        return (self._hash == hash(other) and
+                (self is other or
+                 self._frozen == other._frozen and
+                 self._colour == other._colour))
 
     def __lt__(self, other):
         # There is no preference between states with same path cost
         return True
-
-
-if __name__ == "__main__":
-    # Test for class property
-    assert State.code_map == {"red": 0, "green": 1, "blue": 2, "blocks":3}
-    State.code_map = {}
-    assert State.code_map == {}
-
-    forward_dict = {0: [(0, 0), (0, -1), (-2, 1)], 3: [(-1, 0), (-1, 1), (1, 1), (3, -1)]}
-    state = State(forward_dict, "red")
-    print(state.piece_to_pos, state.pos_to_piece, state.code_map)
-    assert State.code_map == {}
-    state2 = State(forward_dict, "red")
-    assert state == state2
-
-
-

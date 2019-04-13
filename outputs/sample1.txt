@@ -1,0 +1,10 @@
+JUMP from (0, 1) to (2, 1).
+JUMP from (-2, 1) to (0, 1).
+MOVE from (0, 1) to (1, 0).
+JUMP from (0, 0) to (2, 0).
+JUMP from (1, 0) to (3, 0).
+EXIT from (3, 0).
+MOVE from (2, 0) to (3, 0).
+EXIT from (3, 0).
+MOVE from (2, 1) to (3, 0).
+EXIT from (3, 0).
