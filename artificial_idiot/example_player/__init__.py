@@ -1,1 +1,1 @@
-from your_team_name.player import ExamplePlayer as Player
+from example_player.player import ExamplePlayer as Player
