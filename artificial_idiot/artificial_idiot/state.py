@@ -1,5 +1,5 @@
-from artificial_idiot.util import classproperty
-from artificial_idiot.util import print_board
+from artificial_idiot.util.class_property import classproperty
+from artificial_idiot.util.misc import print_board
 from copy import copy
 from artificial_idiot.util.mycopy import deepcopy
 

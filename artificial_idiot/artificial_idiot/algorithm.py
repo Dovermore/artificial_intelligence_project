@@ -1,5 +1,5 @@
 from artificial_idiot.node import Node
-from artificial_idiot.util import PriorityQueueImproved
+from artificial_idiot.util.queue import PriorityQueueImproved
 
 
 def best_first_graph_search(problem, f, show=False, **kwargs):

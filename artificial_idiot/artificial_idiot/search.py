@@ -8,11 +8,11 @@ Authors: Chuanyuan Liu, Zhuoqun Huang
 import sys
 import json
 
-from artificial_idiot.util import JsonParser
+from artificial_idiot.util.json_parser import JsonParser
 from artificial_idiot.state import State
 from artificial_idiot.problem import PathFindingProblem
 from artificial_idiot.algorithm import (astar_search)
-from artificial_idiot.util import format_action, print_board
+from artificial_idiot.util.misc import format_action, print_board
 from time import sleep
 from artificial_idiot.node import Node
 
