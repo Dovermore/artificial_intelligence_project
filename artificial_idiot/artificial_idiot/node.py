@@ -1,7 +1,4 @@
-
-
 class Node:
-
     """A node in a search tree. Contains a pointer to the parent (the node
     that this is a successor of) and to the actual state for this node. Note
     that if a state is arrived at by two paths, then there are two nodes with
@@ -59,11 +56,6 @@ class Node:
             path_back.append(node)
             node = node.parent
         return list(reversed(path_back))
-
-    # We want for a queue of nodes in breadth_first_graph_search or
-    # astar_search to have no duplicated states, so we treat nodes
-    # with the same state as equal. [Problem: this may not be what you
-    # want in other contexts.]
 
     def __eq__(self, other):
         return self.__hash__() == other.__hash__() and \

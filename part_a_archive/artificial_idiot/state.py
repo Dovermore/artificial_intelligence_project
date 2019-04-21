@@ -1,7 +1,7 @@
-from artificial_idiot.util import classproperty
-from artificial_idiot.util import print_board
+from util.class_property import classproperty
+from util.misc import print_board
 from copy import copy
-from artificial_idiot.util.mycopy import deepcopy
+from util.mycopy import deepcopy
 
 
 class State:
@@ -29,12 +29,12 @@ class State:
         and also used for a better find in queue
         """
         frozen_pos = frozenset(pos_to_piece.keys())
-        if frozenset(pos_to_piece.keys()) in cls.generated_states:
+        if frozen_pos in cls.generated_states:
             return cls.generated_states[frozen_pos]
         else:
             return super(State, cls).__new__(cls)
 
-    def __init__(self, pos_to_piece, colour, frozen=None):
+    def __init__(self, pos_to_piece, colour):
         # DO THIS FIRST, OR THE LOOP OVERRIDES IT
         self._colour = colour
         # Map from positions to pieces
@@ -43,10 +43,8 @@ class State:
         for location, colour in self._pos_to_piece.items():
             self._piece_to_pos[colour].append(location)
 
-        if frozen is not None:
-            self._frozen = frozen
-        else:
-            self._frozen = frozenset(self._pos_to_piece.keys())
+        self._frozen = frozenset(self._pos_to_piece.keys())
+        self.generated_states[self._frozen] = self
         self._hash = hash(self._frozen)
 
     @property
