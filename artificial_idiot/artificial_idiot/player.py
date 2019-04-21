@@ -49,6 +49,16 @@ class Player(abc.ABC):
         (or pass) for the player colour (your method does not need to validate 
         the action/pass against the game rules).
         """
-        # TODO: Update state representation in response to action.
+        pass
 
 
+class ArtificialIdiot(Player):
+
+    def __init__(self, colour):
+        pass
+
+    def action(self):
+        pass
+
+    def update(self, colour, action):
+        pass

@@ -20,22 +20,7 @@ class State:
                   "blue": "🔵", "block": "⬛"}
     _rev_code_map = {value: key for key, value in _code_map.items()}
 
-    def __new__(cls, pos_to_piece, colour):
-        """
-        Return the same instance if the positions indicated are completely the
-        same as some previously created instances
-
-        Use new to cache the instances for faster comparison,
-        and also used for a better find in queue
-        """
-        frozen_pos = frozenset(pos_to_piece.keys())
-        if frozenset(pos_to_piece.keys()) in cls.generated_states:
-            return cls.generated_states[frozen_pos]
-        else:
-            return super(State, cls).__new__(cls)
-
-    def __init__(self, pos_to_piece, colour, frozen=None):
-        # DO THIS FIRST, OR THE LOOP OVERRIDES IT
+    def __init__(self, pos_to_piece, colour):
         self._colour = colour
         # Map from positions to pieces
         self._pos_to_piece = pos_to_piece
@@ -43,10 +28,7 @@ class State:
         for location, colour in self._pos_to_piece.items():
             self._piece_to_pos[colour].append(location)
 
-        if frozen is not None:
-            self._frozen = frozen
-        else:
-            self._frozen = frozenset(self._pos_to_piece.keys())
+        self._frozen = frozenset(self._pos_to_piece.keys())
         self._hash = hash(self._frozen)
 
     @property
