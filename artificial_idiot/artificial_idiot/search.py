@@ -8,14 +8,13 @@ Authors: Chuanyuan Liu, Zhuoqun Huang
 import sys
 import json
 
-from util.json_parser import JsonParser
-from state import State
-from problem import PathFindingProblem
-from algorithm import (dijkstra_search, astar_search,
-                       depth_first_tree_search)
-from util.misc import format_action, print_board
+from artificial_idiot.util import JsonParser
+from artificial_idiot.state import State
+from artificial_idiot.problem import PathFindingProblem
+from artificial_idiot.algorithm import (astar_search)
+from artificial_idiot.util import format_action, print_board
 from time import sleep
-from node import Node
+from artificial_idiot.node import Node
 
 
 def main():

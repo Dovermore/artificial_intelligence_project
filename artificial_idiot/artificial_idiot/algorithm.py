@@ -1,6 +1,5 @@
-from node import Node
-from util.misc import memoize
-from util.queue import PriorityQueueImproved
+from artificial_idiot.node import Node
+from artificial_idiot.util import PriorityQueueImproved
 
 
 def best_first_graph_search(problem, f, show=False, **kwargs):

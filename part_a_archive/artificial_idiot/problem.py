@@ -1,11 +1,11 @@
-from util.misc import is_in
-from util.class_property import classproperty
-from state import State
+from artificial_idiot.util import is_in
+from artificial_idiot.util import classproperty
+from artificial_idiot.state import State
 import abc
 from copy import copy
 from collections import defaultdict as dd
 
-from util.queue import PriorityQueueImproved
+from artificial_idiot.util import PriorityQueueImproved
 
 
 class Problem(abc.ABC):

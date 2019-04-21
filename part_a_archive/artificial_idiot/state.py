@@ -1,7 +1,7 @@
-from util.class_property import classproperty
-from util.misc import print_board
+from artificial_idiot.util import classproperty
+from artificial_idiot.util import print_board
 from copy import copy
-from util.mycopy import deepcopy
+from artificial_idiot.util.mycopy import deepcopy
 
 
 class State:
