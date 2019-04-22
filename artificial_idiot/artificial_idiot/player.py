@@ -1,9 +1,15 @@
 import abc
+from artificial_idiot import evaluator
+from artificial_idiot.state import State
+
+
+player_evaluator = evaluator.DummyEvaluator()
 
 
 class Player(abc.ABC):
     @abc.abstractmethod
-    def __init__(self, colour):
+    def __init__(self, colour, search_algorithm=None,
+                 evaluator=player_evaluator):
         """
         This method is called once at the beginning of the game to initialise
         your player. You should use this opportunity to set up your own internal
@@ -14,7 +20,11 @@ class Player(abc.ABC):
         program will play as (Red, Green or Blue). The value will be one of the 
         strings "red", "green", or "blue" correspondingly.
         """
-        pass
+        self.evaluator = evaluator
+        self.colour = colour
+        # TODO other basic position set up
+        self._internal_state = None
+        self.state = State.rotate_state()
 
     @abc.abstractmethod
     def action(self):
@@ -28,7 +38,7 @@ class Player(abc.ABC):
         must be represented based on the above instructions for representing 
         actions.
         """
-        return ("PASS", None)
+        return "PASS", None
 
     @abc.abstractmethod
     def update(self, colour, action):
@@ -51,10 +61,20 @@ class Player(abc.ABC):
         """
         pass
 
+    def evaluate(self, state, *args, **kwargs):
+        """
+        This method is the evaluation function for a state. The method should
+        always evaluate based on the perspective of a red player
+        :param state: The state to compute evaluation with
+        :return: The evaluated value of a state
+        """
+        return self.evaluator(state, *args, **kwargs)
+
 
 class ArtificialIdiot(Player):
 
-    def __init__(self, colour):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         pass
 
     def action(self):
@@ -62,3 +82,19 @@ class ArtificialIdiot(Player):
 
     def update(self, colour, action):
         pass
+
+
+class DummyPlayer(Player):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        pass
+
+    def action(self):
+        pass
+
+    def update(self, colour, action):
+        pass
+
+    def evaluate(self, state, *args, **kwargs):
+        return super().evaluate(state, *args, **kwargs)
