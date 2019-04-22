@@ -15,6 +15,7 @@ class Node:
         self.state = state
         self.parent = parent
         self.action = action
+        # TODO change path cost to evaluation value where higher the better
         self.path_cost = path_cost
         self.depth = 0
         if parent:
@@ -26,18 +27,18 @@ class Node:
     def __lt__(self, node):
         return self.state < node.state
 
-    def expand(self, problem): 
+    def expand(self, game):
         """List the nodes reachable in one step from this node."""
         # Generator of children nodes
-        children = (self.child_node(problem, action)
-                    for action in problem.actions(self.state))
+        children = (self.child_node(game, action)
+                    for action in game.actions(self.state))
         return children
 
-    def child_node(self, problem, action):
+    def child_node(self, game, action):
         """[Figure 3.10]"""
-        next_state = problem.result(self.state, action)
+        next_state = game.result(self.state, action)
         next_node = Node(next_state, self, action,
-                         problem.path_cost(self.path_cost, self.state,
+                         game.path_cost(self.path_cost, self.state,
                                            action, next_state))
         return next_node
 

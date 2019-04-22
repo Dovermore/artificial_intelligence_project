@@ -22,6 +22,12 @@ class State:
     _rev_code_map = {value: key for key, value in _code_map.items()}
 
     def __init__(self, pos_to_piece, colour, completed=None):
+        """
+        Captures all the information about the state
+        :param pos_to_piece: a dictionary {pos : piece type}
+        :param colour: string that represent the current player
+        :param completed: a dictionary {piece type : number of exited}
+        """
         # This is the current active colour
         self._colour = colour
         # Map from positions to pieces
@@ -76,11 +82,19 @@ class State:
 
         return print_board(pos_to_piece, **kwargs)
 
-    def next_colour(self):
+    @classmethod
+    def next_colour(cls, color):
         """
         :return: The next active colour after current execution
         """
-        return self._colour
+        i = cls._code_map[color] + 1
+        # block remain block
+        if i == 4:
+            i = 3
+        # went over, start again
+        elif i == 3:
+            i = 0
+        return list(cls._code_map.keys())[i]
 
     def occupied(self, pos):
         return pos not in self._pos_to_piece
@@ -91,12 +105,57 @@ class State:
         return abs(r) <= 3 and abs(q) <= 3 and abs(r+q) <= 3
 
     @classmethod
-    def rotate_state(cls, state):
+    def change_to_red(cls, state):
         """
-        Helper function to create a new state based on current state
+        change player to red
+        always return a new state
+        :param state: current state
+        :return: a state where current player is red
+        """
+        # no need to change
+        assert(state._colour != "red")
+        if state._colour == "blue":
+            rotate = 1
+        elif state._colour == "gree":
+            rotate = 2
+        else:
+            rotate = 0
+        state = copy(state)
+        for i in range(rotate):
+            state = State.rotate_120(state)
+        return state
+
+    @classmethod
+    def rotate_120(cls, state):
+        """
+        Helper function to create a new state by rotating the current state
+        Color of the pieces also change:
+        red -> green
+        blue -> red
+        green -> blue
         :param state: The state to rotate
-        :return: The rotated state
+        :return ns: the result of rotating state by 120 degrees clockwise
         """
+        # change player
+        color = State.next_colour(state._colour)
+        # change color of completed nodes
+        completed = {}
+        for p in state.completed:
+            completed[State.next_colour(p)] = state.completed[p]
+        # rotate board
+        pos_to_piece = {}
+        for pos in state._pos_to_piece:
+            # https://www.redblobgames.com/grids/hexagons/#rotation
+            x, z = pos
+            y = -(x+z)
+            color = State.next_colour(state._pos_to_piece[pos])
+            pos_to_piece[(y, x)] = color
+
+        return State(pos_to_piece, color, completed)
+
+    @staticmethod
+    def _gety(self, r, q):
+        return -(r + q)
 
     def __hash__(self):
         # only need hash those two
@@ -115,3 +174,21 @@ class State:
         # There is no preference between states with same path cost
         return True
 
+
+def rotate_test():
+    test = State({(1,-1):"red", (0,0):"green", (0,1):"blue"}, "blue", {"blue":1})
+    check = State({(-1,0):"red", (0,1):"green", (0,0):"blue"}, "red", {"red":1})
+    assert(check == State.rotate_120(test))
+    assert(check == State.change_to_red(test))
+
+def color_test():
+    assert(State.next_colour("red") == "green")
+    assert(State.next_colour("blue") == "red")
+    assert(State.next_colour("green") == "blue")
+    assert(State.next_colour("block") == "block")
+
+if __name__ == '__main__':
+    # test next color
+    color_test()
+    # test rotate state
+    rotate_test()
