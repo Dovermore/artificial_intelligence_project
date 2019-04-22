@@ -2,6 +2,7 @@ from artificial_idiot.util.class_property import classproperty
 from artificial_idiot.util.misc import print_board
 from copy import copy
 from artificial_idiot.util.mycopy import deepcopy
+from artificial_idiot.util.constants import TOTAL_PIECE
 
 
 class State:
@@ -20,13 +21,19 @@ class State:
                   "blue": "🔵", "block": "⬛"}
     _rev_code_map = {value: key for key, value in _code_map.items()}
 
-    def __init__(self, pos_to_piece, colour):
+    def __init__(self, pos_to_piece, colour, completed=None):
+        # This is the current active colour
         self._colour = colour
         # Map from positions to pieces
         self._pos_to_piece = pos_to_piece
         self._piece_to_pos = {col: [] for col in self._code_map}
         for location, colour in self._pos_to_piece.items():
             self._piece_to_pos[colour].append(location)
+
+        self.completed = {}
+        if completed is None:
+            self.completed = {col: 0 for col in self._code_map}
+            assert len(pos_to_piece) == TOTAL_PIECE
 
         self._frozen = frozenset(self._pos_to_piece.keys())
         self._hash = hash(self._frozen)
@@ -84,12 +91,12 @@ class State:
         return abs(r) <= 3 and abs(q) <= 3 and abs(r+q) <= 3
 
     @classmethod
-    def goal_state(cls, state, goal_colour):
-        pos_to_piece = state.pos_to_piece
-        # remove goal colour
-        pos_to_piece = {k: v for k, v in pos_to_piece.items()
-                        if v != goal_colour}
-        return cls(pos_to_piece, goal_colour)
+    def rotate_state(cls, state):
+        """
+        Helper function to create a new state based on current state
+        :param state: The state to rotate
+        :return: The rotated state
+        """
 
     def __hash__(self):
         # only need hash those two
@@ -107,3 +114,4 @@ class State:
     def __lt__(self, other):
         # There is no preference between states with same path cost
         return True
+
