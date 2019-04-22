@@ -91,6 +91,7 @@ class DummyPlayer(Player):
         pass
 
     def action(self):
+        # TODO need to convert action from referee to our own format
         pass
 
     def update(self, colour, action):

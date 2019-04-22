@@ -47,7 +47,7 @@ class MaxnAbstract(Search):
 
     def search(self, s, player):
         if self.cut_off_test(s):
-            return self._evaluate(s), Action(Action.actions)
+
 
 
 

@@ -89,62 +89,15 @@ class BoardProblem(Problem, abc.ABC):
     )
 
 
-class PathFindingProblem(BoardProblem):
+class Game(BoardProblem):
     """
-    Static Search problem for project part A
+    Holds all rules for the game
+    static variables are defined in BoardProblem class
     """
-    def __init__(self, initial, colour):
-        """
-        initial state is supplied by the problem
-        goal state is initial state without any agent's pieces
-        """
-        super().__init__(initial)
-        # remove all agent's pieces
-        self.goal = State.goal_state(initial, colour)
 
-        # A mapping for heuristic distances
-        self.colour = colour
-        self.heuristic_distance = dd(float)
-        self._build_heuristic_distance()
-
-    def _build_heuristic_distance(self):
-        """
-        Build the heuristic map used for searching by Dijkstra's Algorithm
-        """
-        goal = self.goal
-        frontier = PriorityQueueImproved('min',
-                                         f=self.heuristic_distance.__getitem__)
-        # For all exit positions
-        for pos in self._exit_positions[self.colour]:
-            # If the exit position is not occupied by other pieces
-            if pos not in goal.pos_to_piece:
-                # Set initial heuristic to 1, and add to start
-                self.heuristic_distance[pos] = 1
-                frontier.append(pos)
-
-        # While search is not ended
-        while frontier:
-            pos = frontier.pop()
-            q, r = pos
-            # Explore all space near current place
-            cost = self.heuristic_distance[pos]
-            for dq, dr in self._move:
-                for move in range(1, 3):
-                    next_pos = (q + dq * move, r + dr * move)
-                    # If the moved position is valid, update it with cost + 1,
-                    # Else simply continue next loop
-                    if (not State.inboard(next_pos) or
-                            next_pos in goal.pos_to_piece):
-                        continue
-                    # Get value in dictionary
-                    h_val = self.heuristic_distance.get(next_pos, None)
-
-                    # Not yet navigated to or can be updated
-                    if h_val is None or h_val > cost + 1:
-                        # Update dictionary entry
-                        self.heuristic_distance[next_pos] = cost + 1
-                        # Update the value in queue
-                        frontier.append(next_pos)
+    def __init__(self, initial, color):
+        super.__init__(initial)
+        self.color = color
 
     @classmethod
     def actions(cls, state):
@@ -157,7 +110,7 @@ class PathFindingProblem(BoardProblem):
 
         Arguments:
             state (State) : current state of the board
-        
+
         Yields:
             action (tuple) -- encoded as ((from position), (to position))
         """
@@ -172,8 +125,8 @@ class PathFindingProblem(BoardProblem):
 
             for move in cls._move:
                 i, j = move
-                move_pos = (q+i, r+j)
-                jump_pos = (q+i*2, r+j*2)
+                move_pos = (q + i, r + j)
+                jump_pos = (q + i * 2, r + j * 2)
                 # If that direction is possible to move
                 if not state.inboard(move_pos):
                     continue
@@ -190,66 +143,34 @@ class PathFindingProblem(BoardProblem):
         action in the given state. The action must be one of
         self.actions(state).
         """
+        # TODO use rotate state so that the result is always red
         fr, to, mv = action
         pos_to_piece = state.pos_to_piece
         colour = state.colour
         next_colour = state.next_colour()
+        completed = state.completed
+
         # update dictionary
         pos_to_piece.pop(fr)
         if to is not None:
             pos_to_piece[to] = colour
+        # one piece moved out
+        else:
+            if colour in completed:
+                completed[colour] = completed[colour] + 1
+            else:
+                completed[colour] = 1
 
         # Construct the new state
-        return State(pos_to_piece, next_colour)
+        return State(pos_to_piece, next_colour, completed)
 
-    def value(self, state):
-        raise NotImplementedError
-
-    @classproperty
-    def exit_positions(cls):
-        return copy(cls._exit_positions)
-
-    def h0(self, node):
-        state = node.state
-        colour = node.state.colour
-
-        dists = 0
-        for position in state.piece_to_pos[state.colour]:
-            dists += (min([self.grid_dist(position, exit_position) for
-                           exit_position in self._exit_positions[colour]
-                           if exit_position not in
-                           state.piece_to_pos["block"]])
-                      + 1) // 2
-        return dists
-
-    @staticmethod
-    def grid_dist(pos1, pos2):
+    def update(self, action):
         """
-        Get the grid distance between two different grid locations
-        :param pos1: first position (tuple)
-        :param pos2: second position (tuple)
-        :return: The `manhattan` distance between those two positions
+        Update the state by the given action
+        :param action: an action
         """
-        x1, y1 = pos1
-        x2, y2 = pos2
+        self.initial = self.result(self.initial, action)
 
-        dy = y2 - y1
-        dx = x2 - x1
-
-        # If different sign, take the max of difference in position
-        if dy * dx < 0:
-            return max([abs(dy), abs(dx)])
-        # Same sign or zero just take sum
-        else:
-            return abs(dy + dx)
-
-    def h(self, node):
-        state = node.state
-        return sum((self.heuristic_distance[pos] for pos in
-                    node.state._piece_to_pos[state.colour]))
-
-    def goal_test(self, state):
-        return state == self.goal
 
 
 if __name__ == "__main__":
