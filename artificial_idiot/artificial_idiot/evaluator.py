@@ -20,7 +20,7 @@ class Evaluator(abc.ABC):
         Compute the value of a state based on the input.
         This will always compute wrt the perspective of a red player
         :param state: The state to evaluate on
-        :return: The value of that specific state
+        :return: int, The value of that specific state
         """
         pass
 
