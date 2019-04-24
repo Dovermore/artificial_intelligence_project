@@ -6,6 +6,7 @@ Authors: Chuanyuan Liu, Zhuoqun Huang
 """
 
 import abc
+from random import random
 from math import inf
 
 
@@ -14,11 +15,11 @@ class Search(abc.ABC):
     Generic search algorithm
     """
     @abc.abstractmethod
-    def search(self, s, player, *args, **kwargs):
+    def search(self, state, game, *args, **kwargs):
         """
         Return the best action
-        :param s: state of the board
-        :param player: the encoding of the player
+        :param state: state of the board
+        :param game: a class that describes the game
         :return: an action
         """
         raise NotImplementedError
@@ -80,3 +81,15 @@ class MaxTest(MaxnAbstract):
         if depth > self._n:
             return False
         return True
+
+
+class RandomMove(Search):
+
+    def __init__(self, seed):
+        self.seed = seed
+        self.random = random.seed(seed)
+
+    def search(self, state, game):
+        actions = [a for a in game.actions(state)]
+        i = int(random()*len(actions))
+        return actions[i]
