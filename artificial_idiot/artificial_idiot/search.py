@@ -14,7 +14,7 @@ class Search(abc.ABC):
     Generic search algorithm
     """
     @abc.abstractmethod
-    def search(self, s, player):
+    def search(self, s, player, *args, **kwargs):
         """
         Return the best action
         :param s: state of the board
@@ -38,7 +38,7 @@ class MaxnAbstract(Search):
         self._n = n
 
     @abc.abstractmethod
-    def cut_off_test(self, state):
+    def cut_off_test(self, state, *args, **kwargs):
         """
         Reduce the depth of the search
         :param state:
