@@ -6,7 +6,7 @@ Authors: Chuanyuan Liu, Zhuoqun Huang
 """
 
 import abc
-from random import random
+from random import randrange
 from math import inf
 
 
@@ -87,9 +87,9 @@ class RandomMove(Search):
 
     def __init__(self, seed):
         self.seed = seed
-        self.random = random.seed(seed)
+        self.randrange = randrange.seed(seed)
 
     def search(self, state, game):
         actions = [a for a in game.actions(state)]
-        i = int(random()*len(actions))
+        i = self.randrange(len(actions)-1)
         return actions[i]
