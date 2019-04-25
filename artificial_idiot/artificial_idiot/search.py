@@ -15,7 +15,7 @@ class Search(abc.ABC):
     Generic search algorithm
     """
     @abc.abstractmethod
-    def search(self, state, game, *args, **kwargs):
+    def search(self, state, game, **kwargs):
         """
         Return the best action
         :param state: state of the board
@@ -39,7 +39,7 @@ class MaxnAbstract(Search):
         self._n = n
 
     @abc.abstractmethod
-    def cut_off_test(self, state, *args, **kwargs):
+    def cut_off_test(self, state, **kwargs):
         """
         Reduce the depth of the search
         :param state:
@@ -58,7 +58,7 @@ class MaxnAbstract(Search):
             v.append(eval(state))
         return self._eval(state)
 
-    def search(self, state, game, depth):
+    def search(self, state, game, depth=None, **kwargs):
         if self.cut_off_test(state):
             return (self._evaluate(state, depth), None)
         player = state.codemap[state.color]
@@ -77,7 +77,7 @@ class MaxnAbstract(Search):
 
 class MaxTest(MaxnAbstract):
 
-    def cut_off_test(self, state, depth):
+    def cut_off_test(self, state, depth=None, **kwargs):
         if depth > self._n:
             return False
         return True
@@ -89,7 +89,7 @@ class RandomMove(Search):
         self.seed = seed
         self.randrange = randrange.seed(seed)
 
-    def search(self, state, game):
+    def search(self, state, game, **kwargs):
         actions = [a for a in game.actions(state)]
         i = self.randrange(len(actions)-1)
         return actions[i]
