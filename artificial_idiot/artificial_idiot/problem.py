@@ -66,13 +66,13 @@ class Problem(abc.ABC):
         """
         return c + 1
 
-    @abc.abstractmethod
-    def value(self, state):
-        """
-        For optimization problems, each state has a value.  Hill-climbing
-        and related algorithms try to maximize this value.
-        """
-        pass
+    # @abc.abstractmethod
+    # def value(self, state):
+    #     """
+    #     For optimization problems, each state has a value.  Hill-climbing
+    #     and related algorithms try to maximize this value.
+    #     """
+    #     pass
 
 
 class BoardProblem(Problem, abc.ABC):
@@ -96,7 +96,7 @@ class Game(BoardProblem):
     """
 
     def __init__(self, initial, color):
-        super.__init__(initial)
+        super().__init__(initial)
         self.color = color
 
     @classmethod

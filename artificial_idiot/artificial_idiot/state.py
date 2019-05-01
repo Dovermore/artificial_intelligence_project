@@ -99,21 +99,35 @@ class State:
     def occupied(self, pos):
         return pos not in self._pos_to_piece
 
+    @classmethod
+    def rotate_pos(cls, fr_color, to_color, pos):
+        # grab distance between color
+        f = cls._code_map[fr_color]
+        t = cls._code_map[to_color]
+        if t < f:
+            dist = t + 3 - f
+        else:
+            dist = t - f
+        for i in range(dist):
+            x, z = pos
+            y = -(x + z)
+            pos = (y, x)
+        return pos
+
     @staticmethod
     def inboard(pos):
         r, q = pos
         return abs(r) <= 3 and abs(q) <= 3 and abs(r+q) <= 3
 
     @classmethod
-    def change_to_red(cls, state):
+    # TODO use rotate pos there
+    def state_to_red(cls, state):
         """
         change player to red
         always return a new state
         :param state: current state
         :return: a state where current player is red
         """
-        # no need to change
-        assert(state._colour != "red")
         if state._colour == "blue":
             rotate = 1
         elif state._colour == "gree":
@@ -175,20 +189,28 @@ class State:
         return True
 
 
-def rotate_test():
-    test = State({(1,-1):"red", (0,0):"green", (0,1):"blue"}, "blue", {"blue":1})
-    check = State({(-1,0):"red", (0,1):"green", (0,0):"blue"}, "red", {"red":1})
-    assert(check == State.rotate_120(test))
-    assert(check == State.change_to_red(test))
-
-def color_test():
-    assert(State.next_colour("red") == "green")
-    assert(State.next_colour("blue") == "red")
-    assert(State.next_colour("green") == "blue")
-    assert(State.next_colour("block") == "block")
-
 if __name__ == '__main__':
+    def rotate_test():
+        test = State({(1, -1): "red", (0, 0): "green", (0, 1): "blue"}, "blue", {"blue": 1})
+        check = State({(-1, 0): "red", (0, 1): "green", (0, 0): "blue"}, "red", {"red": 1})
+        assert (check == State.rotate_120(test))
+        assert (check == State.state_to_red(test))
+
+
+    def color_test():
+        assert (State.next_colour("red") == "green")
+        assert (State.next_colour("blue") == "red")
+        assert (State.next_colour("green") == "blue")
+        assert (State.next_colour("block") == "block")
+
+
+    def rotate_action_test():
+        assert(State.rotate_pos("green", "blue", (0, -3)) == (3,0))
+        assert(State.rotate_pos("green", "red", (0, -3)) == (-3, 3))
+
     # test next color
     color_test()
     # test rotate state
     rotate_test()
+    # rotate action
+    rotate_action_test()

@@ -6,7 +6,7 @@ Authors: Chuanyuan Liu, Zhuoqun Huang
 """
 
 import abc
-from random import randrange
+import random
 from math import inf
 
 
@@ -85,11 +85,11 @@ class MaxTest(MaxnAbstract):
 
 class RandomMove(Search):
 
-    def __init__(self, seed):
+    def __init__(self, seed=0):
         self.seed = seed
-        self.randrange = randrange.seed(seed)
+        random.seed(seed)
 
     def search(self, state, game, **kwargs):
         actions = [a for a in game.actions(state)]
-        i = self.randrange(len(actions)-1)
+        i = random.randrange(len(actions)-1)
         return actions[i]

@@ -1,15 +1,19 @@
 import abc
+from artificial_idiot.util.json_parser import JsonParser
 from artificial_idiot import evaluator
 from artificial_idiot.state import State
+from artificial_idiot.problem import Game
+from artificial_idiot.search import RandomMove
+import json
 
 
 player_evaluator = evaluator.DummyEvaluator()
 
 
 class Player(abc.ABC):
-    @abc.abstractmethod
-    def __init__(self, colour, search_algorithm=None,
-                 evaluator=player_evaluator):
+
+    def __init__(self, true_colour, search_algorithm=RandomMove(),
+                 evaluator=player_evaluator, problem=Game):
         """
         This method is called once at the beginning of the game to initialise
         your player. You should use this opportunity to set up your own internal
@@ -21,10 +25,16 @@ class Player(abc.ABC):
         strings "red", "green", or "blue" correspondingly.
         """
         self.evaluator = evaluator
-        self.colour = colour
-        # TODO other basic position set up
-        self._internal_state = None
-        self.state = State.rotate_state()
+        self.colour = true_colour
+        self.search_class = search_algorithm
+
+        # load up the initial state
+        json_loader = json.load(open("../tests/red_initial_state.json"))
+        print(json_loader)
+        json_parser = JsonParser(json_loader)
+        pos_dict, colour = json_parser.parse(pos_dict=True)
+        state = State.state_to_red(State(pos_dict, "red"))
+        self._game = Game(state, "red")
 
     @abc.abstractmethod
     def action(self):
@@ -84,18 +94,28 @@ class ArtificialIdiot(Player):
         pass
 
 
-class DummyPlayer(Player):
+class RandomAgent(Player):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         pass
 
     def action(self):
-        # TODO need to convert action from referee to our own format
-        pass
+        fr, to, move = self.search_class.search(self._game.initial, self._game)
+        fr = State.rotate_pos(self._game.initial.colour, self.colour, fr)
+        to = State.rotate_pos(self._game.initial.colour, self.colour, to)
+        return fr, to, move
 
     def update(self, colour, action):
-        pass
+        move, coord = action
+        fr, to = coord
+        fr = State.rotate_pos(self.colour, self._game.initial.colour, fr)
+        to = State.rotate_pos(self.colour, self._game.initial.colour, to)
+        self._game.update((fr, to, move))
 
     def evaluate(self, state, *args, **kwargs):
         return super().evaluate(state, *args, **kwargs)
+
+if __name__ == "__main__":
+    player = RandomAgent(true_colour="red")
+    print(player.action())

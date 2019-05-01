@@ -1,6 +1,5 @@
 from collections import defaultdict as dd
 
-
 class JsonParser:
     # map fr_code[i] to to_code[i]
     fr_code = ["red", "green", "blue"]
@@ -39,21 +38,18 @@ class JsonParser:
 
 
 if __name__ == "__main__":
-    # Test for phase
     import json
 
-
-    def test_inital_state():
-        forward_dict = {(-3, 0): 'red', (-3, 1): 'red', (-3, 2): 'red', (-3, 3): 'red', (0, -3): 'green', (1, -3): 'green', (2, -3): 'green', (3, -3): 'green', (0, 3): 'blue', (1, 2): 'blue', (2, 1): 'blue', (3, 0): 'blue'}
-        backward_dict = {'red': [(-3, 0), (-3, 1), (-3, 2), (-3, 3)], 'green': [(0, -3), (1, -3), (2, -3), (3, -3)], 'blue': [(0, 3), (1, 2), (2, 1), (3, 0)]}
+    def test_initial_state():
+        pos_dict = {(-3, 0): 'red', (-3, 1): 'red', (-3, 2): 'red', (-3, 3): 'red', (0, -3): 'green', (1, -3): 'green', (2, -3): 'green', (3, -3): 'green', (0, 3): 'blue', (1, 2): 'blue', (2, 1): 'blue', (3, 0): 'blue'}
+        piece_dict = {'red': [(-3, 0), (-3, 1), (-3, 2), (-3, 3)], 'green': [(0, -3), (1, -3), (2, -3), (3, -3)], 'blue': [(0, 3), (1, 2), (2, 1), (3, 0)]}
         with open("../../tests/red_initial_state.json") as f:
             json_loader = json.load(f)
             json_parser = JsonParser(json_loader)
             print(json_parser.parse_piece_a())
-            print("ans: ", str(backward_dict))
             print(json_parser.parse_pos_a())
-            print("ans: ", str(forward_dict))
-
+            assert(piece_dict==dict(json_parser.parse_piece_a()))
+            assert(pos_dict==dict(json_parser.parse_pos_a()))
 
     # test
-    test_inital_state()
+    test_initial_state()
