@@ -147,7 +147,7 @@ class Game(BoardProblem):
         fr, to, mv = action
         pos_to_piece = state.pos_to_piece
         colour = state.colour
-        next_colour = state.next_colour()
+        next_colour = State.next_colour(state.colour)
         completed = state.completed
 
         # update dictionary

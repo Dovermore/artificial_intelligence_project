@@ -119,3 +119,7 @@ class RandomAgent(Player):
 if __name__ == "__main__":
     player = RandomAgent(true_colour="red")
     print(player.action())
+    action = ("MOVE", ((0, -3),(0, -2)))
+    opponent = "green"
+    player.update(opponent, action)
+    print(player.action())
