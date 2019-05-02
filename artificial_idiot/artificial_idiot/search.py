@@ -85,7 +85,7 @@ class MaxTest(MaxnAbstract):
 
 class RandomMove(Search):
 
-    def __init__(self, seed=0):
+    def __init__(self, seed):
         self.seed = seed
         random.seed(seed)
 

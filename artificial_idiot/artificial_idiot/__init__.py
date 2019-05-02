@@ -1,1 +1,1 @@
-from artificial_idiot.player import ArtificialIdiot as Player
+from artificial_idiot.player import RandomAgent as Player

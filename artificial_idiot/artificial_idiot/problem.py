@@ -1,11 +1,6 @@
 from artificial_idiot.util.misc import is_in
-from artificial_idiot.util.class_property import classproperty
 from artificial_idiot.state import State
-from copy import copy
-from collections import defaultdict as dd
-
 import abc
-from artificial_idiot.util.queue import PriorityQueueImproved
 
 
 class Problem(abc.ABC):
@@ -143,12 +138,16 @@ class Game(BoardProblem):
         action in the given state. The action must be one of
         self.actions(state).
         """
-        # TODO use rotate state so that the result is always red
+        next_colour = State.next_colour(state.colour)
+        completed = state.completed
+
+        # if action is None than the state does not change
+        if action is None:
+            return State(state.pos_to_piece, next_colour)
+
         fr, to, mv = action
         pos_to_piece = state.pos_to_piece
         colour = state.colour
-        next_colour = State.next_colour(state.colour)
-        completed = state.completed
 
         # update dictionary
         pos_to_piece.pop(fr)
