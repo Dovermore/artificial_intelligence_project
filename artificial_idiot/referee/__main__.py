@@ -69,7 +69,6 @@ def play(p_R, p_G, p_B, options):
         
         # Validate this action (or pass) and apply it to the game if it is 
         # allowed. Display the resulting game state.
-        print("action: ", action)
         game.update(curr_player.colour, action)
         display(game, options)
 

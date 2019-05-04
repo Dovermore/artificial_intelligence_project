@@ -90,5 +90,6 @@ class RandomMove(Search):
 
     def search(self, game, **kwargs):
         actions = [a for a in game.actions(game.state)]
-        i = random.randrange(len(actions)-1)
+        print(actions)
+        i = random.randrange(len(actions))
         return actions[i]

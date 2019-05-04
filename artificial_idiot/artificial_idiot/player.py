@@ -37,22 +37,22 @@ class AbstractPlayer(abc.ABC):
 
     start_config = {
         "red": [
-            [-3, 0],
-            [-3, 1],
-            [-3, 2],
-            [-3, 3]
+            (-3, 0),
+            (-3, 1),
+            (-3, 2),
+            (-3, 3)
         ],
         "green": [
-            [0, -3],
-            [1, -3],
-            [2, -3],
-            [3, -3]
+            (0, -3),
+            (1, -3),
+            (2, -3),
+            (3, -3)
         ],
         "blue": [
-            [0, 3],
-            [1, 2],
-            [2, 1],
-            [3, 0]
+            (0, 3),
+            (1, 2),
+            (2, 1),
+            (3, 0)
         ]
     }
 
@@ -77,12 +77,12 @@ class AbstractPlayer(abc.ABC):
             for color in self.start_config:
                 for pos in self.start_config[color]:
                     pos_to_piece[pos] = color
-            initial_state = State(pos_to_piece, player)
+            initial_state = State(pos_to_piece, "red")
 
-        state = State.state_to_red(initial_state)
+        state = initial_state.state_to_red()
 
         # Colour of the game is different from the color of the state
-        self._game = Game(state, player)
+        self._game = Game(player, state)
 
     @abc.abstractmethod
     def action(self):
@@ -154,6 +154,8 @@ class RandomAgent(AbstractPlayer):
     def update(self, colour, action):
         player_action = convert_action_to(action, 'player')
         self._game.update(colour, player_action)
+        print("# PLAYER", self.player)
+        print(self._game.state)
 
     @property
     def state(self):

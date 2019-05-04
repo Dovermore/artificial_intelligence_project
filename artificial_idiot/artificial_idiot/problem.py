@@ -164,7 +164,7 @@ class Game(BoardProblem):
             pos_to_piece[leap_frog] = colour
 
         # Construct the new state
-        return State(next_colour, pos_to_piece, completed)
+        return State(pos_to_piece, next_colour, completed)
 
     def update(self, colour, action):
         """

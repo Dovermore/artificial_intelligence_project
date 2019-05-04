@@ -30,7 +30,7 @@ class State:
     def gety(r, q):
         return -(r + q)
 
-    def __init__(self, colour, pos_to_piece, completed=None):
+    def __init__(self, pos_to_piece, colour, completed=None):
         """
         Captures all the information about the state
         :param colour: string that represent the current player
@@ -46,7 +46,7 @@ class State:
             self._piece_to_pos[colour].append(location)
 
         if completed is None:
-            self.completed = {col: 0 for col in self._code_map}
+            completed = {col: 0 for col in self._code_map}
             assert len(pos_to_piece) == TOTAL_PIECE
         self.completed = completed
 
@@ -107,11 +107,10 @@ class State:
         return pos
 
     # TODO use rotate pos there
-    def state_to_red(self, color):
+    def state_to_red(self):
         """
         change player to red
         always return a new state
-        :param color: color
         :return: a state where current player is red
         """
         if self.colour == "blue":
@@ -167,7 +166,7 @@ class State:
             kwargs["message"] += msg
         else:
             kwargs["message"] = msg
-        return print_board(pos_to_piece, **kwargs, printed=False)
+        return print_board(pos_to_piece, **kwargs, printed=False) + "\n# Completed: " + str(self.completed)
 
     def __hash__(self):
         # only need hash those two
