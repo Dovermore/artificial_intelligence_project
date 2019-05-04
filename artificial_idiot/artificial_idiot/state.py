@@ -167,8 +167,7 @@ class State:
             kwargs["message"] += msg
         else:
             kwargs["message"] = msg
-
-        return print_board(pos_to_piece, **kwargs)
+        return print_board(pos_to_piece, **kwargs, printed=False)
 
     def __hash__(self):
         # only need hash those two

@@ -159,7 +159,6 @@ class Game(BoardProblem):
             else:
                 completed[colour] = 1
 
-        #TODO convert other player's pieces
         if mv == "JUMP":
             leap_frog = (fr[0] + to[0])/2, (fr[1] + to[1])/2
             pos_to_piece[leap_frog] = colour
