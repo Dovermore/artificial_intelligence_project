@@ -21,11 +21,20 @@ class State:
                   "blue": "🔵", "block": "⬛"}
     _rev_code_map = {value: key for key, value in _code_map.items()}
 
-    def __init__(self, pos_to_piece, colour, completed=None):
+    @staticmethod
+    def inboard(pos):
+        r, q = pos
+        return abs(r) <= 3 and abs(q) <= 3 and abs(r+q) <= 3
+
+    @staticmethod
+    def gety(r, q):
+        return -(r + q)
+
+    def __init__(self, colour, pos_to_piece, completed=None):
         """
         Captures all the information about the state
-        :param pos_to_piece: a dictionary {pos : piece type}
         :param colour: string that represent the current player
+        :param pos_to_piece: a dictionary {pos : piece type}
         :param completed: a dictionary {piece type : number of exited}
         """
         # This is the current active colour
@@ -36,13 +45,20 @@ class State:
         for location, colour in self._pos_to_piece.items():
             self._piece_to_pos[colour].append(location)
 
-        self.completed = {}
         if completed is None:
             self.completed = {col: 0 for col in self._code_map}
             assert len(pos_to_piece) == TOTAL_PIECE
+        self.completed = completed
 
         self._frozen = frozenset(self._pos_to_piece.keys())
         self._hash = hash(self._frozen)
+
+    def occupied(self, pos):
+        return pos not in self._pos_to_piece
+
+    @classproperty
+    def code_map(cls):
+        return copy(cls._code_map)
 
     @property
     def piece_to_pos(self):
@@ -57,30 +73,9 @@ class State:
     def colour(self):
         return self._colour
 
-    @classproperty
-    def code_map(cls):
-        return copy(cls._code_map)
-
     @code_map.setter
     def code_map(cls, code_map):
         cls._code_map = code_map
-
-    def __repr__(self, **kwargs):
-        # need a copy here
-        pos_to_piece = self.pos_to_piece
-        # Make the name shorter so display normally
-        # pos_to_piece = {key: value[:3] for key, value
-        #                 in pos_to_piece.items()}
-        pos_to_piece = {key: self._print_map[value] for key, value
-                        in pos_to_piece.items()}
-
-        msg = f"Colour: {self._colour}"
-        if "message" in kwargs:
-            kwargs["message"] += msg
-        else:
-            kwargs["message"] = msg
-
-        return print_board(pos_to_piece, **kwargs)
 
     @classmethod
     def next_colour(cls, color):
@@ -95,9 +90,6 @@ class State:
         elif i == 3:
             i = 0
         return list(cls._code_map.keys())[i]
-
-    def occupied(self, pos):
-        return pos not in self._pos_to_piece
 
     @classmethod
     def rotate_pos(cls, fr_color, to_color, pos):
@@ -114,27 +106,21 @@ class State:
             pos = (y, x)
         return pos
 
-    @staticmethod
-    def inboard(pos):
-        r, q = pos
-        return abs(r) <= 3 and abs(q) <= 3 and abs(r+q) <= 3
-
-    @classmethod
     # TODO use rotate pos there
-    def state_to_red(cls, state):
+    def state_to_red(self, color):
         """
         change player to red
         always return a new state
-        :param state: current state
+        :param color: color
         :return: a state where current player is red
         """
-        if state._colour == "blue":
+        if self.colour == "blue":
             rotate = 1
-        elif state._colour == "gree":
+        elif self.colour == "gree":
             rotate = 2
         else:
             rotate = 0
-        state = copy(state)
+        state = copy(self)
         for i in range(rotate):
             state = State.rotate_120(state)
         return state
@@ -167,9 +153,22 @@ class State:
 
         return State(pos_to_piece, color, completed)
 
-    @staticmethod
-    def _gety(self, r, q):
-        return -(r + q)
+    def __repr__(self, **kwargs):
+        # need a copy here
+        pos_to_piece = self.pos_to_piece
+        # Make the name shorter so display normally
+        # pos_to_piece = {key: value[:3] for key, value
+        #                 in pos_to_piece.items()}
+        pos_to_piece = {key: self._print_map[value] for key, value
+                        in pos_to_piece.items()}
+
+        msg = f"Colour: {self._colour}"
+        if "message" in kwargs:
+            kwargs["message"] += msg
+        else:
+            kwargs["message"] = msg
+
+        return print_board(pos_to_piece, **kwargs)
 
     def __hash__(self):
         # only need hash those two

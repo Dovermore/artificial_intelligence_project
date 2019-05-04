@@ -11,13 +11,13 @@ class Problem(abc.ABC):
     of your subclass and solve them with the various search functions.
     """
 
-    def __init__(self, initial, goal=None):
+    def __init__(self, state, goal=None):
         """
-        The constructor specifies the initial state, and possibly a goal
+        The constructor specifies the state state, and possibly a goal
         state, if there is a unique goal. Your subclass's constructor can add
         other arguments.
         """
-        self.initial = initial
+        self.state = state
         self.goal = goal
 
     @abc.abstractmethod
@@ -90,8 +90,8 @@ class Game(BoardProblem):
     static variables are defined in BoardProblem class
     """
 
-    def __init__(self, initial, color):
-        super().__init__(initial)
+    def __init__(self, color, state):
+        super().__init__(state)
         self.color = color
 
     @classmethod
@@ -135,7 +135,7 @@ class Game(BoardProblem):
     def result(self, state, action):
         """
         Return the state that results from executing the given
-        action in the given state. The action must be one of
+        action in the given state by a given actor. The action must be one of
         self.actions(state).
         """
         next_colour = State.next_colour(state.colour)
@@ -147,10 +147,9 @@ class Game(BoardProblem):
 
         fr, to, mv = action
         pos_to_piece = state.pos_to_piece
-        colour = state.colour
 
         # update dictionary
-        pos_to_piece.pop(fr)
+        colour = pos_to_piece.pop(fr)
         if to is not None:
             pos_to_piece[to] = colour
         # one piece moved out
@@ -160,18 +159,56 @@ class Game(BoardProblem):
             else:
                 completed[colour] = 1
 
-        # Construct the new state
-        return State(pos_to_piece, next_colour, completed)
+        #TODO convert other player's pieces
+        if mv == "JUMP":
+            leap_frog = (fr[0] + to[0])/2, (fr[1] + to[1])/2
+            pos_to_piece[leap_frog] = colour
 
-    def update(self, action):
+        # Construct the new state
+        return State(next_colour, pos_to_piece, completed)
+
+    def update(self, colour, action):
         """
         Update the state by the given action
+        :param colour: player who made the move
         :param action: an action
         """
-        self.initial = self.result(self.initial, action)
+        self.state = self.result(self.state, action)
 
+    def __str__(self):
+        return str(self.state)
 
 
 if __name__ == "__main__":
-    # test for static problem class
-    pass
+    # test to convert player pieces
+    from artificial_idiot.util.json_parser import JsonParser
+    import json
+
+    def test_jump():
+        f = open("../tests/jump.json")
+        json_loader = json.load(f)
+        json_parser = JsonParser(json_loader)
+        pos_dict, player, completed = json_parser.parse()
+        game = Game(player, State(player, pos_dict, completed=completed))
+        f.close()
+
+        f = open("../tests/jump_ans.json")
+        json_loader = json.load(f)
+        json_parser = JsonParser(json_loader)
+        pos_dict_ans, player_ans, completed_ans = json_parser.parse()
+        f.close()
+
+        print(game)
+        game.state = game.result(game.state, ((-3, 0), (-1,-2), "JUMP"))
+        assert(dict(game.state.pos_to_piece) == pos_dict_ans)
+        assert(game.color == player_ans)
+        print(game.state.completed)
+        assert(game.state.completed == completed_ans)
+        print(game)
+
+    test_jump()
+
+
+
+
+

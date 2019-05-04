@@ -32,10 +32,32 @@ def convert_action_to(action, convert_to):
     else:
         raise ValueError(convert_to + "mode is not valid")
 
+
 class AbstractPlayer(abc.ABC):
 
-    def __init__(self, true_colour, search_algorithm=None,
-                 evaluator=player_evaluator, problem=Game):
+    start_config = {
+        "red": [
+            [-3, 0],
+            [-3, 1],
+            [-3, 2],
+            [-3, 3]
+        ],
+        "green": [
+            [0, -3],
+            [1, -3],
+            [2, -3],
+            [3, -3]
+        ],
+        "blue": [
+            [0, 3],
+            [1, 2],
+            [2, 1],
+            [3, 0]
+        ]
+    }
+
+    def __init__(self, player, search_algorithm=None,
+                 evaluator=player_evaluator, initial_state=None):
         """
         This method is called once at the beginning of the game to initialise
         your player. You should use this opportunity to set up your own internal
@@ -47,16 +69,20 @@ class AbstractPlayer(abc.ABC):
         strings "red", "green", or "blue" correspondingly.
         """
         self.evaluator = evaluator
-        self.colour = true_colour
-        self.search_class = search_algorithm
+        self.player = player
+        self.search_algorithm = search_algorithm
 
-        # load up the initial state
-        # TODO allow relative import to referee file
-        json_loader = json.load(open("red_initial_state.json"))
-        json_parser = JsonParser(json_loader)
-        pos_dict, colour = json_parser.parse(pos_dict=True)
-        state = State.state_to_red(State(pos_dict, "red"))
-        self._game = Game(state, "red")
+        if initial_state is None:
+            pos_to_piece = {}
+            for color in self.start_config:
+                for pos in self.start_config[color]:
+                    pos_to_piece[pos] = color
+            initial_state = State(pos_to_piece, player)
+
+        state = State.state_to_red(initial_state)
+
+        # Colour of the game is different from the color of the state
+        self._game = Game(state, player)
 
     @abc.abstractmethod
     def action(self):
@@ -117,31 +143,28 @@ class ArtificialIdiot(AbstractPlayer):
 
 
 class RandomAgent(AbstractPlayer):
-    def __init__(self, true_colour, seed):
-        super().__init__(true_colour, search_algorithm=RandomMove(seed))
+    def __init__(self, player):
+        super().__init__(player, search_algorithm=RandomMove(10))
         pass
 
     def action(self):
-        player_action = self.search_class.search(self._game.initial, self._game)
+        player_action = self.search_algorithm.search(self._game)
         return convert_action_to(player_action, 'referee')
 
     def update(self, colour, action):
         player_action = convert_action_to(action, 'player')
-        self._game.update(player_action)
-
-    def evaluate(self, state, *args, **kwargs):
-        return super().evaluate(state, *args, **kwargs)
+        self._game.update(colour, player_action)
 
     @property
     def state(self):
         # TODO DEEPCOPY
-        return self._game.initial
+        return self._game.state
 
 
 if __name__ == "__main__":
     # TODO handle test cases where player have to pass
     #  or opponent passes
-    player = RandomAgent(true_colour="red", seed=10)
+    player = RandomAgent(player="red")
     assert(player.action() == ('MOVE', ((-3, 2), (-2, 1))))
     print(player.state)
     action = ("MOVE", ((0, -3),(0, -2)))
