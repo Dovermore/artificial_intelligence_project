@@ -34,8 +34,21 @@ class DummyEvaluator(Evaluator):
         pass
 
     def __call__(self, state, *args, **kwargs):
-        return state.completed[state.colour]
+        return 0
 
+class MyEvaluator(Evaluator):
+    """
+    An evaluator that only considers
+     1. amount of exited pieces
+     2. distance to exit
+     3. amount of nodes
+    """
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        pass
+
+    def __call__(self, state, *args, **kwargs):
+        return state.completed[state.colour]
 
 if __name__ == '__main__':
     from artificial_idiot.state import State
@@ -44,5 +57,5 @@ if __name__ == '__main__':
     f = open("../tests/min_branch_factor.json")
     pos_dict, colour, completed = JsonParser(json.load(f)).parse()
     state = State(pos_dict, colour, completed)
-    evaluator = DummyEvaluator()
+    evaluator = MyEvaluator()
     print(evaluator(state))

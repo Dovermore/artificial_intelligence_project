@@ -55,6 +55,24 @@ In the first iteration we limited the depth of the search to 5.
 
 
 
+## Evaluator
+
+Factors that have positive correlation with winning. Weighting will be asigned using machine learning
+
+Number of pieces:
+
+* Player jump over other player when possible
+* Player will avoid other players
+
+Number of exited pieces
+
+* Player would want to exit as soon as possible
+
+Distance to exit
+
+* Player move closer to goal
+* Pieces will jump over each other
+
 
 
 

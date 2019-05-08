@@ -60,6 +60,7 @@ class MaxN(Search):
         a_best = None
         # try all actions
         for a in game.actions(game.state):
+            print(game.state.colour, a)
             v, _ = self.search(game, depth=depth+1)
             print(v, _)
             # found a better utility
@@ -83,7 +84,7 @@ class RandomMove(Search):
 
 
 if __name__ == '__main__':
-    from artificial_idiot.evaluator import DummyEvaluator
+    from artificial_idiot.evaluator import *
     from artificial_idiot.cutoff import DepthLimitCutoff
     from artificial_idiot.problem import Game
     from artificial_idiot.state import State
@@ -93,7 +94,7 @@ if __name__ == '__main__':
         f = open("../tests/min_branch_factor.json")
         pos_dict, colour, completed = JsonParser(json.load(f)).parse()
         game = Game(colour, State(pos_dict, colour, completed))
-        evaluator = DummyEvaluator()
+        evaluator = MyEvaluator()
         cutoff = DepthLimitCutoff(max_depth=2)
         search = MaxN(evaluator, cutoff, n_player=3)
         print(search.search(game))
