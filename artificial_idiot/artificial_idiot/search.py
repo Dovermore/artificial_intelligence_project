@@ -47,15 +47,17 @@ class MaxN(Search):
         :return: a utility vector
         """
         v = []
-        for i in range(self._n):
-            v.append(self._eval(state))
+        for index in range(self._n):
+            v.append(self._eval(state, state.rev_code_map[index]))
         return v
 
     def search(self, game, state, depth=1, **kwargs):
         # cut off test
         if self._cut_off_test(state, depth=depth):
+            print(state)
+            print('evaluation', self._evaluate(state))
             return (self._evaluate(state), None)
-        player = state.player
+        player = state.code_map[state.colour]
         # initialize utility to be the worst possible
         v_max = [-inf] * self._n
         a_best = None
@@ -65,6 +67,7 @@ class MaxN(Search):
             v, _ = self.search(game, game.result(state, a), depth=depth+1)
             print(v, _)
             # found a better utility
+            print("test", v, v_max)
             if v[player] > v_max[player]:
                 v_max = v
                 a_best = a
@@ -91,14 +94,15 @@ if __name__ == '__main__':
     from artificial_idiot.state import State
     from artificial_idiot.util.json_parser import JsonParser
     import json
-    def test_MaxN():
-        f = open("../tests/min_branch_factor.json")
+
+    def test_max_n():
+        f = open("../tests/simple.json")
         pos_dict, colour, completed = JsonParser(json.load(f)).parse()
         game = Game(colour, State(pos_dict, colour, completed))
         evaluator = MyEvaluator()
         cutoff = DepthLimitCutoff(max_depth=2)
         search = MaxN(evaluator, cutoff, n_player=3)
-        print(search.search(game, game.state))
+        print(search.search(game, game.initial_state))
 
-    test_MaxN()
+    test_max_n()
 

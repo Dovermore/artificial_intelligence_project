@@ -150,11 +150,11 @@ class Game(BoardProblem):
         """
         # TODO next color is a rule that should belong in the Game class
         next_colour = State.next_colour(state.colour)
-        completed = state.completed
+        completed = state.completed.copy()
 
         # if action is None than the state does not change
         if action is None:
-            return State(state.pos_to_piece, next_colour)
+            return State(state.pos_to_piece, next_colour, state.completed)
 
         fr, to, mv = action
         pos_to_piece = state.pos_to_piece
@@ -218,7 +218,7 @@ if __name__ == "__main__":
         print(game)
 
     def test_exit():
-        f = open("../tests/min_branch_factor.json")
+        f = open("../tests/simple.json")
         pos_dict, colour, completed = JsonParser(json.load(f)).parse()
         game = Game(colour, State(pos_dict, colour, completed))
         print(game.initial_state)

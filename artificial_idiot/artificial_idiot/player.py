@@ -1,11 +1,8 @@
 import abc
-from artificial_idiot.util.json_parser import JsonParser
 from artificial_idiot import evaluator
 from artificial_idiot.state import State
 from artificial_idiot.game import Game
 from artificial_idiot.search import RandomMove
-from artificial_idiot.util.mycopy import deepcopy
-import json
 
 player_evaluator = evaluator.DummyEvaluator()
 
@@ -23,7 +20,7 @@ def convert_action_to(action, convert_to):
             fr, to = pos
         return fr, to, move
     elif convert_to == "referee":
-        if action == None:
+        if action is None:
             return 'PASS', None
         fr, to, move = action
         if move == 'EXIT':
@@ -155,12 +152,12 @@ class RandomAgent(AbstractPlayer):
         player_action = convert_action_to(action, 'player')
         self._game.update(colour, player_action)
         print("# PLAYER", self.player)
-        print(self._game.state)
+        print(self._game.initial_state)
 
     @property
     def state(self):
         # TODO DEEPCOPY
-        return self._game.state
+        return self._game.initial_state
 
 
 class MaxNAgent(AbstractPlayer):
@@ -176,12 +173,12 @@ class MaxNAgent(AbstractPlayer):
         player_action = convert_action_to(action, 'player')
         self._game.update(colour, player_action)
         print("# PLAYER", self.player)
-        print(self._game.state)
+        print(self._game.initial_state)
 
     @property
     def state(self):
         # TODO DEEPCOPY
-        return self._game.state
+        return self._game.initial_state
 
 
 

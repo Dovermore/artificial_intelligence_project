@@ -30,7 +30,7 @@ class State:
     def gety(r, q):
         return -(r + q)
 
-    def __init__(self, pos_to_piece, colour, completed=None):
+    def __init__(self, pos_to_piece, colour, completed):
         """
         Captures all the information about the state
         :param colour: string that represent the current player
@@ -61,8 +61,8 @@ class State:
         return copy(cls._code_map)
 
     @property
-    def player(self):
-        return self._code_map[self._colour]
+    def rev_code_map(self):
+        return self._rev_code_map
 
     @property
     def piece_to_pos(self):

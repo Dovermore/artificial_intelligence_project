@@ -15,7 +15,7 @@ class Evaluator(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def __call__(self, state, *args, **kwargs):
+    def __call__(self, state, player, *args, **kwargs):
         """
         Compute the value of a state based on the input.
         This will always compute wrt the perspective of a red player
@@ -33,8 +33,9 @@ class DummyEvaluator(Evaluator):
         super().__init__(*args, **kwargs)
         pass
 
-    def __call__(self, state, *args, **kwargs):
+    def __call__(self, state, player, *args, **kwargs):
         return 0
+
 
 class MyEvaluator(Evaluator):
     """
@@ -47,15 +48,17 @@ class MyEvaluator(Evaluator):
         super().__init__(*args, **kwargs)
         pass
 
-    def __call__(self, state, *args, **kwargs):
-        return state.completed[state.colour]
+    def __call__(self, state, player, *args, **kwargs):
+        return state.completed[player]
 
 if __name__ == '__main__':
     from artificial_idiot.state import State
     import json
     from artificial_idiot.util.json_parser import JsonParser
-    f = open("../tests/min_branch_factor.json")
+    f = open("../tests/evaluator_test.json")
     pos_dict, colour, completed = JsonParser(json.load(f)).parse()
     state = State(pos_dict, colour, completed)
     evaluator = MyEvaluator()
-    print(evaluator(state))
+    assert(evaluator(state, 'red') == 3)
+    assert(evaluator(state, 'green') == 2)
+    assert(evaluator(state, 'blue') == 4)

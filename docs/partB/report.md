@@ -87,5 +87,9 @@ Distance to exit
 
 #### min_branch_factor.json
 
-* Each player has 1 piece at the corner of the board so the branching factor for each player is the minimum.
-* The remaining pieces for the players are in their appropriate exit position. This means a smart agent should try to exit immediately 
+* Each player has 1 piece at the corner of the board so the branching factor for each player is the minimum 3. 
+* Each piece can only  MOVE and is not in the correct position to EXIT.
+
+### Simple
+
+* 1 piece for each players are in their appropriate exit position. This means a smart agent should try to exit immediately.
