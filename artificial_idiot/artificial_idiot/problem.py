@@ -189,7 +189,7 @@ if __name__ == "__main__":
         json_loader = json.load(f)
         json_parser = JsonParser(json_loader)
         pos_dict, player, completed = json_parser.parse()
-        game = Game(player, State(player, pos_dict, completed=completed))
+        game = Game(player, State(pos_dict, player, completed=completed))
         f.close()
 
         f = open("../tests/jump_ans.json")
@@ -206,7 +206,16 @@ if __name__ == "__main__":
         assert(game.state.completed == completed_ans)
         print(game)
 
+    def test_exit():
+        f = open("../tests/min_branch_factor.json")
+        pos_dict, colour, completed = JsonParser(json.load(f)).parse()
+        game = Game(colour, State(pos_dict, colour, completed))
+        print(game.state)
+        assert ([i for i in game.actions(game.state)] == [((3, -3), None, 'EXIT')])
+
     test_jump()
+    print("="*10)
+    test_exit()
 
 
 
