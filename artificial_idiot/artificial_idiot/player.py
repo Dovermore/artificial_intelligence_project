@@ -1,11 +1,8 @@
 import abc
-from artificial_idiot.util.json_parser import JsonParser
 from artificial_idiot import evaluator
 from artificial_idiot.state import State
 from artificial_idiot.problem import Game
 from artificial_idiot.search import RandomMove
-from artificial_idiot.util.mycopy import deepcopy
-import json
 
 player_evaluator = evaluator.DummyEvaluator()
 
@@ -23,7 +20,7 @@ def convert_action_to(action, convert_to):
             fr, to = pos
         return fr, to, move
     elif convert_to == "referee":
-        if action == None:
+        if action is None:
             return 'PASS', None
         fr, to, move = action
         if move == 'EXIT':
@@ -37,7 +34,7 @@ class AbstractPlayer(abc.ABC):
 
     start_config = {
         "red": [
-            (-3, 0),
+
             (-3, 1),
             (-3, 2),
             (-3, 3)
@@ -72,6 +69,7 @@ class AbstractPlayer(abc.ABC):
         self.player = player
         self.search_algorithm = search_algorithm
 
+        # Initialise board if not given
         if initial_state is None:
             pos_to_piece = {}
             for color in self.start_config:
@@ -79,6 +77,7 @@ class AbstractPlayer(abc.ABC):
                     pos_to_piece[pos] = color
             initial_state = State(pos_to_piece, "red")
 
+        # FIXME ???? Isn't state already red?
         state = initial_state.state_to_red()
 
         # Colour of the game is different from the color of the state
