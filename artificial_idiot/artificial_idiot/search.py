@@ -15,10 +15,11 @@ class Search(abc.ABC):
     Generic search algorithm
     """
     @abc.abstractmethod
-    def search(self, game, **kwargs):
+    def search(self, game, state, **kwargs):
         """
         Return the best action
         :param game: a class that describes the game
+        :param state: state of the board
         :return: an action
         """
         raise NotImplementedError
@@ -50,18 +51,18 @@ class MaxN(Search):
             v.append(self._eval(state))
         return v
 
-    def search(self, game, depth=1, **kwargs):
+    def search(self, game, state, depth=1, **kwargs):
         # cut off test
-        if self._cut_off_test(game.state, depth=depth):
-            return (self._evaluate(game.state), None)
-        player = game.state.player
+        if self._cut_off_test(state, depth=depth):
+            return (self._evaluate(state), None)
+        player = state.player
         # initialize utility to be the worst possible
         v_max = [-inf] * self._n
         a_best = None
         # try all actions
-        for a in game.actions(game.state):
-            print(game.state.colour, a)
-            v, _ = self.search(game, depth=depth+1)
+        for a in game.actions(state):
+            print(state.colour, a)
+            v, _ = self.search(game, game.result(state, a), depth=depth+1)
             print(v, _)
             # found a better utility
             if v[player] > v_max[player]:
@@ -86,7 +87,7 @@ class RandomMove(Search):
 if __name__ == '__main__':
     from artificial_idiot.evaluator import *
     from artificial_idiot.cutoff import DepthLimitCutoff
-    from artificial_idiot.problem import Game
+    from artificial_idiot.game import Game
     from artificial_idiot.state import State
     from artificial_idiot.util.json_parser import JsonParser
     import json
@@ -97,7 +98,7 @@ if __name__ == '__main__':
         evaluator = MyEvaluator()
         cutoff = DepthLimitCutoff(max_depth=2)
         search = MaxN(evaluator, cutoff, n_player=3)
-        print(search.search(game))
+        print(search.search(game, game.state))
 
     test_MaxN()
 

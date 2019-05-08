@@ -75,6 +75,12 @@ Distance to exit
 
 
 
+## Ordering
+
+1. Exit
+2. Jump
+3. Move
+
 
 
 ## Test states

@@ -2,7 +2,7 @@ import abc
 from artificial_idiot.util.json_parser import JsonParser
 from artificial_idiot import evaluator
 from artificial_idiot.state import State
-from artificial_idiot.problem import Game
+from artificial_idiot.game import Game
 from artificial_idiot.search import RandomMove
 from artificial_idiot.util.mycopy import deepcopy
 import json

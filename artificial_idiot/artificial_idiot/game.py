@@ -17,7 +17,7 @@ class Problem(abc.ABC):
         state, if there is a unique goal. Your subclass's constructor can add
         other arguments.
         """
-        self.state = state
+        self.initial_state = state
         self.goal = goal
 
     @abc.abstractmethod
@@ -50,6 +50,7 @@ class Problem(abc.ABC):
             return is_in(state, self.goal)
         else:
             return state == self.goal
+
 
     def path_cost(self, c, state1, action, state2):
         """
@@ -90,9 +91,9 @@ class Game(BoardProblem):
     static variables are defined in BoardProblem class
     """
 
-    def __init__(self, color, state):
+    def __init__(self, colour, state):
         super().__init__(state)
-        self.color = color
+        self.colour = colour
 
     @classmethod
     def actions(cls, state):
@@ -117,6 +118,7 @@ class Game(BoardProblem):
             if (q, r) in exit_ready_pos:
                 yield ((q, r), None, "EXIT")
 
+            # jump
             for move in cls._move:
                 i, j = move
                 move_pos = (q + i, r + j)
@@ -124,12 +126,21 @@ class Game(BoardProblem):
                 # If that direction is possible to move
                 if not state.inboard(move_pos):
                     continue
+                # Jump (still need to check inboard)
+                elif state.occupied(jump_pos) and \
+                        not state.occupied(move_pos) and state.inboard(jump_pos):
+                    yield ((q, r), jump_pos, "JUMP")
+
+            # move
+            for move in cls._move:
+                i, j = move
+                move_pos = (q + i, r + j)
+                # If that direction is possible to move
+                if not state.inboard(move_pos):
+                    continue
                 # Move (No need to check inboard)
                 elif state.occupied(move_pos):
                     yield ((q, r), move_pos, "MOVE")
-                # Jump (still need to check inboard)
-                elif state.occupied(jump_pos) and state.inboard(jump_pos):
-                    yield ((q, r), jump_pos, "JUMP")
 
     def result(self, state, action):
         """
@@ -172,10 +183,10 @@ class Game(BoardProblem):
         :param colour: player who made the move
         :param action: an action
         """
-        self.state = self.result(self.state, action)
+        self.initial_state = self.result(self.state, action)
 
     def __str__(self):
-        return str(self.state)
+        return str(self.initial_state)
 
 
 if __name__ == "__main__":
@@ -198,21 +209,22 @@ if __name__ == "__main__":
         f.close()
 
         print(game)
-        game.state = game.result(game.state, ((-3, 0), (-1,-2), "JUMP"))
-        assert(dict(game.state.pos_to_piece) == pos_dict_ans)
-        assert(game.color == player_ans)
-        print(game.state.completed)
-        assert(game.state.completed == completed_ans)
+        state = game.initial_state
+        state = game.result(state, ((-3, 0), (-1,-2), "JUMP"))
+        assert(dict(state.pos_to_piece) == pos_dict_ans)
+        assert(game.colour == player_ans)
+        print(state.completed)
+        assert(state.completed == completed_ans)
         print(game)
 
     def test_exit():
         f = open("../tests/min_branch_factor.json")
         pos_dict, colour, completed = JsonParser(json.load(f)).parse()
         game = Game(colour, State(pos_dict, colour, completed))
-        print(game.state)
-        print ([i for i in game.actions(game.state)])
+        print(game.initial_state)
+        assert([i for i in game.actions(game.initial_state)] == [((3, -3), None, 'EXIT'), ((3, -3), (3, -2), 'MOVE'), ((3, -3), (2, -2), 'MOVE'), ((3, -3), (2, -3), 'MOVE')])
 
-    # test_jump()
+    test_jump()
     print("="*10)
     test_exit()
 
