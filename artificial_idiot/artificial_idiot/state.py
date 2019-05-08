@@ -61,6 +61,10 @@ class State:
         return copy(cls._code_map)
 
     @property
+    def player(self):
+        return self._code_map[self._colour]
+
+    @property
     def piece_to_pos(self):
         # Need to deepcopy this for there are mutable lists
         return deepcopy(self._piece_to_pos)

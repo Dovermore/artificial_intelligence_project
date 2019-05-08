@@ -138,6 +138,7 @@ class Game(BoardProblem):
         action in the given state by a given actor. The action must be one of
         self.actions(state).
         """
+        # TODO next color is a rule that should belong in the Game class
         next_colour = State.next_colour(state.colour)
         completed = state.completed
 

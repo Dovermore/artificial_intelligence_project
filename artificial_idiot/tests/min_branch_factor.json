@@ -1,0 +1,18 @@
+{
+    "colour": "red",
+    "red": [
+        [3, 3]
+    ],
+    "green": [
+        [0, 3]
+    ],
+    "blue": [
+        [0, -3]
+    ],
+    "completed" : {
+        "red" : 3,
+        "green" : 3,
+        "blue" : 3
+    }
+}
+

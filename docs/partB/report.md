@@ -42,3 +42,26 @@ Since distinct move will result in distinct states, the random agent will only n
 
 1. Test pass 
 2. Test all possible valid moves
+
+
+
+
+
+## Max N Agent
+
+What is a good depth to choose? 
+
+In the first iteration we limited the depth of the search to 5. 
+
+
+
+
+
+
+
+## Test states
+
+#### min_branch_factor.json
+
+* Each player has 1 piece at the corner of the board so the branching factor for each player is the minimum.
+* The remaining pieces for the players are in their appropriate exit position. This means a smart agent should try to exit immediately 
