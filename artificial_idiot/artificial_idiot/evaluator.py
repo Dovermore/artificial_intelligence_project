@@ -26,17 +26,23 @@ class Evaluator(abc.ABC):
 
 
 class DummyEvaluator(Evaluator):
-
+    """
+    An evaluator that only consider amount of exited pieces
+    """
     def __init__(self, *args, **kwargs):
-        """
-        No setup
-        """
         super().__init__(*args, **kwargs)
         pass
 
     def __call__(self, state, *args, **kwargs):
-        """
-        This is dummy evaluator, will always return 0 for all states
-        """
-        return 0
+        return state.completed[state.colour]
 
+
+if __name__ == '__main__':
+    from artificial_idiot.state import State
+    import json
+    from artificial_idiot.util.json_parser import JsonParser
+    f = open("../tests/min_branch_factor.json")
+    pos_dict, colour, completed = JsonParser(json.load(f)).parse()
+    state = State(pos_dict, colour, completed)
+    evaluator = DummyEvaluator()
+    print(evaluator(state))

@@ -162,14 +162,40 @@ class RandomAgent(AbstractPlayer):
         return self._game.state
 
 
+class MaxNAgent(AbstractPlayer):
+    def __init__(self, player):
+        super().__init__(player, search_algorithm=RandomMove(10))
+        pass
+
+    def action(self):
+        player_action = self.search_algorithm.search(self._game)
+        return convert_action_to(player_action, 'referee')
+
+    def update(self, colour, action):
+        player_action = convert_action_to(action, 'player')
+        self._game.update(colour, player_action)
+        print("# PLAYER", self.player)
+        print(self._game.state)
+
+    @property
+    def state(self):
+        # TODO DEEPCOPY
+        return self._game.state
+
+
+
 if __name__ == "__main__":
     # TODO handle test cases where player have to pass
     #  or opponent passes
-    player = RandomAgent(player="red")
-    assert(player.action() == ('MOVE', ((-3, 2), (-2, 1))))
-    print(player.state)
-    action = ("MOVE", ((0, -3),(0, -2)))
-    player.update("green", action)
-    print(player.state)
-    assert(player.action() == ('MOVE', ((1, -3), (1, -2))))
-    player.update("blue", ("PASS", None))
+    def random_agent_test():
+        player = RandomAgent(player="red")
+        assert (player.action() == ('MOVE', ((-3, 2), (-2, 1))))
+        print(player.state)
+        action = ("MOVE", ((0, -3), (0, -2)))
+        player.update("green", action)
+        print(player.state)
+        assert (player.action() == ('MOVE', ((1, -3), (1, -2))))
+        player.update("blue", ("PASS", None))
+
+    def max_n_agent_test():
+        pass
