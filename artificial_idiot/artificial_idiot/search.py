@@ -54,8 +54,8 @@ class MaxN(Search):
     def search(self, game, state, depth=1, **kwargs):
         # cut off test
         if self._cut_off_test(state, depth=depth):
-            print(state)
-            print('evaluation', self._evaluate(state))
+            # print(state)
+            # print('evaluation', self._evaluate(state))
             return (self._evaluate(state), None)
         player = state.code_map[state.colour]
         # initialize utility to be the worst possible
@@ -63,11 +63,8 @@ class MaxN(Search):
         a_best = None
         # try all actions
         for a in game.actions(state):
-            print(state.colour, a)
             v, _ = self.search(game, game.result(state, a), depth=depth+1)
-            print(v, _)
             # found a better utility
-            print("test", v, v_max)
             if v[player] > v_max[player]:
                 v_max = v
                 a_best = a
@@ -80,9 +77,8 @@ class RandomMove(Search):
         self.seed = seed
         random.seed(seed)
 
-    def search(self, game, **kwargs):
-        actions = [a for a in game.actions(game.state)]
-        print(actions)
+    def search(self, game, state, **kwargs):
+        actions = [a for a in game.actions(game.initial_state)]
         i = random.randrange(len(actions))
         return actions[i]
 

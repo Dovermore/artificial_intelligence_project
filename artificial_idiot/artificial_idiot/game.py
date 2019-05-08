@@ -183,7 +183,7 @@ class Game(BoardProblem):
         :param colour: player who made the move
         :param action: an action
         """
-        self.initial_state = self.result(self.state, action)
+        self.initial_state = self.result(self.initial_state, action)
 
     def __str__(self):
         return str(self.initial_state)
