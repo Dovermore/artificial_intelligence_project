@@ -69,17 +69,7 @@ class AbstractPlayer(abc.ABC):
         self.player = player
         self.search_algorithm = search_algorithm
 
-        # Initialise board if not given
-        if initial_state is None:
-            pos_to_piece = {}
-            for color in self.start_config:
-                for pos in self.start_config[color]:
-                    pos_to_piece[pos] = color
-            initial_state = State(pos_to_piece, "red")
-
-        # FIXME ???? Isn't state already red?
-        state = initial_state.state_to_red()
-
+        state = State
         # Colour of the game is different from the color of the state
         self._game = Game(player, state)
 

@@ -111,7 +111,7 @@ class Game(BoardProblem):
         """
         # for each piece try all possible moves
         # Not using deepcopy here because no need to
-        for q, r in state._piece_to_pos[state.colour]:
+        for q, r in state.piece_to_pos[state.colour]:
             exit_ready_pos = cls._exit_positions[state.colour]
             # exit
             if (q, r) in exit_ready_pos:

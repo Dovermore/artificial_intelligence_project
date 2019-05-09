@@ -1,9 +1,3 @@
-# ignore Chuan's file
-*.ipynb
-test.py
-tempCodeRunnerFile.py
-
-
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

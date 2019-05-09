@@ -23,6 +23,7 @@ class Search(abc.ABC):
         """
         raise NotImplementedError
 
+
 class MaxN(Search):
     """
     Generic Maxn algorithm

@@ -21,15 +21,6 @@ class State:
                   "blue": "🔵", "block": "⬛"}
     _rev_code_map = {value: key for key, value in _code_map.items()}
 
-    @staticmethod
-    def inboard(pos):
-        r, q = pos
-        return abs(r) <= 3 and abs(q) <= 3 and abs(r+q) <= 3
-
-    @staticmethod
-    def gety(r, q):
-        return -(r + q)
-
     def __init__(self, pos_to_piece, colour, completed=None):
         """
         Captures all the information about the state
@@ -41,9 +32,7 @@ class State:
         self._colour = colour
         # Map from positions to pieces
         self._pos_to_piece = pos_to_piece
-        self._piece_to_pos = {col: [] for col in self._code_map}
-        for location, colour in self._pos_to_piece.items():
-            self._piece_to_pos[colour].append(location)
+        self._piece_to_pos = None
 
         if completed is None:
             completed = {col: 0 for col in self._code_map}
@@ -64,10 +53,24 @@ class State:
     def player(self):
         return self._code_map[self._colour]
 
+    # @property
+    # def piece_to_pos(self):
+    #     # Only compute this when needed
+    #     if self._piece_to_pos is None:
+    #         self._piece_to_pos = {col: [] for col in self._code_map}
+    #         for location, colour in self._pos_to_piece.items():
+    #             self._piece_to_pos[colour].append(location)
+    #     # Need to deepcopy this for there are mutable lists
+    #     return deepcopy(self._piece_to_pos)
+
     @property
     def piece_to_pos(self):
-        # Need to deepcopy this for there are mutable lists
-        return deepcopy(self._piece_to_pos)
+        # One time computation, this one might be faster.
+        # As this is not used frequently
+        piece_to_pos = {col: [] for col in self._code_map}
+        for location, colour in self._pos_to_piece.items():
+            piece_to_pos[colour].append(location)
+        return piece_to_pos
 
     @property
     def pos_to_piece(self):
@@ -188,6 +191,15 @@ class State:
     def __lt__(self, other):
         # There is no preference between states with same path cost
         return True
+
+    @staticmethod
+    def inboard(pos):
+        r, q = pos
+        return abs(r) <= 3 and abs(q) <= 3 and abs(r+q) <= 3
+
+    @staticmethod
+    def gety(r, q):
+        return -(r + q)
 
 
 if __name__ == '__main__':
