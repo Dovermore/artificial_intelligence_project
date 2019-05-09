@@ -17,7 +17,8 @@ def convert_action_to(action, convert_to):
     if convert_to == "player":
         move, pos = action
         if move == 'PASS':
-            return None
+            fr = None
+            to = None
         elif move == 'EXIT':
             fr = pos
             to = None
@@ -25,11 +26,11 @@ def convert_action_to(action, convert_to):
             fr, to = pos
         return fr, to, move
     elif convert_to == "referee":
-        if action is None:
-            return 'PASS', None
         fr, to, move = action
         if move == 'EXIT':
             return 'EXIT', fr
+        if move == 'PASS':
+            return 'PASS', None
         return move, (fr, to)
     else:
         raise ValueError(convert_to + "mode is not valid")
@@ -70,7 +71,7 @@ class AbstractPlayer(abc.ABC):
         program will play as (Red, Green or Blue). The value will be one of the
         strings "red", "green", or "blue" correspondingly.
 
-        You can parse any valid inital state to test the Agent
+        You can parse any valid board state to test the Agent
         However the Agent assumes the states are valid
         """
         self.evaluator = evaluator
@@ -165,8 +166,6 @@ class RandomAgent(AbstractPlayer):
     def update(self, colour, action):
         player_action = convert_action_to(action, 'player')
         self._game.update(colour, player_action)
-        print("# I am player: ", self.player)
-        print(self._game.initial_state)
 
 
 class MaxNAgent(AbstractPlayer):
@@ -176,15 +175,12 @@ class MaxNAgent(AbstractPlayer):
         pass
 
     def action(self):
-        print(self._game.initial_state)
         _, player_action = self.search_algorithm.search(self._game, self._game.initial_state)
         return convert_action_to(player_action, 'referee')
 
     def update(self, colour, action):
         player_action = convert_action_to(action, 'player')
         self._game.update(colour, player_action)
-        print("# I am player: ", self.player)
-        print(self._game.initial_state)
 
 
 class Player(MaxNAgent):
@@ -217,7 +213,7 @@ if __name__ == "__main__":
         player.update("blue", ("PASS", None))
 
     def max_n_agent_test():
-        f = open("../tests/simple.json")
+        f = open("../tests/bug1.json")
         pos_dict, colour, completed = JsonParser(json.load(f)).parse()
         initial_state = State(pos_dict, colour, completed)
         evaluator = MyEvaluator()
@@ -226,5 +222,14 @@ if __name__ == "__main__":
         print(player.state)
         print(player.action())
 
+    def random_agent_pass_test():
+        f = open("../tests/bug1.json")
+        pos_dict, colour, completed = JsonParser(json.load(f)).parse()
+        initial_state = State(pos_dict, colour, completed)
+        player = RandomAgent(player="red", initial_state=initial_state, seed=10)
+        print(player.state)
+        print(player.action())
+
     random_agent_test()
     max_n_agent_test()
+    random_agent_pass_test()

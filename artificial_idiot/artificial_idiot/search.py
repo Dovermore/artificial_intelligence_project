@@ -54,8 +54,6 @@ class MaxN(Search):
     def search(self, game, state, depth=1, **kwargs):
         # cut off test
         if self._cut_off_test(state, depth=depth):
-            # print(state)
-            # print('evaluation', self._evaluate(state))
             return (self._evaluate(state), None)
         player = state.code_map[state.colour]
         # initialize utility to be the worst possible

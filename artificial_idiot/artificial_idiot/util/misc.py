@@ -102,7 +102,7 @@ def print_board(board_dict, message="", debug=False, printed=True, **kwargs):
     cells = []
     for qr in [(q, r) for q in ran for r in ran if -q-r in ran]:
         if qr in board_dict:
-            cell = str(board_dict[qr]).center(5)
+            cell = str(board_dict[qr]).center(4)
         else:
             cell = "     " # 5 spaces will fill a cell
         cells.append(cell)

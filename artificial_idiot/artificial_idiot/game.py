@@ -112,10 +112,14 @@ class Game(BoardProblem):
         """
         # for each piece try all possible moves
         # Not using deepcopy here because no need to
+
+        action = False
+
         for q, r in state._piece_to_pos[state.colour]:
             exit_ready_pos = cls._exit_positions[state.colour]
             # exit
             if (q, r) in exit_ready_pos:
+                action = True
                 yield ((q, r), None, "EXIT")
 
             # jump
@@ -129,6 +133,7 @@ class Game(BoardProblem):
                 # Jump (still need to check inboard)
                 elif state.occupied(jump_pos) and \
                         not state.occupied(move_pos) and state.inboard(jump_pos):
+                    action = True
                     yield ((q, r), jump_pos, "JUMP")
 
             # move
@@ -140,7 +145,13 @@ class Game(BoardProblem):
                     continue
                 # Move (No need to check inboard)
                 elif state.occupied(move_pos):
+                    action = True
                     yield ((q, r), move_pos, "MOVE")
+
+        # no move possible return None
+        if not action:
+            yield (None, None, "PASS")
+
 
     def result(self, state, action):
         """
@@ -152,12 +163,11 @@ class Game(BoardProblem):
         next_colour = State.next_colour(state.colour)
         completed = state.completed.copy()
 
-        # if action is None than the state does not change
-        if action is None:
-            return State(state.pos_to_piece, next_colour, state.completed)
-
         fr, to, mv = action
         pos_to_piece = state.pos_to_piece
+
+        if mv == "PASS":
+            return State(state.pos_to_piece, next_colour, state.completed)
 
         # update dictionary
         colour = pos_to_piece.pop(fr)
