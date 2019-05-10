@@ -44,7 +44,6 @@ class AbstractPlayer(abc.ABC):
         You can parse any valid board state to test the Agent
         However the Agent assumes the states are valid
         """
-        self.evaluator = evaluator
         self.player = player
         self.search_algorithm = search_algorithm
 
@@ -68,7 +67,7 @@ class AbstractPlayer(abc.ABC):
         state = State(self.start_config, colour=self
                       .referee_to_player_mapping["red"])
         # Colour of the game is different from the color of the state
-        self.game = Game("red", state)
+        self.game = Game("red", state, evaluator)
 
     @abc.abstractmethod
     def action(self):
@@ -104,15 +103,6 @@ class AbstractPlayer(abc.ABC):
         the action/pass against the game rules).
         """
         pass
-
-    def evaluate(self, state, *args, **kwargs):
-        """
-        This method is the evaluation function for a state. The method should
-        always evaluate based on the perspective of a red player
-        :param state: The state to compute evaluation with
-        :return: The evaluated value of a state
-        """
-        return self.evaluator(state, *args, **kwargs)
 
     def convert_action(self, action, convert_to):
         """
