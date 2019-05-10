@@ -3,10 +3,11 @@ from artificial_idiot.search import RandomMove, MaxN
 from artificial_idiot.cutoff import DepthLimitCutoff
 from artificial_idiot.evaluator import *
 from artificial_idiot.util.json_parser import JsonParser
+from artificial_idiot.state import State
 import json
 
 
-player_evaluator = evaluator.DummyEvaluator()
+player_evaluator = DummyEvaluator()
 
 
 def convert_action_to(action, convert_to):

@@ -48,9 +48,9 @@ class State:
     def rev_code_map(cls):
         return copy(cls._rev_code_map)
 
-    @property
-    def rev_code_map(self):
-        return self._rev_code_map
+    @classproperty
+    def rev_code_map(cls):
+        return cls._rev_code_map
 
     # @property
     # def piece_to_pos(self):

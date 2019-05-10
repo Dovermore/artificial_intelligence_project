@@ -128,7 +128,7 @@ class Game(BoardProblem):
                 # If that direction is possible to move
                 if not state.inboard(move_pos):
                     move_pos = (q + i, r + j)
-                    move_actions.append((q, r), move_pos, "MOVE")
+                    move_actions.append(((q, r), move_pos, "MOVE"))
                 else:
                     continue
                 # Jump (still need to check inboard)
