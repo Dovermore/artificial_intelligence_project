@@ -49,8 +49,8 @@ class State:
         return copy(cls._rev_code_map)
 
     @property
-    def player(self):
-        return self._code_map[self._colour]
+    def rev_code_map(self):
+        return self._rev_code_map
 
     # @property
     # def piece_to_pos(self):

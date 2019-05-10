@@ -55,7 +55,31 @@ In the first iteration we limited the depth of the search to 5.
 
 
 
+## Evaluator
 
+Factors that have positive correlation with winning. Weighting will be asigned using machine learning
+
+Number of pieces:
+
+* Player jump over other player when possible
+* Player will avoid other players
+
+Number of exited pieces
+
+* Player would want to exit as soon as possible
+
+Distance to exit
+
+* Player move closer to goal
+* Pieces will jump over each other
+
+
+
+## Ordering
+
+1. Exit
+2. Jump
+3. Move
 
 
 
@@ -63,5 +87,9 @@ In the first iteration we limited the depth of the search to 5.
 
 #### min_branch_factor.json
 
-* Each player has 1 piece at the corner of the board so the branching factor for each player is the minimum.
-* The remaining pieces for the players are in their appropriate exit position. This means a smart agent should try to exit immediately 
+* Each player has 1 piece at the corner of the board so the branching factor for each player is the minimum 3. 
+* Each piece can only  MOVE and is not in the correct position to EXIT.
+
+### Simple
+
+* 1 piece for each players are in their appropriate exit position. This means a smart agent should try to exit immediately.

@@ -1,8 +1,10 @@
-import abc
-from artificial_idiot import evaluator
-from artificial_idiot.state import State
-from artificial_idiot.problem import Game
-from artificial_idiot.search import RandomMove
+from artificial_idiot.game import Game
+from artificial_idiot.search import RandomMove, MaxN
+from artificial_idiot.cutoff import DepthLimitCutoff
+from artificial_idiot.evaluator import *
+from artificial_idiot.util.json_parser import JsonParser
+import json
+
 
 player_evaluator = evaluator.DummyEvaluator()
 
@@ -12,7 +14,8 @@ def convert_action_to(action, convert_to):
     if convert_to == "player":
         move, pos = action
         if move == 'PASS':
-            return None
+            fr = None
+            to = None
         elif move == 'EXIT':
             fr = pos
             to = None
@@ -20,11 +23,11 @@ def convert_action_to(action, convert_to):
             fr, to = pos
         return fr, to, move
     elif convert_to == "referee":
-        if action is None:
-            return 'PASS', None
         fr, to, move = action
         if move == 'EXIT':
             return 'EXIT', fr
+        if move == 'PASS':
+            return 'PASS', None
         return move, (fr, to)
     else:
         raise ValueError(convert_to + "mode is not valid")
@@ -58,6 +61,9 @@ class AbstractPlayer(abc.ABC):
         The parameter colour will be a string representing the player your
         program will play as (Red, Green or Blue). The value will be one of the
         strings "red", "green", or "blue" correspondingly.
+
+        You can parse any valid board state to test the Agent
+        However the Agent assumes the states are valid
         """
         self.evaluator = evaluator
         self.player = player
@@ -152,6 +158,12 @@ class AbstractPlayer(abc.ABC):
         return new_fr, new_to, move
 
 
+    @property
+    def state(self):
+        # TODO DEEPCOPY to be safe
+        return self._game.initial_state
+
+
 class ArtificialIdiot(AbstractPlayer):
 
     def __init__(self, *args, **kwargs):
@@ -166,60 +178,81 @@ class ArtificialIdiot(AbstractPlayer):
 
 
 class RandomAgent(AbstractPlayer):
-    def __init__(self, player):
-        super().__init__(player, search_algorithm=RandomMove(10))
+    def __init__(self, player, initial_state=None, seed=10):
+        super().__init__(player, search_algorithm=RandomMove(seed), initial_state=initial_state)
         pass
 
     def action(self):
-        player_action = self.search_algorithm.search(self.game)
+        player_action = self.search_algorithm.search(self._game, self._game.initial_state)
         return convert_action_to(player_action, 'referee')
 
     def update(self, colour, action):
         player_action = convert_action_to(action, 'player')
-        self.game.update(colour, player_action)
-        print("# PLAYER", self.player)
-        print(self.game.state)
-
-    @property
-    def state(self):
-        # TODO DEEPCOPY
-        return self.game.state
+        self._game.update(colour, player_action)
 
 
 class MaxNAgent(AbstractPlayer):
-    def __init__(self, player):
-        super().__init__(player, search_algorithm=RandomMove(10))
+    def __init__(self, player, initial_state, evaluator, cutoff):
+        search_algorithm = MaxN(evaluator, cutoff, n_player=3)
+        super().__init__(player, search_algorithm=search_algorithm, initial_state=initial_state)
         pass
 
     def action(self):
-        player_action = self.search_algorithm.search(self.game)
+        _, player_action = self.search_algorithm.search(self._game, self._game.initial_state)
         return convert_action_to(player_action, 'referee')
 
     def update(self, colour, action):
         player_action = convert_action_to(action, 'player')
-        self.game.update(colour, player_action)
-        print("# PLAYER", self.player)
-        print(self.game.state)
+        self._game.update(colour, player_action)
 
-    @property
-    def state(self):
-        # TODO DEEPCOPY
-        return self.game.state
 
+class Player(MaxNAgent):
+    """
+    A wrapper class for referee that uses interface given by referee
+    Here we use best hyperparameter
+    """
+    def __init__(self, player):
+        evaluator = MyEvaluator()
+        cutoff = DepthLimitCutoff(max_depth=3)
+        super().__init__(player, cutoff=cutoff, evaluator=evaluator, initial_state=None)
+        pass
 
 
 if __name__ == "__main__":
     # TODO handle test cases where player have to pass
     #  or opponent passes
+
+
     def random_agent_test():
-        player = RandomAgent(player="red")
-        assert (player.action() == ('MOVE', ((-3, 2), (-2, 1))))
-        print(player.state)
-        action = ("MOVE", ((0, -3), (0, -2)))
-        player.update("green", action)
-        print(player.state)
-        assert (player.action() == ('MOVE', ((1, -3), (1, -2))))
+        player = RandomAgent(player="red", initial_state=None, seed=10)
+        red_move =('MOVE', ((-3, 0), (-2, -1)))
+        green_move = ("MOVE", ((0, -3), (0, -2)))
+        blue_move = ('MOVE', ((3,0), (2,0)))
+        assert (player.action() == red_move)
+        player.update("red", red_move)
+        player.update("green", green_move)
+        player.update("blue", blue_move)
+        assert (player.action() == ('MOVE', ((-3, 3), (-2, 2))))
         player.update("blue", ("PASS", None))
 
     def max_n_agent_test():
-        pass
+        f = open("../tests/bug1.json")
+        pos_dict, colour, completed = JsonParser(json.load(f)).parse()
+        initial_state = State(pos_dict, colour, completed)
+        evaluator = MyEvaluator()
+        cutoff = DepthLimitCutoff(max_depth=3)
+        player = MaxNAgent(player="red", initial_state=initial_state, evaluator=evaluator, cutoff=cutoff)
+        print(player.state)
+        print(player.action())
+
+    def random_agent_pass_test():
+        f = open("../tests/bug1.json")
+        pos_dict, colour, completed = JsonParser(json.load(f)).parse()
+        initial_state = State(pos_dict, colour, completed)
+        player = RandomAgent(player="red", initial_state=initial_state, seed=10)
+        print(player.state)
+        print(player.action())
+
+    random_agent_test()
+    max_n_agent_test()
+    random_agent_pass_test()

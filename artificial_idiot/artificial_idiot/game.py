@@ -110,44 +110,37 @@ class Game(BoardProblem):
         Yields:
             action (tuple) -- encoded as ((from position), (to position))
         """
+        action = False
         # for each piece try all possible moves
         # Not using deepcopy here because no need to
-        action = False
-        for q, r in state._piece_to_pos[state.colour]:
+        for q, r in state.piece_to_pos[state.colour]:
             exit_ready_pos = cls._exit_positions[state.colour]
             # exit
             if (q, r) in exit_ready_pos:
                 action = True
                 yield ((q, r), None, "EXIT")
 
-            # jump
+            move_actions = []
             for move in cls._move:
                 i, j = move
                 move_pos = (q + i, r + j)
                 jump_pos = (q + i * 2, r + j * 2)
                 # If that direction is possible to move
                 if not state.inboard(move_pos):
+                    move_pos = (q + i, r + j)
+                    move_actions.append((q, r), move_pos, "MOVE")
+                else:
                     continue
                 # Jump (still need to check inboard)
-                elif state.occupied(jump_pos) and \
+                if state.occupied(jump_pos) and \
                         not state.occupied(move_pos) and state.inboard(jump_pos):
                     action = True
                     yield ((q, r), jump_pos, "JUMP")
-
-            # move
-            for move in cls._move:
-                i, j = move
-                move_pos = (q + i, r + j)
-                # If that direction is possible to move
-                if not state.inboard(move_pos):
-                    continue
-                # Move (No need to check inboard)
-                elif state.occupied(move_pos):
-                    action = True
-                    yield ((q, r), move_pos, "MOVE")
-
         # no move possible return None
-        if not action:
+        if move_actions:
+            for action in move_actions:
+                yield action
+        else:
             yield (None, None, "PASS")
 
 

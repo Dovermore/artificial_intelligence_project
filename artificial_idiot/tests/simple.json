@@ -1,13 +1,13 @@
 {
     "colour": "red",
     "red": [
-        [-3, 0]
-    ],
-    "green": [
         [3, -3]
     ],
-    "blue": [
+    "green": [
         [0, 3]
+    ],
+    "blue": [
+        [0, -3]
     ],
     "completed" : {
         "red" : 3,
