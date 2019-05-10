@@ -161,7 +161,7 @@ class AbstractPlayer(abc.ABC):
     @property
     def state(self):
         # TODO DEEPCOPY to be safe
-        return self._game.initial_state
+        return self.game.initial_state
 
 
 class ArtificialIdiot(AbstractPlayer):
@@ -183,12 +183,12 @@ class RandomAgent(AbstractPlayer):
         pass
 
     def action(self):
-        player_action = self.search_algorithm.search(self._game, self._game.initial_state)
+        player_action = self.search_algorithm.search(self.game, self.game.initial_state)
         return convert_action_to(player_action, 'referee')
 
     def update(self, colour, action):
         player_action = convert_action_to(action, 'player')
-        self._game.update(colour, player_action)
+        self.game.update(colour, player_action)
 
 
 class MaxNAgent(AbstractPlayer):
@@ -198,12 +198,12 @@ class MaxNAgent(AbstractPlayer):
         pass
 
     def action(self):
-        _, player_action = self.search_algorithm.search(self._game, self._game.initial_state)
+        _, player_action = self.search_algorithm.search(self.game, self.game.initial_state)
         return convert_action_to(player_action, 'referee')
 
     def update(self, colour, action):
         player_action = convert_action_to(action, 'player')
-        self._game.update(colour, player_action)
+        self.game.update(colour, player_action)
 
 
 class Player(MaxNAgent):
