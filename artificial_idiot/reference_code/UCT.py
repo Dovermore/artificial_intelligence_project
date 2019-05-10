@@ -1,3 +1,7 @@
+# ATTRIBUTION
+# http://mcts.ai/code/python.html
+
+
 # This is a very simple implementation of the UCT Monte Carlo Tree Search algorithm in Python 2.7.
 # The function UCT(rootstate, itermax, verbose = False) is towards the bottom of the code.
 # It aims to have the clearest and simplest possible code, and for the sake of clarity, the code
@@ -324,9 +328,11 @@ class Node:
 
 
 def UCT(rootstate, itermax, verbose = False):
-    """ Conduct a UCT search for itermax iterations starting from rootstate.
-        Return the best move from the rootstate.
-        Assumes 2 alternating players (player 1 starts), with game results in the range [0.0, 1.0]."""
+    """
+    Conduct a UCT search for itermax iterations starting from rootstate.
+    Return the best move from the rootstate.
+    Assumes 2 alternating players (player 1 starts), with game results in the range [0.0, 1.0].
+    """
 
     rootnode = Node(state = rootstate)
 
