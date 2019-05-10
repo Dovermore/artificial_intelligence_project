@@ -34,8 +34,8 @@ class State:
             completed = {col: 0 for col in self._code_map}
         self.completed = completed
 
-        self._frozen = frozenset(self._pos_to_piece.keys())
-        self._hash = hash(self._frozen)
+        self.frozen = frozenset(self._pos_to_piece.keys())
+        self._hash = hash(self.frozen)
 
     def occupied(self, pos):
         return pos not in self._pos_to_piece
@@ -167,7 +167,8 @@ class State:
             kwargs["message"] += msg
         else:
             kwargs["message"] = msg
-        return print_board(pos_to_piece, **kwargs, printed=False) + "\n# Completed: " + str(self.completed)
+        return print_board(pos_to_piece, **kwargs, printed=False) + \
+            "\n# Completed: " + str(self.completed)
 
     def __hash__(self):
         return self._hash
@@ -176,9 +177,12 @@ class State:
         # First compare hash, if hash is successful, compare id
         # last compare the content for a fast comparison
         # (This is based on experimental result of comparison speed)
-        return (self._hash == hash(other) and
-                 self._frozen == other._frozen and
-                 self._colour == other._colour)
+        return (isinstance(other, State) and
+                self._hash == hash(other) and
+                self.frozen == other._frozen and
+                self._colour == other._colour and
+                self._pos_to_piece == other._pos_to_piece
+                )
 
     def __lt__(self, other):
         # There is no preference between states with same path cost

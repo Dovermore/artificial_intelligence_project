@@ -179,11 +179,13 @@ class ArtificialIdiot(AbstractPlayer):
 
 class RandomAgent(AbstractPlayer):
     def __init__(self, player, initial_state=None, seed=10):
-        super().__init__(player, search_algorithm=RandomMove(seed), initial_state=initial_state)
+        super().__init__(player, search_algorithm=RandomMove(seed),
+                         initial_state=initial_state)
         pass
 
     def action(self):
-        player_action = self.search_algorithm.search(self.game, self.game.initial_state)
+        player_action = self.search_algorithm.search(self.game,
+                                                     self.game.initial_state)
         return convert_action_to(player_action, 'referee')
 
     def update(self, colour, action):
@@ -194,11 +196,13 @@ class RandomAgent(AbstractPlayer):
 class MaxNAgent(AbstractPlayer):
     def __init__(self, player, initial_state, evaluator, cutoff):
         search_algorithm = MaxN(evaluator, cutoff, n_player=3)
-        super().__init__(player, search_algorithm=search_algorithm, initial_state=initial_state)
+        super().__init__(player, search_algorithm=search_algorithm,
+                         initial_state=initial_state)
         pass
 
     def action(self):
-        _, player_action = self.search_algorithm.search(self.game, self.game.initial_state)
+        _, player_action = self\
+            .search_algorithm.search(self.game, self.game.initial_state)
         return convert_action_to(player_action, 'referee')
 
     def update(self, colour, action):
@@ -214,7 +218,8 @@ class Player(MaxNAgent):
     def __init__(self, player):
         evaluator = MyEvaluator()
         cutoff = DepthLimitCutoff(max_depth=3)
-        super().__init__(player, cutoff=cutoff, evaluator=evaluator, initial_state=None)
+        super().__init__(player, cutoff=cutoff, evaluator=evaluator,
+                         initial_state=None)
         pass
 
 
@@ -241,7 +246,8 @@ if __name__ == "__main__":
         initial_state = State(pos_dict, colour, completed)
         evaluator = MyEvaluator()
         cutoff = DepthLimitCutoff(max_depth=3)
-        player = MaxNAgent(player="red", initial_state=initial_state, evaluator=evaluator, cutoff=cutoff)
+        player = MaxNAgent(player="red", initial_state=initial_state,
+                           evaluator=evaluator, cutoff=cutoff)
         print(player.state)
         print(player.action())
 
@@ -249,7 +255,8 @@ if __name__ == "__main__":
         f = open("../tests/bug1.json")
         pos_dict, colour, completed = JsonParser(json.load(f)).parse()
         initial_state = State(pos_dict, colour, completed)
-        player = RandomAgent(player="red", initial_state=initial_state, seed=10)
+        player = RandomAgent(player="red", initial_state=initial_state,
+                             seed=10)
         print(player.state)
         print(player.action())
 
