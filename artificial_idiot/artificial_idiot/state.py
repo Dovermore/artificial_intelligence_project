@@ -12,8 +12,7 @@ class State:
     (x1, y1) -> piece_code
     """
     _code_map = {"red": 0, "green": 1, "blue": 2}
-    _print_map = {"red": "🔴", "green": "✅",
-                  "blue": "🔵"}
+    _print_map = {"red": "🔴", "green": "✅", "blue": "🔵"}
     _rev_code_map = {value: key for key, value in _code_map.items()}
 
     def __init__(self, pos_to_piece, colour, completed=None):
