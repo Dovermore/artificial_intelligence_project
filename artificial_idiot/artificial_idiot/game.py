@@ -110,23 +110,20 @@ class Game(BoardProblem):
         Yields:
             action (tuple) -- encoded as ((from position), (to position))
         """
-        action = False
         # for each piece try all possible moves
         # Not using deepcopy here because no need to
+        move_actions = []
         for q, r in state.piece_to_pos[state.colour]:
             exit_ready_pos = cls._exit_positions[state.colour]
             # exit
             if (q, r) in exit_ready_pos:
-                action = True
                 yield ((q, r), None, "EXIT")
-
-            move_actions = []
             for move in cls._move:
                 i, j = move
                 move_pos = (q + i, r + j)
                 jump_pos = (q + i * 2, r + j * 2)
                 # If that direction is possible to move
-                if not state.inboard(move_pos):
+                if state.inboard(move_pos):
                     move_pos = (q + i, r + j)
                     move_actions.append(((q, r), move_pos, "MOVE"))
                 else:
@@ -134,7 +131,6 @@ class Game(BoardProblem):
                 # Jump (still need to check inboard)
                 if state.occupied(jump_pos) and \
                         not state.occupied(move_pos) and state.inboard(jump_pos):
-                    action = True
                     yield ((q, r), jump_pos, "JUMP")
         # no move possible return None
         if move_actions:

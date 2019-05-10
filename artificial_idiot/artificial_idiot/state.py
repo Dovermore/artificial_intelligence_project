@@ -94,6 +94,8 @@ class State:
 
     @classmethod
     def rotate_pos(cls, fr_color, to_color, pos):
+        if pos is None:
+            return None
         # grab distance between color
         f = cls._code_map[fr_color]
         t = cls._code_map[to_color]

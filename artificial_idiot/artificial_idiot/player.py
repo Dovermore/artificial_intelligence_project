@@ -10,29 +10,6 @@ import json
 player_evaluator = DummyEvaluator()
 
 
-def convert_action_to(action, convert_to):
-    # convert referee action encoding to player's encoding
-    if convert_to == "player":
-        move, pos = action
-        if move == 'PASS':
-            fr = None
-            to = None
-        elif move == 'EXIT':
-            fr = pos
-            to = None
-        else:
-            fr, to = pos
-        return fr, to, move
-    elif convert_to == "referee":
-        fr, to, move = action
-        if move == 'EXIT':
-            return 'EXIT', fr
-        if move == 'PASS':
-            return 'PASS', None
-        return move, (fr, to)
-    else:
-        raise ValueError(convert_to + "mode is not valid")
-
 
 class AbstractPlayer(abc.ABC):
 
@@ -136,6 +113,23 @@ class AbstractPlayer(abc.ABC):
         """
         return self.evaluator(state, *args, **kwargs)
 
+    def convert_action(self, action, convert_to):
+        """
+        Convert action format as well as perspective.
+        :param action: The action to convert
+        :param convert_to: The converted perspective
+        :return: Converted action
+        """
+        if convert_to == "player":
+            return self.convert_action_perspective(
+                self.convert_action_format(action, convert_to), convert_to)
+        elif convert_to == "referee":
+            return self.convert_action_format(
+                self.convert_action_perspective(action, convert_to),
+                convert_to)
+        else:
+            raise ValueError(convert_to + "mode is not valid")
+
     def convert_action_perspective(self, action, convert_to):
         """
         This further converts the converted format from convert_action_to
@@ -146,7 +140,7 @@ class AbstractPlayer(abc.ABC):
         """
         fr, to, move = action
         # No need for change if pass
-        if action == "pass":
+        if action == "PASS":
             return action
         if convert_to == "player":
             new_fr = State.rotate_pos(self.player, "red", fr)
@@ -157,6 +151,37 @@ class AbstractPlayer(abc.ABC):
         else:
             raise ValueError(convert_to + "mode is not valid")
         return new_fr, new_to, move
+
+    @staticmethod
+    def convert_action_format(action, convert_to):
+        """
+        Convert action from player/referee representation to the other
+        representation.
+        :param action: The action to convert
+        :param convert_to: The representation to convert to
+        :return:
+        """
+        # convert referee action encoding to player's encoding
+        if convert_to == "player":
+            move, pos = action
+            if move == 'PASS':
+                fr = None
+                to = None
+            elif move == 'EXIT':
+                fr = pos
+                to = None
+            else:
+                fr, to = pos
+            return fr, to, move
+        elif convert_to == "referee":
+            fr, to, move = action
+            if move == 'EXIT':
+                return 'EXIT', fr
+            if move == 'PASS':
+                return 'PASS', None
+            return move, (fr, to)
+        else:
+            raise ValueError(convert_to + "mode is not valid")
 
 
     @property
@@ -187,10 +212,10 @@ class RandomAgent(AbstractPlayer):
     def action(self):
         player_action = self.search_algorithm.search(self.game,
                                                      self.game.initial_state)
-        return convert_action_to(player_action, 'referee')
+        return self.convert_action(player_action, 'referee')
 
     def update(self, colour, action):
-        player_action = convert_action_to(action, 'player')
+        player_action = self.convert_action(action, 'player')
         self.game.update(colour, player_action)
 
 
@@ -204,10 +229,10 @@ class MaxNAgent(AbstractPlayer):
     def action(self):
         _, player_action = self\
             .search_algorithm.search(self.game, self.game.initial_state)
-        return convert_action_to(player_action, 'referee')
+        return self.convert_action(player_action, 'referee')
 
     def update(self, colour, action):
-        player_action = convert_action_to(action, 'player')
+        player_action = self.convert_action(action, 'player')
         self.game.update(colour, player_action)
 
 
