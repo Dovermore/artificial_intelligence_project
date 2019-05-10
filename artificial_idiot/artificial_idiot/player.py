@@ -138,6 +138,9 @@ class AbstractPlayer(abc.ABC):
         :return: The converted perspective
         """
         fr, to, move = action
+        # No need for change if pass
+        if action == "pass":
+            return action
         if convert_to == "player":
             new_fr = State.rotate_pos(self.player, "red", fr)
             new_to = State.rotate_pos(self.player, "red", to)
