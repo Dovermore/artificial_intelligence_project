@@ -1,8 +1,6 @@
 from artificial_idiot.util.class_property import classproperty
 from artificial_idiot.util.misc import print_board
 from copy import copy
-from artificial_idiot.util.mycopy import deepcopy
-from artificial_idiot.util.constants import TOTAL_PIECE
 
 
 class State:
@@ -13,12 +11,9 @@ class State:
     piece_code -> [(x1, y1), (x2, y2), (x3, y3)...]
     (x1, y1) -> piece_code
     """
-    # Records all generated states
-    generated_states = {}
-
-    _code_map = {"red": 0, "green": 1, "blue": 2, "block": 3}
+    _code_map = {"red": 0, "green": 1, "blue": 2}
     _print_map = {"red": "🔴", "green": "✅",
-                  "blue": "🔵", "block": "⬛"}
+                  "blue": "🔵"}
     _rev_code_map = {value: key for key, value in _code_map.items()}
 
     def __init__(self, pos_to_piece, colour, completed=None):
@@ -28,6 +23,7 @@ class State:
         :param pos_to_piece: a dictionary {pos : piece type}
         :param completed: a dictionary {piece type : number of exited}
         """
+
         # This is the current active colour
         self._colour = colour
         # Map from positions to pieces
@@ -36,7 +32,6 @@ class State:
 
         if completed is None:
             completed = {col: 0 for col in self._code_map}
-            assert len(pos_to_piece) == TOTAL_PIECE
         self.completed = completed
 
         self._frozen = frozenset(self._pos_to_piece.keys())
@@ -48,6 +43,10 @@ class State:
     @classproperty
     def code_map(cls):
         return copy(cls._code_map)
+
+    @classproperty
+    def rev_code_map(cls):
+        return copy(cls._rev_code_map)
 
     @property
     def player(self):
@@ -90,13 +89,8 @@ class State:
         :return: The next active colour after current execution
         """
         i = cls._code_map[color] + 1
-        # block remain block
-        if i == 4:
-            i = 3
         # went over, start again
-        elif i == 3:
-            i = 0
-        return list(cls._code_map.keys())[i]
+        return cls._rev_code_map[i % 3]
 
     @classmethod
     def rotate_pos(cls, fr_color, to_color, pos):
@@ -176,7 +170,6 @@ class State:
         return print_board(pos_to_piece, **kwargs, printed=False) + "\n# Completed: " + str(self.completed)
 
     def __hash__(self):
-        # only need hash those two
         return self._hash
 
     def __eq__(self, other):
@@ -184,9 +177,8 @@ class State:
         # last compare the content for a fast comparison
         # (This is based on experimental result of comparison speed)
         return (self._hash == hash(other) and
-                (self is other or
                  self._frozen == other._frozen and
-                 self._colour == other._colour))
+                 self._colour == other._colour)
 
     def __lt__(self, other):
         # There is no preference between states with same path cost
@@ -201,6 +193,36 @@ class State:
     def gety(r, q):
         return -(r + q)
 
+    # @classmethod
+    # def rotate_pos_120(cls, pos, n):
+    #     """
+    #     Rotate a position by 120 degree, n times clockwise
+    #     :param pos: (x, z)
+    #     :param n: number of rotation of 120 degree
+    #     :return: rotated position
+    #     """
+    #     n %= 3
+    #     x, z = pos
+    #     y = -(x + z)
+    #     # "Hard code" the logic as it won't change
+    #     if n == 1:
+    #         return y, x
+    #     elif n == 2:
+    #         return z, y
+    #     return pos
+    #
+    # @classmethod
+    # def rotate_pos_colour(cls, pos, from_colour, to_colour):
+    #     """
+    #     Rotate the position based on the given colour
+    #     :param pos: The position to be rotated
+    #     :param from_colour: From which colour's position
+    #     :param to_colour: To which colour's position
+    #     :return: Rotated position
+    #     """
+    #     n = cls._code_map[to_colour] - cls._code_map[from_colour]
+    #     return State.rotate_pos_120(pos, n)
+
 
 if __name__ == '__main__':
     def rotate_test():
@@ -214,7 +236,6 @@ if __name__ == '__main__':
         assert (State.next_colour("red") == "green")
         assert (State.next_colour("blue") == "red")
         assert (State.next_colour("green") == "blue")
-        assert (State.next_colour("block") == "block")
 
 
     def rotate_action_test():

@@ -33,24 +33,18 @@ def convert_action_to(action, convert_to):
 class AbstractPlayer(abc.ABC):
 
     start_config = {
-        "red": [
-
-            (-3, 1),
-            (-3, 2),
-            (-3, 3)
-        ],
-        "green": [
-            (0, -3),
-            (1, -3),
-            (2, -3),
-            (3, -3)
-        ],
-        "blue": [
-            (0, 3),
-            (1, 2),
-            (2, 1),
-            (3, 0)
-        ]
+        (-3, 0): "red",
+        (-3, 1): "red",
+        (-3, 2): "red",
+        (-3, 3): "red",
+        (0, -3): "green",
+        (1, -3): "green",
+        (2, -3): "green",
+        (3, -3): "green",
+        (0, 3): "blue",
+        (1, 2): "blue",
+        (2, 1): "blue",
+        (3, 0): "blue"
     }
 
     def __init__(self, player, search_algorithm=None,
@@ -69,9 +63,27 @@ class AbstractPlayer(abc.ABC):
         self.player = player
         self.search_algorithm = search_algorithm
 
-        state = State
+        self.code_map = State.code_map
+        self.rev_code_map = State.rev_code_map
+        colour_code = self.code_map[player]
+
+        # cycle the players:
+        #    player:: red:   red -> red,   green -> green, blue -> blue
+        #    player:: green: red -> blue,  green -> red,   blue -> green
+        #    player:: blue:  red -> green, green -> blue,  blue -> red
+        self.referee_to_player_mapping = {
+            col: self.rev_code_map[(self.code_map[col]-colour_code) % 3]
+            for col in self.code_map
+        }
+        self.player_to_referee_mapping = {
+            value: key for key, value in
+            self.referee_to_player_mapping.items()}
+
+        # The initial player is red, convert it to the rotate perspective
+        state = State(self.start_config, colour=self
+                      .referee_to_player_mapping["red"])
         # Colour of the game is different from the color of the state
-        self._game = Game(player, state)
+        self.game = Game("red", state)
 
     @abc.abstractmethod
     def action(self):
@@ -117,6 +129,25 @@ class AbstractPlayer(abc.ABC):
         """
         return self.evaluator(state, *args, **kwargs)
 
+    def convert_action_perspective(self, action, convert_to):
+        """
+        This further converts the converted format from convert_action_to
+        to the corresponding player perspective
+        :param action: the action to translate. Format (fr, to, type)
+        :param convert_to: To whose perspective should the convert to
+        :return: The converted perspective
+        """
+        fr, to, move = action
+        if convert_to == "player":
+            new_fr = State.rotate_pos(self.player, "red", fr)
+            new_to = State.rotate_pos(self.player, "red", to)
+        elif convert_to == "referee":
+            new_fr = State.rotate_pos("red", self.player, fr)
+            new_to = State.rotate_pos("red", self.player, to)
+        else:
+            raise ValueError(convert_to + "mode is not valid")
+        return new_fr, new_to, move
+
 
 class ArtificialIdiot(AbstractPlayer):
 
@@ -137,19 +168,19 @@ class RandomAgent(AbstractPlayer):
         pass
 
     def action(self):
-        player_action = self.search_algorithm.search(self._game)
+        player_action = self.search_algorithm.search(self.game)
         return convert_action_to(player_action, 'referee')
 
     def update(self, colour, action):
         player_action = convert_action_to(action, 'player')
-        self._game.update(colour, player_action)
+        self.game.update(colour, player_action)
         print("# PLAYER", self.player)
-        print(self._game.state)
+        print(self.game.state)
 
     @property
     def state(self):
         # TODO DEEPCOPY
-        return self._game.state
+        return self.game.state
 
 
 class MaxNAgent(AbstractPlayer):
@@ -158,19 +189,19 @@ class MaxNAgent(AbstractPlayer):
         pass
 
     def action(self):
-        player_action = self.search_algorithm.search(self._game)
+        player_action = self.search_algorithm.search(self.game)
         return convert_action_to(player_action, 'referee')
 
     def update(self, colour, action):
         player_action = convert_action_to(action, 'player')
-        self._game.update(colour, player_action)
+        self.game.update(colour, player_action)
         print("# PLAYER", self.player)
-        print(self._game.state)
+        print(self.game.state)
 
     @property
     def state(self):
         # TODO DEEPCOPY
-        return self._game.state
+        return self.game.state
 
 
 
