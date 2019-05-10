@@ -179,6 +179,10 @@ class Game(BoardProblem):
         """
         self.initial_state = self.result(self.initial_state, action)
 
+    @staticmethod
+    def terminal_node(node):
+        return max(node.state.completed.values()) == 4
+
     def __str__(self):
         return str(self.initial_state)
 
