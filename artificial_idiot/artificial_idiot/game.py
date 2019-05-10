@@ -120,25 +120,22 @@ class Game(BoardProblem):
                 yield ((q, r), None, "EXIT")
             for move in cls._move:
                 i, j = move
-                move_pos = (q + i, r + j)
-                jump_pos = (q + i * 2, r + j * 2)
+                move_to = (q + i, r + j)
+                jump_to = (q + i * 2, r + j * 2)
                 # If that direction is possible to move
-                if state.inboard(move_pos):
-                    move_pos = (q + i, r + j)
-                    move_actions.append(((q, r), move_pos, "MOVE"))
-                else:
-                    continue
-                # Jump (still need to check inboard)
-                if state.occupied(jump_pos) and \
-                        not state.occupied(move_pos) and state.inboard(jump_pos):
-                    yield ((q, r), jump_pos, "JUMP")
+                if state.inboard(move_to):
+                    if not state.occupied(move_to):
+                        move_actions.append(((q, r), move_to, "MOVE"))
+                    # Jump (still need to check inboard)
+                    elif state.inboard(jump_to) and \
+                            not state.occupied(jump_to):
+                        yield ((q, r), jump_to, "JUMP")
         # no move possible return None
         if move_actions:
             for action in move_actions:
                 yield action
         else:
             yield (None, None, "PASS")
-
 
     def result(self, state, action):
         """

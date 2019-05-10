@@ -38,7 +38,7 @@ class State:
         self._hash = hash(self.frozen)
 
     def occupied(self, pos):
-        return pos not in self._pos_to_piece
+        return pos in self._pos_to_piece
 
     @classproperty
     def code_map(cls):
