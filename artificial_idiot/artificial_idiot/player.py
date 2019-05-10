@@ -4,6 +4,7 @@ from artificial_idiot.cutoff import DepthLimitCutoff
 from artificial_idiot.evaluator import *
 from artificial_idiot.util.json_parser import JsonParser
 from artificial_idiot.state import State
+import random
 import json
 
 
@@ -204,7 +205,10 @@ class ArtificialIdiot(AbstractPlayer):
 
 
 class RandomAgent(AbstractPlayer):
-    def __init__(self, player, initial_state=None, seed=10):
+    def __init__(self, player, initial_state=None, seed=None):
+        if seed is None:
+            seed = random.random()
+        print("* seed is:", seed)
         super().__init__(player, search_algorithm=RandomMove(seed),
                          initial_state=initial_state)
         pass
@@ -250,9 +254,6 @@ class Player(MaxNAgent):
 
 
 if __name__ == "__main__":
-    # TODO handle test cases where player have to pass
-    #  or opponent passes
-
 
     def random_agent_test():
         player = RandomAgent(player="red", initial_state=None, seed=10)

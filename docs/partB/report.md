@@ -53,6 +53,8 @@ What is a good depth to choose?
 
 In the first iteration we limited the depth of the search to 5. 
 
+An agent don't need to use MaxN or any evaluation function when it can only carry out a single action. Evaluation functions are only useful when there is a choice between actions. To make the program more efficient we can limit the number of possible actions by reacting immediately to danger much as the possibility of beening eaten. We can also limit the size of the board just like how human chess players spend their attension focusing on the the part of the  chess board with the highest conflict.
+
 
 
 ## Evaluator
