@@ -32,9 +32,9 @@ class State:
         if completed is None:
             completed = {col: 0 for col in self._code_map}
         self.completed = completed
+        self.frozen = None
+        self._hash = None
 
-        self.frozen = frozenset(self._pos_to_piece.keys())
-        self._hash = hash(self.frozen)
 
     def occupied(self, pos):
         return pos in self._pos_to_piece
@@ -172,6 +172,9 @@ class State:
             "\n# Completed: " + str(self.completed)
 
     def __hash__(self):
+        if self.frozen is None:
+            self.frozen = frozenset(self._pos_to_piece.items())
+            self._hash = hash(self.frozen)
         return self._hash
 
     def __eq__(self, other):
@@ -179,7 +182,7 @@ class State:
         # last compare the content for a fast comparison
         # (This is based on experimental result of comparison speed)
         return (isinstance(other, State) and
-                self._hash == hash(other) and
+                hash(self) == hash(other) and
                 self.frozen == other._frozen and
                 self._colour == other._colour and
                 self._pos_to_piece == other._pos_to_piece
@@ -197,36 +200,6 @@ class State:
     @staticmethod
     def gety(r, q):
         return -(r + q)
-
-    # @classmethod
-    # def rotate_pos_120(cls, pos, n):
-    #     """
-    #     Rotate a position by 120 degree, n times clockwise
-    #     :param pos: (x, z)
-    #     :param n: number of rotation of 120 degree
-    #     :return: rotated position
-    #     """
-    #     n %= 3
-    #     x, z = pos
-    #     y = -(x + z)
-    #     # "Hard code" the logic as it won't change
-    #     if n == 1:
-    #         return y, x
-    #     elif n == 2:
-    #         return z, y
-    #     return pos
-    #
-    # @classmethod
-    # def rotate_pos_colour(cls, pos, from_colour, to_colour):
-    #     """
-    #     Rotate the position based on the given colour
-    #     :param pos: The position to be rotated
-    #     :param from_colour: From which colour's position
-    #     :param to_colour: To which colour's position
-    #     :return: Rotated position
-    #     """
-    #     n = cls._code_map[to_colour] - cls._code_map[from_colour]
-    #     return State.rotate_pos_120(pos, n)
 
 
 if __name__ == '__main__':
