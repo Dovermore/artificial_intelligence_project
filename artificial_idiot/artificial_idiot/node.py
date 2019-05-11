@@ -1,3 +1,9 @@
+from math import sqrt, log
+from functools import lru_cache
+# Use this for fast random number generation
+from artificial_idiot.util.misc import randint
+
+
 class Node:
     """A node in a search tree. Contains a pointer to the parent (the node
     that this is a successor of) and to the actual state for this node. Note
@@ -75,12 +81,21 @@ class Node:
 
 
 class BasicUCTNode(Node):
-    def __init__(self, *args, **kwargs):
+    c = 2
+
+    def __init__(self, c, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # TODO this should be replaced by more advanced evaluation
         #      in future version
         self.wins = 0
         self.visits = 0
+        # What child aren't explored yet
+        self.unexpanded_children = None
+        self.sorted_children = []
+
+    @classmethod
+    def set_c(cls, c):
+        cls.c = c
 
     def update(self, result):
         """
@@ -90,5 +105,21 @@ class BasicUCTNode(Node):
         """
         self.wins += result
         self.visits += 1
+
+    def uct_child_node(self, game):
+        # Initialise the nodes
+        if self.unexpanded_children is None:
+            self.unexpanded_children = list(self.expand(game))
+
+        if len(self.unexpanded_children) > 0:
+            return
+
+        s = sorted(self.childNodes, key=lambda c: c.wins/c.visits + sqrt(2*log(self.visits)/c.visits))[-1]
+
+    @lru_cache(maxsize=24)
+    def value(self, child):
+        return (child.wins / child.visits
+                + self.c * sqrt(log(self.visits) / child.visits))
+
 
 
