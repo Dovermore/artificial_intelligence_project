@@ -1,4 +1,5 @@
 from functools import lru_cache
+from random import getrandbits
 
 
 def memoize(fn, slot=None, maxsize=32):
@@ -122,4 +123,15 @@ def format_action(action):
 def is_in(elt, seq):
     """Similar to (elt in seq), but compares with 'is', not '=='."""
     return any(x is elt for x in seq)
+
+
+def randint(lo, hi):
+    """
+    Fast implementation generating random integer
+    :param lo: Lower bound (inclusive)
+    :param hi: Upper bound (exclusive)
+    :return: Random integer
+    """
+    # Set to 10 bits to handle at most 1024 as hi
+    return getrandbits(10) % (hi - lo) + lo
 
