@@ -21,6 +21,7 @@ class Node:
         self.children = {}
         if parent:
             self.depth = parent.depth + 1
+        self.children = {}
 
     def __repr__(self, transition=False, **kwargs):
         return "<Node {}>".format(self.state.__repr__(**kwargs))
