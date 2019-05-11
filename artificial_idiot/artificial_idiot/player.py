@@ -11,9 +11,7 @@ import json
 player_evaluator = DummyEvaluator()
 
 
-
 class AbstractPlayer(abc.ABC):
-
     start_config = {
         (-3, 0): "red",
         (-3, 1): "red",
@@ -173,7 +171,6 @@ class AbstractPlayer(abc.ABC):
             return move, (fr, to)
         else:
             raise ValueError(convert_to + "mode is not valid")
-
 
     @property
     def state(self):
