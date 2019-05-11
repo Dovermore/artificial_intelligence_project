@@ -39,7 +39,7 @@ class Node:
         next_state = game.result(self.state, action)
         next_node = Node(next_state, self, action,
                          game.path_cost(self.path_cost, self.state,
-                                           action, next_state))
+                                        action, next_state))
         return next_node
 
     @property
@@ -64,3 +64,15 @@ class Node:
 
     def __hash__(self):
         return self.state.__hash__()
+
+
+class BasicUCTNode(Node):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # TODO this should be replaced by more advanced evaluation
+        #      in future version
+        self.wins = 0
+        self.visits = 0
+
+
+
