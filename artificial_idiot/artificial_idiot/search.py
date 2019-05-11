@@ -8,6 +8,7 @@ Authors: Chuanyuan Liu, Zhuoqun Huang
 import abc
 import random
 from math import inf
+from artificial_idiot.node import BasicUCTNode
 
 
 class Search(abc.ABC):
@@ -81,6 +82,39 @@ class RandomMove(Search):
         i = random.randrange(len(actions))
         return actions[i]
 
+
+class UCBSearch(Search):
+    def __init__(self, c=2, node_type=BasicUCTNode):
+        self.c = c
+        self.node_type = node_type
+        self.node_type.set_c(c)
+
+    def tree_policy(self, game, initial_node):
+        """
+        Fully expand path of the tree down to the leave node.
+        :param game: The game the path is in
+        :param initial_node: The node to start search with
+        :return: The terminal node of such path
+        """
+        node = initial_node
+        while not game.terminal_node(node):
+            if not node.isFullyExpanded():
+                return game.expand(node)
+            else:
+                node = node.bestChild(node)
+
+        return node
+
+    def search(self, game, state, c=2, node_type=BasicUCTNode):
+        node = node_type(game.initial_state)
+        node_type.set_c(c)
+        while not game.terminal_node(node):
+            if not node.isFullyExpanded():
+                return game.expand(node)
+            else:
+                node = node.bestChild(node)
+
+        return node
 
 if __name__ == '__main__':
     from artificial_idiot.evaluator import *

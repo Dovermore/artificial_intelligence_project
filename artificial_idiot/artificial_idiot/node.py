@@ -83,7 +83,7 @@ class Node:
 class BasicUCTNode(Node):
     c = 2
 
-    def __init__(self, c, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # TODO this should be replaced by more advanced evaluation
         #      in future version
@@ -111,15 +111,17 @@ class BasicUCTNode(Node):
         if self.unexpanded_children is None:
             self.unexpanded_children = list(self.expand(game))
 
-        if len(self.unexpanded_children) > 0:
-            return
-
-        s = sorted(self.childNodes, key=lambda c: c.wins/c.visits + sqrt(2*log(self.visits)/c.visits))[-1]
+        remaining = len(self.unexpanded_children)
+        if remaining > 0:
+            child = self.unexpanded_children.pop()
+            return child
+        else:
+            # Somehow this beats max([(f(v),v) for v in children])
+            keys = [self.child_value(child) for child in self.children]
+            return self.children[keys.index(max(keys))]
 
     @lru_cache(maxsize=24)
-    def value(self, child):
+    def child_value(self, child):
         return (child.wins / child.visits
                 + self.c * sqrt(log(self.visits) / child.visits))
-
-
 
