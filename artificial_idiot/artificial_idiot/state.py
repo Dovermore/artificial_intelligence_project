@@ -33,7 +33,7 @@ class State:
             completed = {col: 0 for col in self._code_map}
         self.completed = completed
 
-        self.frozen = frozenset(self._pos_to_piece.keys())
+        self.frozen = frozenset(self._pos_to_piece.items())
         self._hash = hash(self.frozen)
 
     def occupied(self, pos):

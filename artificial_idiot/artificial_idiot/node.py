@@ -73,6 +73,20 @@ class BasicUCTNode(Node):
         #      in future version
         self.wins = 0
         self.visits = 0
+        self.children = set()
 
+    def update(self, result):
+        """
+        Update the state of current node
+        # TODO override this for a better model
+        :param result: The outcome of the game. 0 for lose 1 for win
+        """
+        self.wins += result
+        self.visits += 1
+
+    def child_node(self, game, action):
+        child = super().child_node(game, action)
+        self.children.add(child)
+        return child
 
 

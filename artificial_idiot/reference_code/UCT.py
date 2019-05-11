@@ -334,7 +334,7 @@ def UCT(rootstate, itermax, verbose = False):
     Assumes 2 alternating players (player 1 starts), with game results in the range [0.0, 1.0].
     """
 
-    rootnode = Node(state = rootstate)
+    rootnode = Node(state=rootstate)
 
     for i in range(itermax):
         node = rootnode
@@ -366,6 +366,7 @@ def UCT(rootstate, itermax, verbose = False):
 
     return sorted(rootnode.childNodes, key = lambda c: c.visits)[-1].move # return the move that was most visited
 
+
 def UCTPlayGame():
     """ Play a sample game between two UCT players where each player gets a different number
         of UCT iterations (= simulations = tree nodes).
@@ -386,6 +387,7 @@ def UCTPlayGame():
     elif state.GetResult(state.playerJustMoved) == 0.0:
         print("Player " + str(3 - state.playerJustMoved) + " wins!")
     else: print("Nobody wins!")
+
 
 if __name__ == "__main__":
     """ Play a single game to the end using UCT for both players. 
