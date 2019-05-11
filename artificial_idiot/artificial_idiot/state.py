@@ -35,7 +35,6 @@ class State:
         self.frozen = None
         self._hash = None
 
-
     def occupied(self, pos):
         return pos in self._pos_to_piece
 
@@ -181,8 +180,7 @@ class State:
         # First compare hash, if hash is successful, compare id
         # last compare the content for a fast comparison
         # (This is based on experimental result of comparison speed)
-        return (isinstance(other, State) and
-                hash(self) == hash(other) and
+        return (hash(self) == hash(other) and
                 self.frozen == other._frozen and
                 self._colour == other._colour and
                 self._pos_to_piece == other._pos_to_piece

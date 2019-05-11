@@ -18,6 +18,7 @@ class Node:
         # TODO change path cost to evaluation value where higher the better
         self.path_cost = path_cost
         self.depth = 0
+        self.children = {}
         if parent:
             self.depth = parent.depth + 1
 
@@ -35,11 +36,17 @@ class Node:
         return children
 
     def child_node(self, game, action):
-        """[Figure 3.10]"""
-        next_state = game.result(self.state, action)
-        next_node = Node(next_state, self, action,
-                         game.path_cost(self.path_cost, self.state,
-                                        action, next_state))
+        """
+        Generate child node based on game and action
+        """
+        # Only generate if not previously generated
+        if action not in self.children:
+            next_state = game.result(self.state, action)
+            next_node = Node(next_state, self, action,
+                             game.path_cost(self.path_cost, self.state,
+                                            action, next_state))
+        else:
+            next_node = self.children[action]
         return next_node
 
     @property
@@ -73,7 +80,6 @@ class BasicUCTNode(Node):
         #      in future version
         self.wins = 0
         self.visits = 0
-        self.children = set()
 
     def update(self, result):
         """
@@ -83,10 +89,5 @@ class BasicUCTNode(Node):
         """
         self.wins += result
         self.visits += 1
-
-    def child_node(self, game, action):
-        child = super().child_node(game, action)
-        self.children.add(child)
-        return child
 
 
