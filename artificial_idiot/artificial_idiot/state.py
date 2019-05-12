@@ -15,6 +15,7 @@ class State:
     _print_map = {"red": "🔴", "green": "✅", "blue": "🔵"}
     _rev_code_map = {value: key for key, value in _code_map.items()}
 
+    # TODO make checking fo completed faster/ and more robust
     def __init__(self, pos_to_piece, colour, completed=None):
         """
         Captures all the information about the state
@@ -180,7 +181,7 @@ class State:
         # last compare the content for a fast comparison
         # (This is based on experimental result of comparison speed)
         return (hash(self) == hash(other) and
-                self.frozen == other._frozen and
+                self.frozen == other.frozen and
                 self._colour == other._colour and
                 self._pos_to_piece == other._pos_to_piece
                 )

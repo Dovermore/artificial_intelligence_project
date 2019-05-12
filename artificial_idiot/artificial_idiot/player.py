@@ -237,12 +237,19 @@ class BasicUCTPlayer(AbstractPlayer):
     Basic UCT player. Uses upper confidence monte carlo search algorithm
     """
     def __init__(self, player, evaluator=winloss_evaluator,
-                 game_type=NodeGame, initial_state=None, *args, **kwargs):
+                 game_type=NodeGame, node_type=BasicUCTNode,
+                 initial_state=None, *args, **kwargs):
         search = UCTSearch(*args, **kwargs)
         super().__init__(player, search, game_type, evaluator, initial_state)
+        state = self.game.initial_state
+        self.game = game_type(colour="red",
+                              state=node_type(state),
+                              evaluator=evaluator)
 
     def action(self):
-        return self.search_algorithm.search(self.game, self.game.initial_state)
+        action = self.search_algorithm.search(self.game,
+                                              self.game.initial_state)
+        return self.convert_action(action, "referee")
 
 
 if __name__ == "__main__":

@@ -1,4 +1,6 @@
 from math import sqrt, log
+from random import shuffle
+from artificial_idiot.util.misc import randint
 
 
 class Node:
@@ -46,9 +48,11 @@ class Node:
         # Only generate if not previously generated
         if action not in self.children:
             next_state = game.result(self.state, action)
-            next_node = Node(next_state, self, action,
-                             game.path_cost(self.path_cost, self.state,
-                                            action, next_state))
+            next_node = self.__class__(next_state, self, action,
+                                       game.path_cost(
+                                           self.path_cost, self.state, action,
+                                           next_state))
+            self.children[action] = next_node
         else:
             next_node = self.children[action]
         return next_node
@@ -100,32 +104,46 @@ class BasicUCTNode(Node):
         # TODO override this for a better model
         :param result: The outcome of the game. 0 for lose 1 for win
         """
-        self.wins += result
+        self.wins += (result == 1)
         self.visits += 1
 
-    def uct_child_node(self, game):
+    def tree_policy(self, game):
         """
         Get the child node of a UCT node. If the node is expanded then return
         the best node, else get a random unexplored node
         :param game: The game the node is in (rules of expansion)
         :return: A move given by the above selection rule
         """
+        # TODO update policy to be more abstracted
         # Initialise the nodes
         if self.unexpanded_children is None:
             self.unexpanded_children = list(self.expand(game))
+            shuffle(self.unexpanded_children)
         remaining = len(self.unexpanded_children)
-        # Still has unexplored node. Pick one of them in random
         if remaining > 0:
             child = self.unexpanded_children.pop()
             return child
-        # All nodes explored, find the best one instead
         else:
             # Somehow this beats max([(f(v),v) for v in children])
-            keys = [self.child_value(child) for child in self.children]
-            return self.children[keys.index(max(keys))]
+            children = list(self.children.values())
+            # This is a leaf node
+            if not len(children):
+                return None
+            keys = [self.child_value(child) for child in children]
+            return children[keys.index(max(keys))]
 
-    # Cannot cache this, will change each time you use it
-    # @lru_cache(maxsize=24)
+    def default_policy(self, game):
+        # Use the game default policy plus some random
+        actions = list(game.actions(self.state))
+        return self.child_node(game, actions[randint(0, len(actions))])
+
+    def show_path(self):
+        path = self.path
+        for node in path:
+            print(f"{hash(node)%9999}: [{node.wins:4d}, {node.visits:4d}]",
+                  end=" --> ")
+        print("<?>")
+
     def child_value(self, child):
         return (child.wins / child.visits
                 + sqrt(self.c * log(self.visits) / child.visits))
