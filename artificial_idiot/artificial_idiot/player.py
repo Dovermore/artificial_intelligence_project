@@ -27,7 +27,7 @@ class AbstractPlayer(abc.ABC):
         (3, 0): "blue"
     }
 
-    def __init__(self, player, search_algorithm=None,
+    def __init__(self, player, search_algorithm=None, game_type=Game,
                  evaluator=player_evaluator, initial_state=None):
         """
         This method is called once at the beginning of the game to initialise
@@ -65,7 +65,7 @@ class AbstractPlayer(abc.ABC):
         state = State(self.start_config, colour=self
                       .referee_to_player_mapping["red"])
         # Colour of the game is different from the color of the state
-        self.game = Game("red", state, evaluator)
+        self.game = game_type("red", state, evaluator)
 
     @abc.abstractmethod
     def action(self):
