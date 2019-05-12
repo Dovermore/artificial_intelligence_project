@@ -90,7 +90,7 @@ class UCBSearch(Search):
         self.node_type.set_c(c)
         self.initial_node = None
 
-    def tree_policy(self, game, node):
+    def tree_policy(self, game):
         """
         Fully expand path of the tree down to the leave node.
         :param game: The game the path is in
@@ -111,17 +111,18 @@ class UCBSearch(Search):
                 raise LookupError("Traced back to a invalid node!")
             node = node.parent
 
-    def search(self, game, state, iteration=100, max_depth=-1, training=True):
-        # TODO add depth and cutoff
+    def search(self, game, state, iteration=100, max_depth=-1,
+               max_time=-1, training=True):
+        # TODO add depth, time and cutoff
         assert game.initial_state.state == state, "incompatible state"
-        while True:
-            # Set initial node
-            node = game.initial_state
+        while iteration > 0:
             # Get a leaf
-            leaf = self.tree_policy(game, node)
+            leaf = self.tree_policy(game)
             # If training, do back prop
             if training:
-                self.back_prop(game, node, result=)
+                self.back_prop(game, leaf, result=game.evaluator(leaf.state))
+            iteration -= 1
+        return game.initial_state.uct_child_node(game)
 
 
 if __name__ == '__main__':
