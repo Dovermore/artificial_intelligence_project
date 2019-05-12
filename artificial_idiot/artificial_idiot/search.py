@@ -53,7 +53,7 @@ class MaxN(Search):
             v.append(self._eval(state, state.rev_code_map[index]))
         return v
 
-    def search(self, game, state, depth=1, **kwargs):
+    def _recursive_max_search(self, game, state, depth):
         # cut off test
         if self._cut_off_test(state, depth=depth):
             return self._evaluate(state), None
@@ -62,16 +62,25 @@ class MaxN(Search):
         v_max = [-inf] * self._n
         a_best = None
         actions = list(game.actions(state))
-        # no exploration needed if only there is choice to be made
-        if len(actions) < 2: return actions[0];
+        print(actions)
+        # no exploration needed if only there is no choice to be made
+        if len(actions) == 0: return
+        if len(actions) == 1: return None, actions[0]
         for a in actions:
-            v, _ = self.search(game, game.result(state, a), depth=depth+1)
+            v, _ = self._recursive_max_search(game, game.result(state, a), depth=depth+1)
             # found a better utility
             if v[player] > v_max[player]:
+                print(v_max, a_best)
                 v_max = v
                 a_best = a
         return v_max, a_best
 
+
+    def search(self, game, state, depth=3, **kwargs):
+        # cut off test
+        print(state)
+        _, a = self._recursive_max_search(game, state, depth)
+        return a
 
 # class MaxNLazy(Search):
 #
@@ -178,7 +187,7 @@ class UCTSearch(Search):
 
 
 if __name__ == '__main__':
-    from artificial_idiot.evaluator import AbstractWeightEvaluator
+    from artificial_idiot.evaluator import WeightedEvaluator, MyEvaluator
     from artificial_idiot.cutoff import DepthLimitCutoff
     from artificial_idiot.game import Game
     from artificial_idiot.state import State
@@ -188,7 +197,7 @@ if __name__ == '__main__':
     def test_max_n():
         f = open("../tests/simple.json")
         pos_dict, colour, completed = JsonParser(json.load(f)).parse()
-        evaluator = AbstractWeightEvaluator()
+        evaluator = MyEvaluator()
         game = Game(colour, State(pos_dict, colour, completed), evaluator)
         cutoff = DepthLimitCutoff(max_depth=2)
         search = MaxN(evaluator, cutoff, n_player=3)
@@ -196,7 +205,7 @@ if __name__ == '__main__':
 
     def test_only_one_possible_move():
         f = open("../tests/only_one_move.json")
-        evaluator = AbstractWeightEvaluator()
+        evaluator = MyEvaluator()
         pos_dict, colour, completed = JsonParser(json.load(f)).parse()
         game = Game(colour, State(pos_dict, colour, completed), evaluator)
         cutoff = DepthLimitCutoff(max_depth=2)

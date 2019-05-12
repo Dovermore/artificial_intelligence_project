@@ -57,14 +57,33 @@ class MyEvaluator(Evaluator):
     """
     An evaluator that only considers
      1. amount of exited pieces
-     2. distance to exit
-     3. amount of nodes
     """
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        pass
 
     def __call__(self, state, player, *args, **kwargs):
+        return state.completed[player]
+
+
+class WeightedEvaluator(Evaluator):
+    """
+    An evaluator that takes in functions that
+    1. takes in current state
+    returns how valuable the state is for a given player in the forms of
+    1. a value
+    2. an array of values
+    The values are concatenated by the order of function list
+    These values are then multiplied by the weights
+    """
+    def __init__(self, functions, *args, **kwargs):
+        self._functions = functions
+        super().__init__(*args, **kwargs)
+
+    def __call__(self, state, player, weights ,*args, **kwargs):
+
+        for func in self._functions:
+            func(state)
+
         return state.completed[player]
 
 

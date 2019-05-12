@@ -215,7 +215,7 @@ class MaxNAgent(AbstractPlayer):
         pass
 
     def action(self):
-        _, player_action = self\
+        player_action = self\
             .search_algorithm.search(self.game, self.game.initial_state)
         return self.convert_action(player_action, 'referee')
 
