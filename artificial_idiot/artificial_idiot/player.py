@@ -81,7 +81,6 @@ class AbstractPlayer(abc.ABC):
         """
         return "PASS", None
 
-    @abc.abstractmethod
     def update(self, colour, action):
         """
         This method is called at the end of every turn (including your player’s
@@ -100,7 +99,8 @@ class AbstractPlayer(abc.ABC):
         (or pass) for the player colour (your method does not need to validate
         the action/pass against the game rules).
         """
-        pass
+        player_action = self.convert_action(action, 'player')
+        self.game.update(colour, player_action)
 
     def convert_action(self, action, convert_to):
         """
@@ -205,10 +205,6 @@ class RandomAgent(AbstractPlayer):
                                                      self.game.initial_state)
         return self.convert_action(player_action, 'referee')
 
-    def update(self, colour, action):
-        player_action = self.convert_action(action, 'player')
-        self.game.update(colour, player_action)
-
 
 class MaxNAgent(AbstractPlayer):
     def __init__(self, player, initial_state, evaluator, cutoff):
@@ -221,10 +217,6 @@ class MaxNAgent(AbstractPlayer):
         _, player_action = self\
             .search_algorithm.search(self.game, self.game.initial_state)
         return self.convert_action(player_action, 'referee')
-
-    def update(self, colour, action):
-        player_action = self.convert_action(action, 'player')
-        self.game.update(colour, player_action)
 
 
 class Player(MaxNAgent):
