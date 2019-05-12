@@ -1,7 +1,4 @@
 from math import sqrt, log
-from functools import lru_cache
-# Use this for fast random number generation
-from artificial_idiot.util.misc import randint
 
 
 class Node:
@@ -97,7 +94,7 @@ class BasicUCTNode(Node):
     def set_c(cls, c):
         cls.c = c
 
-    def update(self, result):
+    def update(self, result, *args, **kwargs):
         """
         Update the state of current node
         # TODO override this for a better model
@@ -107,21 +104,29 @@ class BasicUCTNode(Node):
         self.visits += 1
 
     def uct_child_node(self, game):
+        """
+        Get the child node of a UCT node. If the node is expanded then return
+        the best node, else get a random unexplored node
+        :param game: The game the node is in (rules of expansion)
+        :return: A move given by the above selection rule
+        """
         # Initialise the nodes
         if self.unexpanded_children is None:
             self.unexpanded_children = list(self.expand(game))
-
         remaining = len(self.unexpanded_children)
+        # Still has unexplored node. Pick one of them in random
         if remaining > 0:
             child = self.unexpanded_children.pop()
             return child
+        # All nodes explored, find the best one instead
         else:
             # Somehow this beats max([(f(v),v) for v in children])
             keys = [self.child_value(child) for child in self.children]
             return self.children[keys.index(max(keys))]
 
-    @lru_cache(maxsize=24)
+    # Cannot cache this, will change each time you use it
+    # @lru_cache(maxsize=24)
     def child_value(self, child):
         return (child.wins / child.visits
-                + self.c * sqrt(log(self.visits) / child.visits))
+                + sqrt(self.c * log(self.visits) / child.visits))
 

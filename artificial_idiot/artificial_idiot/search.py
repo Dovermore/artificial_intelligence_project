@@ -88,6 +88,7 @@ class UCBSearch(Search):
         self.c = c
         self.node_type = node_type
         self.node_type.set_c(c)
+        self.initial_node = None
 
     def tree_policy(self, game, initial_node):
         """
@@ -98,13 +99,14 @@ class UCBSearch(Search):
         """
         node = initial_node
         while not game.terminal_node(node):
-            if not node.isFullyExpanded():
-                return game.expand(node)
-            else:
-                node = node.bestChild(node)
-
+            node = node.uct_child_node(node)
         return node
 
+    def back_prop(self, leaf, result, *args, **kwargs):
+        node = leaf
+        while node !=
+
+    # TODO finish this
     def search(self, game, state, c=2, node_type=BasicUCTNode):
         node = node_type(game.initial_state)
         node_type.set_c(c)
@@ -113,8 +115,8 @@ class UCBSearch(Search):
                 return game.expand(node)
             else:
                 node = node.bestChild(node)
-
         return node
+
 
 if __name__ == '__main__':
     from artificial_idiot.evaluator import *
