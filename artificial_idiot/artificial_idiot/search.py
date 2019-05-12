@@ -55,30 +55,26 @@ class MaxN(Search):
 
     def _recursive_max_search(self, game, state, depth):
         # cut off test
-        if self._cut_off_test(state, depth=depth):
+        if self._cut_off_test(state, depth=depth) or game.terminal_state(state):
             return self._evaluate(state), None
         player = state.code_map[state.colour]
         # initialize utility to be the worst possible
         v_max = [-inf] * self._n
         a_best = None
-        actions = list(game.actions(state))
-        print(actions)
-        # no exploration needed if only there is no choice to be made
-        if len(actions) == 0: return
-        if len(actions) == 1: return None, actions[0]
-        for a in actions:
+        for a in game.actions(state):
             v, _ = self._recursive_max_search(game, game.result(state, a), depth=depth+1)
             # found a better utility
             if v[player] > v_max[player]:
-                print(v_max, a_best)
                 v_max = v
                 a_best = a
         return v_max, a_best
 
 
-    def search(self, game, state, depth=3, **kwargs):
+    def search(self, game, state, depth=1, **kwargs):
+        # no exploration needed if only there is no choice to be made
+        actions =game.actions(state)
+        if len(actions) == 1: return actions[0]
         # cut off test
-        print(state)
         _, a = self._recursive_max_search(game, state, depth)
         return a
 
@@ -166,23 +162,23 @@ class UCTSearch(Search):
             # Some how got to a node without parent but is not root
             node = node.parent
 
-    def search(self, game, state, iteration=100, max_depth=-1,
+    def search(self, game, state, iteration=10, max_depth=-1,
                max_time=-1, training=True):
         # TODO add depth, time and cutoff
         # TODO fix this iteration
         while iteration > 0:
             # Get a leaf
             expanded = self.select_expand(game)
-            print("==================== before ====================")
-            expanded.show_path()
+            # print("==================== before ====================")
+            # expanded.show_path()
             leaf = self.simulation(game, expanded)
             result = game.evaluator(leaf.state, "red")
-            print(f"---------- {result} ----------")
+            # print(f"---------- {result} ----------")
             self.back_prop(game, expanded, result=game.evaluator(
                 leaf.state, "red"))
             iteration -= 1
-            print("-------------------- after --------------------")
-            expanded.show_path()
+            # print("-------------------- after --------------------")
+            # expanded.show_path()
         return game.initial_state.tree_policy(game).action
 
 
@@ -194,12 +190,12 @@ if __name__ == '__main__':
     from artificial_idiot.util.json_parser import JsonParser
     import json
 
-    def test_max_n():
+    def test_exit():
         f = open("../tests/simple.json")
         pos_dict, colour, completed = JsonParser(json.load(f)).parse()
         evaluator = MyEvaluator()
         game = Game(colour, State(pos_dict, colour, completed), evaluator)
-        cutoff = DepthLimitCutoff(max_depth=2)
+        cutoff = DepthLimitCutoff(max_depth=3)
         search = MaxN(evaluator, cutoff, n_player=3)
         print(search.search(game, game.initial_state))
 
@@ -208,10 +204,10 @@ if __name__ == '__main__':
         evaluator = MyEvaluator()
         pos_dict, colour, completed = JsonParser(json.load(f)).parse()
         game = Game(colour, State(pos_dict, colour, completed), evaluator)
-        cutoff = DepthLimitCutoff(max_depth=2)
+        cutoff = DepthLimitCutoff(max_depth=3)
         search = MaxN(evaluator, cutoff, n_player=3)
         print(search.search(game, game.initial_state))
 
-    test_max_n()
+    # test_exit()
     test_only_one_possible_move()
 

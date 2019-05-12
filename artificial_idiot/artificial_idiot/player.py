@@ -226,7 +226,7 @@ class Player(MaxNAgent):
     Here we use best hyperparameter
     """
     def __init__(self, player):
-        evaluator = AbstractWeightEvaluator()
+        evaluator = MyEvaluator()
         cutoff = DepthLimitCutoff(max_depth=3)
         super().__init__(player, cutoff=cutoff, evaluator=evaluator,
                          initial_state=None)
