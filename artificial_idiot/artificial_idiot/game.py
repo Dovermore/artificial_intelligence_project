@@ -198,7 +198,7 @@ class NodeGame(Game):
     """
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.root = Node(self.initial_state)
+        self.initial_state = Node(self.initial_state)
 
     # @classmethod
     # def actions(cls, state):
@@ -210,13 +210,13 @@ class NodeGame(Game):
     #     return super().actions(state)
 
     def update(self, colour, action):
-        for child in self.root.expand(self):
+        for child in self.initial_state.expand(self):
             if child.action == action:
-                self.root = child
+                self.initial_state = child
         else:
             raise ValueError(f"No corresponding action {action} found."
                              f"Possible actions are "
-                             f"{[child.action for child in self.root.children]}")
+                             f"{[child.action for child in self.initial_state.children]}")
 
 
 if __name__ == "__main__":

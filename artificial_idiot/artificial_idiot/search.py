@@ -90,32 +90,38 @@ class UCBSearch(Search):
         self.node_type.set_c(c)
         self.initial_node = None
 
-    def tree_policy(self, game, initial_node):
+    def tree_policy(self, game, node):
         """
         Fully expand path of the tree down to the leave node.
         :param game: The game the path is in
-        :param initial_node: The node to start search with
         :return: The terminal node of such path
         """
-        node = initial_node
+        node = game.initial_state
         while not game.terminal_node(node):
             node = node.uct_child_node(node)
         return node
 
-    def back_prop(self, leaf, result, *args, **kwargs):
+    def back_prop(self, game, leaf, result, *args, **kwargs):
         node = leaf
-        while node !=
+        # Back prop till the root node (but not include that)
+        while node != game.initial_state:
+            node.update(result, *args, **kwargs)
+            # Some how got to a node without parent but is not root
+            if node.parent is None:
+                raise LookupError("Traced back to a invalid node!")
+            node = node.parent
 
-    # TODO finish this
-    def search(self, game, state, c=2, node_type=BasicUCTNode):
-        node = node_type(game.initial_state)
-        node_type.set_c(c)
-        while not game.terminal_node(node):
-            if not node.isFullyExpanded():
-                return game.expand(node)
-            else:
-                node = node.bestChild(node)
-        return node
+    def search(self, game, state, iteration=100, max_depth=-1, training=True):
+        # TODO add depth and cutoff
+        assert game.initial_state.state == state, "incompatible state"
+        while True:
+            # Set initial node
+            node = game.initial_state
+            # Get a leaf
+            leaf = self.tree_policy(game, node)
+            # If training, do back prop
+            if training:
+                self.back_prop(game, node, result=)
 
 
 if __name__ == '__main__':
