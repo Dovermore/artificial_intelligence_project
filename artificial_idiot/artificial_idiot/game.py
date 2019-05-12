@@ -1,5 +1,6 @@
-from artificial_idiot.util.misc import is_in
+from artificial_idiot.util.misc import is_in, randint
 from artificial_idiot.state import State
+from artificial_idiot.node import Node
 import abc
 
 
@@ -50,7 +51,6 @@ class Problem(abc.ABC):
             return is_in(state, self.goal)
         else:
             return state == self.goal
-
 
     def path_cost(self, c, state1, action, state2):
         """
@@ -189,6 +189,34 @@ class Game(BoardProblem):
 
     def __str__(self):
         return str(self.initial_state)
+
+
+class NodeGame(Game):
+    """
+    A expansion to the base game. Also stores a root node for search with
+    memory (Learning)
+    """
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.root = Node(self.initial_state)
+
+    # @classmethod
+    # def actions(cls, state):
+    #     """
+    #     # TODO Possible subclassing of this to make more efficient
+    #     :param state:
+    #     :return:
+    #     """
+    #     return super().actions(state)
+
+    def update(self, colour, action):
+        for child in self.root.expand(self):
+            if child.action == action:
+                self.root = child
+        else:
+            raise ValueError(f"No corresponding action {action} found."
+                             f"Possible actions are "
+                             f"{[child.action for child in self.root.children]}")
 
 
 if __name__ == "__main__":
