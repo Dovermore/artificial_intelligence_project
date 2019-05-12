@@ -225,7 +225,7 @@ class Player(MaxNAgent):
     Here we use best hyperparameter
     """
     def __init__(self, player):
-        evaluator = MyEvaluator()
+        evaluator = AbstractWeightEvaluator()
         cutoff = DepthLimitCutoff(max_depth=3)
         super().__init__(player, cutoff=cutoff, evaluator=evaluator,
                          initial_state=None)
@@ -250,7 +250,7 @@ if __name__ == "__main__":
         f = open("../tests/bug1.json")
         pos_dict, colour, completed = JsonParser(json.load(f)).parse()
         initial_state = State(pos_dict, colour, completed)
-        evaluator = MyEvaluator()
+        evaluator = AbstractWeightEvaluator()
         cutoff = DepthLimitCutoff(max_depth=3)
         player = MaxNAgent(player="red", initial_state=initial_state,
                            evaluator=evaluator, cutoff=cutoff)
