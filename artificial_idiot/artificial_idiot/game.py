@@ -113,13 +113,13 @@ class Game(BoardProblem):
         Yields:
             action (tuple) -- encoded as ((from position), (to position))
         """
+        actions = []
         if cls.terminal_state(state):
-            return
+            return actions
         # Jump -> move -> exit
         # for each piece try all possible moves
         # Not using deepcopy here because no need to
         move_actions = []
-        actions = []
         for q, r in state.piece_to_pos[state.colour]:
             for move in cls._move:
                 i, j = move
@@ -189,6 +189,12 @@ class Game(BoardProblem):
     def value(self, state, *args, **kwargs):
         return self.evaluator(state, *args, **kwargs)
 
+    @staticmethod
+    def terminal_state(state):
+        if isinstance(state, Node):
+            return max(state.state.completed.values()) == 4
+        return max(state.completed.values()) == 4
+
     def __str__(self):
         return str(self.initial_state)
 
@@ -216,12 +222,6 @@ class NodeGame(Game):
             raise ValueError(f"No corresponding action {action} found."
                              f"Possible actions are "
                              f"{[child.action for child in self.initial_state.children]}")
-
-    @staticmethod
-    def terminal_state(state):
-        if isinstance(state, Node):
-            return max(state.state.completed.values()) == 4
-        return max(state.completed.values()) == 4
 
 
 if __name__ == "__main__":
