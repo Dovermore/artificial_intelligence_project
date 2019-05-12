@@ -22,7 +22,6 @@ class State:
         :param pos_to_piece: a dictionary {pos : piece type}
         :param completed: a dictionary {piece type : number of exited}
         """
-
         # This is the current active colour
         self._colour = colour
         # Map from positions to pieces
