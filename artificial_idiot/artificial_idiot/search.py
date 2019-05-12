@@ -83,7 +83,7 @@ class RandomMove(Search):
         return actions[i]
 
 
-class UCBSearch(Search):
+class UCTSearch(Search):
     def __init__(self, c=2, node_type=BasicUCTNode):
         self.c = c
         self.node_type = node_type

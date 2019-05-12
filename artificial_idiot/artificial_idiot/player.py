@@ -1,5 +1,5 @@
 from artificial_idiot.game import Game
-from artificial_idiot.search import RandomMove, MaxN
+from artificial_idiot.search import *
 from artificial_idiot.cutoff import DepthLimitCutoff
 from artificial_idiot.evaluator import *
 from artificial_idiot.util.json_parser import JsonParser
@@ -9,6 +9,7 @@ import json
 
 
 player_evaluator = DummyEvaluator()
+winloss_evaluator = WinLossEvaluator()
 
 
 class AbstractPlayer(abc.ABC):
@@ -237,7 +238,19 @@ class Player(MaxNAgent):
         cutoff = DepthLimitCutoff(max_depth=3)
         super().__init__(player, cutoff=cutoff, evaluator=evaluator,
                          initial_state=None)
-        pass
+
+
+class BasicUCTPlayer(AbstractPlayer):
+    """
+    Basic UCT player. Uses upper confidence monte carlo search algorithm
+    """
+    def __init__(self, player, evaluator=winloss_evaluator,
+                 initial_state=None, *args, **kwargs):
+        search = UCTSearch(*args, **kwargs)
+        super().__init__(player, search, evaluator, initial_state)
+
+    def action(self):
+        return self.search_algorithm.search(self.game, self.game.initial_state)
 
 
 if __name__ == "__main__":
