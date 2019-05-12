@@ -37,6 +37,22 @@ class DummyEvaluator(Evaluator):
         return 0
 
 
+class WinLossEvaluator(Evaluator):
+    """
+    Return 1 if win, -1 if lost, else 0
+    """
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def __call__(self, state, player, *args, **kwargs):
+        if state.completed[player] == 4:
+            return 1
+        for p in state.completed:
+            if state.completed[p] == 4:
+                return -1
+        return 0
+
+
 class MyEvaluator(Evaluator):
     """
     An evaluator that only considers
