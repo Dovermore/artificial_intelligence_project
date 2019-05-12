@@ -1,4 +1,4 @@
-from artificial_idiot.game import Game
+from artificial_idiot.game import *
 from artificial_idiot.search import *
 from artificial_idiot.cutoff import DepthLimitCutoff
 from artificial_idiot.evaluator import *
@@ -237,9 +237,9 @@ class BasicUCTPlayer(AbstractPlayer):
     Basic UCT player. Uses upper confidence monte carlo search algorithm
     """
     def __init__(self, player, evaluator=winloss_evaluator,
-                 initial_state=None, *args, **kwargs):
+                 game_type=NodeGame, initial_state=None, *args, **kwargs):
         search = UCTSearch(*args, **kwargs)
-        super().__init__(player, search, evaluator, initial_state)
+        super().__init__(player, search, game_type, evaluator, initial_state)
 
     def action(self):
         return self.search_algorithm.search(self.game, self.game.initial_state)
