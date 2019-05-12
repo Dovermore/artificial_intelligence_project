@@ -2,6 +2,7 @@ from artificial_idiot.util.misc import is_in, randint
 from artificial_idiot.state import State
 from artificial_idiot.node import Node
 import abc
+from functools import lru_cache
 
 
 class Problem(abc.ABC):
@@ -97,6 +98,7 @@ class Game(BoardProblem):
         self.colour = colour
 
     @classmethod
+    @lru_cache(10000)
     def actions(cls, state):
         """
         Yield all possible moves in a given state
@@ -111,14 +113,14 @@ class Game(BoardProblem):
         Yields:
             action (tuple) -- encoded as ((from position), (to position))
         """
+        if cls.terminal_state(state):
+            return
+        # Jump -> move -> exit
         # for each piece try all possible moves
         # Not using deepcopy here because no need to
         move_actions = []
+        actions = []
         for q, r in state.piece_to_pos[state.colour]:
-            exit_ready_pos = cls._exit_positions[state.colour]
-            # exit
-            if (q, r) in exit_ready_pos:
-                yield ((q, r), None, "EXIT")
             for move in cls._move:
                 i, j = move
                 move_to = (q + i, r + j)
@@ -130,13 +132,17 @@ class Game(BoardProblem):
                     # Jump (still need to check inboard)
                     elif state.inboard(jump_to) and \
                             not state.occupied(jump_to):
-                        yield ((q, r), jump_to, "JUMP")
+                        actions.append(((q, r), jump_to, "JUMP"))
         # no move possible return None
         if move_actions:
             for action in move_actions:
-                yield action
-        else:
-            yield (None, None, "PASS")
+                actions.append(action)
+        for q, r in state.piece_to_pos[state.colour]:
+            exit_ready_pos = cls._exit_positions[state.colour]
+            # exit
+            if (q, r) in exit_ready_pos:
+                actions.append(((q, r), None, "EXIT"))
+        return actions if len(actions) > 0 else [(None, None, "PASS")]
 
     def result(self, state, action):
         """
@@ -180,10 +186,6 @@ class Game(BoardProblem):
         """
         self.initial_state = self.result(self.initial_state, action)
 
-    @staticmethod
-    def terminal_node(node):
-        return max(node.state.completed.values()) == 4
-
     def value(self, state, *args, **kwargs):
         return self.evaluator(state, *args, **kwargs)
 
@@ -196,10 +198,6 @@ class NodeGame(Game):
     A expansion to the base game. Also stores a root node for search with
     memory (Learning)
     """
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.initial_state = Node(self.initial_state)
-
     # @classmethod
     # def actions(cls, state):
     #     """
@@ -213,10 +211,17 @@ class NodeGame(Game):
         for child in self.initial_state.expand(self):
             if child.action == action:
                 self.initial_state = child
+                return
         else:
             raise ValueError(f"No corresponding action {action} found."
                              f"Possible actions are "
                              f"{[child.action for child in self.initial_state.children]}")
+
+    @staticmethod
+    def terminal_state(state):
+        if isinstance(state, Node):
+            return max(state.state.completed.values()) == 4
+        return max(state.completed.values()) == 4
 
 
 if __name__ == "__main__":
