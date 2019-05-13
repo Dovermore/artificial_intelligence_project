@@ -15,7 +15,7 @@ class AbstractLayer(ABC):
         raise NotImplementedError()
 
     @abstractmethod
-    def get_dz(self, z, backward_err):
+    def compute_dz(self, z, backward_err):
         """
         Compute error of a layer using the unactivated value z and error from
         output layer.
@@ -26,14 +26,14 @@ class AbstractLayer(ABC):
         raise NotImplementedError()
 
     @abstractmethod
-    def get_da_prev(self, z):
+    def compute_prev_da(self, z):
         """
         Compute derivative for activation function of previous layer
         """
         raise NotImplementedError()
 
     @abstractmethod
-    def get_dw(self, inputs, layer_err):
+    def compute_dw(self, inputs, layer_err):
         raise NotImplementedError()
 
     @abstractmethod
@@ -54,17 +54,17 @@ class FullyConnected(AbstractLayer):
             return z, a
         return a
 
-    def get_dz(self, z, backwarded_err):
+    def compute_dz(self, z, backwarded_err):
         return backwarded_err * self.activation.deriv(z)
 
-    def get_da_prev(self, z):
+    def compute_prev_da(self, z):
         """
         Chain rule, z = X @ w, a = relu(z)
         dy/dw = dy/dz * dz/dw
         """
         return z.dot(self.W.T)
 
-    def get_dw(self, inputs, layer_err):
+    def compute_dw(self, inputs, layer_err):
         return inputs.T.dot(layer_err)
 
     def update(self, grad):

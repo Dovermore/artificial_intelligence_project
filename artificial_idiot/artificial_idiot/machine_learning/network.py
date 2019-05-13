@@ -1,12 +1,20 @@
 from collections import deque
-import pickle # Python serialisation library
+import pickle  # Python serialisation library
+import os
+import os.path as path
+from datetime import datetime
+
+
+start = datetime.now().strftime("%Y%m%d%H%M%S")
 
 
 class Network:
     """
     This class defines how to train the neural network
     """
-    def __init__(self, layers, learning_rate, loss):
+    def __init__(self, layers, learning_rate, loss,
+                 save_to=path.join(".", start, "network"),
+                 checkpoint_path=path.join(".", start, "checkpoints")):
         """
         __init__ the nerwork class for training, by specifying a set of layers
         the dimension of layers must agree.
@@ -15,10 +23,14 @@ class Network:
             through
         :param learning_rate: The learning rate of the network
         :param loss: Loss function to use.
+        :param save_to: save to certain path
+        :param checkpoint_path: where the checkpoints are saved to
         """
         self.layers = layers
         self.loss = loss
         self._learning_rate = learning_rate
+        self.save_to = save_to
+        self.checkpoint_path = checkpoint_path
 
     @property
     def learning_rate(self):
@@ -67,20 +79,36 @@ class Network:
         gradients = deque()
         for layer in reversed(self.layers):
             # DJ/Dz_i = DJ/Da_i * Da_i/Dz_i
-            dz = layer.get_dz(z, da) #local
+            dz = layer.compute_dz(z, da)
             z = zs.popleft()
             # DJ/Dw_i = DJ/Dz_i * Dz_i/Dw_i
-            gradient = layer.get_dw(z, dz)
+            gradient = layer.compute_dw(z, dz)
             gradients.appendleft(gradient)
             # DJ/Da_i-1 = DJ/Dz_i * Dz/Da_i-1
-            da = layer.get_da_prev(dz)
+            da = layer.compute_prev_da(dz)
 
         for layer in self.layers:
             # W_t+1 = W_t - theta * gard
             layer.update(self.learning_rate * gradients.popleft())
-
         assert len(gradients) == 0
 
-    def serialise(self):
-        # pickle.
-        pass
+    @staticmethod
+    def read_from(file):
+        try:
+            pickle.loads(file)
+        except Exception as e:
+            print(e)
+
+    def save_checkpoint(self):
+        now = datetime.now().strftime("%Y%m%d%H%M%S")
+        os.makedirs(self.checkpoint_path, exist_ok=True)
+        with open(path.join(self.checkpoint_path, f"checkpoint_{now}"),
+                  "wb") as f:
+            pickle.dump(self, f)
+
+    def save_final(self):
+        if not path.exists(self.save_to):
+            os.makedirs(os.path.dirname(self.save_to), exist_ok=True)
+        with open(self.save_to, "wb") as f:
+            pickle.dump(self, f)
+
