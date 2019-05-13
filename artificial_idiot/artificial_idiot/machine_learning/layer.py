@@ -1,8 +1,7 @@
-from abc import ABCMeta, abstractmethod
+from abc import abstractmethod, ABC
 
 
-class AbstractLayer(object):
-    __metaclass__ = ABCMeta
+class AbstractLayer(ABC):
 
     @abstractmethod
     def forward(self, inputs):

@@ -1,4 +1,4 @@
-from artificial_idiot.nn.nn.layer.layer import AbstractLayer
+from artificial_idiot.machine_learning.layer import AbstractLayer
 
 
 class FullyConnected(AbstractLayer):
@@ -12,7 +12,7 @@ class FullyConnected(AbstractLayer):
 
     def train_forward(self, inputs):
         z = inputs.dot(self.W)
-        return (z, self.activation.compute(z))
+        return z, self.activation.compute(z)
 
     def get_layer_error(self, z, backwarded_err):
         return backwarded_err * self.activation.deriv(z)

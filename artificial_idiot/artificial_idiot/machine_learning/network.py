@@ -2,18 +2,18 @@ from collections import deque
 
 
 class Network(object):
-    def __init__(self, layers, lr, loss):
+    def __init__(self, layers, learning_rate, loss):
         self.layers = layers
         self.loss = loss
-        self._lr = lr
+        self._learning_rate = learning_rate
 
     @property
-    def lr(self):
-        return self._lr
+    def learning_rate(self):
+        return self._learning_rate
 
-    @lr.setter
-    def lr(self, v):
-        self._lr = v
+    @learning_rate.setter
+    def learning_rate(self, v):
+        self._learning_rate = v
 
     def forward(self, inputs):
         activation = inputs
@@ -41,6 +41,6 @@ class Network(object):
 
         # update step
         for l in self.layers:
-            l.update(self.lr * grads.popleft())
+            l.update(self.learning_rate * grads.popleft())
 
         assert len(grads) == 0

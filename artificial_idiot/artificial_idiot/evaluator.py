@@ -1,4 +1,5 @@
 import abc
+import numpy as np
 
 
 class Evaluator(abc.ABC):
@@ -70,8 +71,7 @@ class WeightedEvaluator(Evaluator):
     An evaluator that takes in functions that
     1. takes in current state
     returns how valuable the state is for a given player in the forms of
-    1. a value
-    2. an array of values
+     np.array
     The values are concatenated by the order of function list
     These values are then multiplied by the weights
     """
@@ -79,12 +79,10 @@ class WeightedEvaluator(Evaluator):
         self._functions = functions
         super().__init__(*args, **kwargs)
 
-    def __call__(self, state, player, weights ,*args, **kwargs):
-
-        for func in self._functions:
-            func(state)
-
-        return state.completed[player]
+    def __call__(self, state, player, weights, *args, **kwargs):
+        X = np.concatenate([fn(state) for fn in self._functions])
+        # reshape to a row vector then perform the matrix multiplication
+        return X.reshape(1, -1) @ weights
 
 
 if __name__ == '__main__':
