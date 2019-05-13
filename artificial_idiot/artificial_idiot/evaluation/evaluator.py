@@ -1,6 +1,44 @@
 import abc
 import numpy as np
 
+_exit_positions = {
+    "red": ((3, -3), (3, -2), (3, -1), (3, 0)),
+    "green": ((-3, 3), (-2, 3), (-1, 3), (0, 3)),
+    "blue": ((0, -3), (-1, -2), (-2, -1), (-3, 0))
+}
+
+
+def grid_dist(pos1, pos2):
+    """
+    Get the grid distance between two different grid locations
+    :param pos1: first position (tuple)
+    :param pos2: second position (tuple)
+    :return: The `manhattan` distance between those two positions
+    """
+    x1, y1 = pos1
+    x2, y2 = pos2
+
+    dy = y2 - y1
+    dx = x2 - x1
+
+    # If different sign, take the max of difference in position
+    if dy * dx < 0:
+        return max([abs(dy), abs(dx)])
+    # Same sign or zero just take sum
+    else:
+        return abs(dy + dx)
+
+
+def sum_shortest_exit_distance(state, player):
+    # the distance is 'infinite' if all exit positions are blocked
+    exit_positions = [pos for pos in _exit_positions[player] if not state.occupied(pos)]
+    distances = {}
+    for piece in state.piece_to_pos[player]:
+        distances[piece] = 100000
+        for exit_pos in exit_positions:
+            distances[piece] = min(grid_dist(piece, exit_pos), distances[piece])
+    return sum(distances.values())
+
 
 class Evaluator(abc.ABC):
     """
@@ -57,33 +95,25 @@ class WinLossEvaluator(Evaluator):
 class NaiveEvaluator(Evaluator):
     """
     An evaluator that only considers
-     1. amount of exited pieces
-     2. number of your pieces
+    -- weights are defined beforehand
+    1. Number of your pieces
+    2. Number of your exited pieces
+    3. Sum of grid distance of each nodes to nearest exit
     """
+
+    # weights for pieces, exited, distance
     def __init__(self, *args, **kwargs):
+        self._weights = [5, 2, 0.7]
         super().__init__(*args, **kwargs)
 
+    # returns how good the state is for a given player
     def __call__(self, state, player, *args, **kwargs):
-        return state.completed[player]
-
-
-class WeightedEvaluator(Evaluator):
-    """
-    An evaluator that takes in functions that
-    1. takes in current state
-    returns how valuable the state is for a given player in the forms of
-     np.array
-    The values are concatenated by the order of function list
-    These values are then multiplied by the weights
-    """
-    def __init__(self, functions, *args, **kwargs):
-        self._functions = functions
-        super().__init__(*args, **kwargs)
-
-    def __call__(self, state, player, weights, *args, **kwargs):
-        X = np.concatenate([fn(state) for fn in self._functions])
-        # reshape to a row vector then perform the matrix multiplication
-        return X.reshape(1, -1) @ weights
+        piece_to_pos = state.piece_to_pos
+        completed = state.completed
+        n_pieces = len(piece_to_pos[player])
+        n_exited_pieces = completed[player]
+        sum_distance = sum_shortest_exit_distance(state, player)
+        return sum([n_pieces, n_exited_pieces, sum_distance])
 
 
 class FunctionalEvaluator(Evaluator):
