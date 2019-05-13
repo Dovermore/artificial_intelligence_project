@@ -107,8 +107,8 @@ class MaxN(Search):
 #                 a_best = a
 #         return v_max, a_best
 
-class RandomMove(Search):
 
+class RandomMove(Search):
     def __init__(self, seed):
         self.seed = seed
         random.seed(seed)
@@ -211,3 +211,15 @@ if __name__ == '__main__':
     # test_exit()
     test_only_one_possible_move()
 
+# TODO implement the opening and ending game
+
+class EndingGameSearch():
+    pass
+
+
+class OpeningGameSearch():
+    pass
+
+
+class CompositionSearch():
+    pass
