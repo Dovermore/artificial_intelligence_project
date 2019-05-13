@@ -22,6 +22,7 @@ class Color:
     GREEN = "#339966"
     BLUE  = "#003399"
     BLACK = "#000000"
+    WHITE = "#ffffff"
     NONE  = ""
 
 # hex shape flat
@@ -34,7 +35,7 @@ HEX_P = [(-PW/2,-PH/4),(0,-PH/2),(PW/2,-PH/4),(PW/2,PH/4),(0,PH/2),(-PW/2,PH/4)]
 class BoardViewCanvas(tkinter.Canvas):
 
     def __init__(self, root):
-        super().__init__(root, width=W, height=H, background=Color.BG, 
+        super().__init__(root, width=W, height=H, background=Color.WHITE,
             highlightthickness=0)
         self.root = root
 
@@ -80,7 +81,7 @@ class ExportButton:
         # render the button (a hexagon):
         D = min(H, W)
         coordinates = transform(HEX_F, (0.8*W, 0.8*H), (0.2*D, 0.2*D))
-        self.id      = canvas.create_polygon(coordinates, fill=Color.FG)
+        self.id      = canvas.create_polygon(coordinates, fill=Color.WHITE)
         self.labelid = canvas.create_text((0.8*W, 0.8*H), text="Export",
                 fill=Color.BG, state=tkinter.DISABLED)
 
@@ -107,7 +108,7 @@ class Board:
         # create board outline:
         D = min(H, W)
         board_coordinates = transform(HEX_F, (W/2, H/2), (0.9*D, 0.9*D))
-        self.id = canvas.create_polygon(board_coordinates, fill=Color.FG)
+        self.id = canvas.create_polygon(board_coordinates, fill=Color.WHITE)
 
         # create hexagons and piece shadows on board:
         self.hexes = {}

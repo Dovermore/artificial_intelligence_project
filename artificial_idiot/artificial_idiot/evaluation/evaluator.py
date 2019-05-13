@@ -96,14 +96,14 @@ class NaiveEvaluator(Evaluator):
     """
     An evaluator that only considers
     -- weights are defined beforehand
-    1. Number of your pieces
+    1. Number of your pieces on the board
     2. Number of your exited pieces
-    3. Sum of grid distance of each nodes to nearest exit
+    3. Reciprocal of the sum of grid distance of each nodes to nearest exit
     """
 
     # weights for pieces, exited, distance
-    def __init__(self, *args, **kwargs):
-        self._weights = [5, 2, 0.7]
+    def __init__(self, weights,  *args, **kwargs):
+        self._weights = weights
         super().__init__(*args, **kwargs)
 
     # returns how good the state is for a given player

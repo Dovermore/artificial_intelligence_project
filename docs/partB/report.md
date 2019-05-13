@@ -91,7 +91,9 @@ What happens if all exit positions are blocked?
 
 When this happens no matter how close the player is to the exit positions he or she cannot win the game. So the agent should not be encouraged to move towards exit if exits are blocked. Only when the exit positions freed up will the agent's pieces start moving towards the exit. 
 
-The distance to exit position ignores the behaviours of positions of other player pieces. If other player pieces are blocking the 
+The distance to exit position ignores the behaviours of positions of other player pieces. If other player pieces are blocking the shortest path to exit, the player will need to take a longer route. Assume agent to be red. When ignoring other player's positions it will continue to move 
+
+
 
 
 
