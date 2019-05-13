@@ -73,7 +73,7 @@ class Network:
         for layer in self.layers:
             z, activation = layer.forward(activation, True)
             zs.appendleft(z)
-        d_yhat = self.loss.deriv((activation, mini_batch_outputs))
+        d_yhat = self.loss.derivative((activation, mini_batch_outputs))
         z = zs.popleft()
         da = d_yhat
         gradients = deque()
@@ -94,10 +94,8 @@ class Network:
 
     @staticmethod
     def read_from(file):
-        try:
-            pickle.loads(file)
-        except Exception as e:
-            print(e)
+        with open(file, "rb") as file:
+            return pickle.load(file)
 
     def save_checkpoint(self):
         now = datetime.now().strftime("%Y%m%d%H%M%S")

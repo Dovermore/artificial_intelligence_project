@@ -42,9 +42,10 @@ class AbstractLayer(ABC):
 
 
 class FullyConnected(AbstractLayer):
-    def __init__(self, wshape, activation, weight_init):
-        self.wshape = wshape
-        self.W = weight_init(self.wshape)
+    def __init__(self, n_in, n_out, activation, weight_init):
+        self.n_in = n_in
+        self.n_out = n_out
+        self.W = weight_init(n_in, n_out)
         self.activation = activation
 
     def forward(self, inputs, training=False):
@@ -55,7 +56,7 @@ class FullyConnected(AbstractLayer):
         return a
 
     def compute_dz(self, z, backwarded_err):
-        return backwarded_err * self.activation.deriv(z)
+        return backwarded_err * self.activation.derivative(z)
 
     def compute_prev_da(self, z):
         """
