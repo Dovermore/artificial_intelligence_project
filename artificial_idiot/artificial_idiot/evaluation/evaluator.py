@@ -119,10 +119,9 @@ class FunctionalEvaluator(Evaluator):
         super().__init__(*args, **kwargs)
 
     def __call__(self, state, weights, *args, **kwargs):
-        # TODO shouldn't X be a 2d array?
-        X = np.concatenate([fn(state) for fn in self._functions])
-        # reshape to a row vector then perform the matrix multiplication
-        return X.reshape(1, -1) @ weights
+        X = np.array([fn(state) for fn in self._functions])
+        X = X.T
+        return np.dot(X, weights)
 
 
 class NaiveEvaluator(Evaluator):

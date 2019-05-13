@@ -11,8 +11,8 @@ def parse_state(file_name):
     return State(pos_dict, colour, completed)
 
 
-def return_1(state):
-    return [1, 1, 1]
+def foo(state):
+    return [1, 2, 3]
 
 
 class TestFunctionalEvaluator(TestCase):
@@ -20,11 +20,11 @@ class TestFunctionalEvaluator(TestCase):
     def test_basic(self):
         n_parameters = 3
         weights = [1]*n_parameters
-        functions = [return_1]*n_parameters
+        functions = [foo]*n_parameters
         evaluator = FunctionalEvaluator(functions)
         state = parse_state("../../tests/evaluator_test.json")
-        utility_value = evaluator(state, weights)
-        self.assertTrue(utility_value == [3, 3, 3])
+        utility_value = list(evaluator(state, weights))
+        self.assertListEqual(utility_value, [3, 6, 9])
 
 
 class TestNaiveEvaluator(TestCase):
