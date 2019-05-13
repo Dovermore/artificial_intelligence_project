@@ -1,6 +1,6 @@
-from artificial_idiot.util.misc import is_in, randint
-from artificial_idiot.state import State
-from artificial_idiot.node import Node
+from artificial_idiot.util.misc import is_in
+from artificial_idiot.game.state import State
+from artificial_idiot.game.node import Node
 import abc
 from functools import lru_cache
 

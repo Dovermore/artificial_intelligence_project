@@ -11,12 +11,14 @@ class AbstractActivation(ABC):
     def deriv(self, x):
         raise NotImplementedError()
 
+
 class Relu(AbstractActivation):
     def compute(self, x):
         return np.maximum(0, x)
 
     def deriv(self, x):
         return 1. * (x > 0)
+
 
 class Sigmoid(AbstractActivation):
     def compute(self, x):
@@ -26,8 +28,10 @@ class Sigmoid(AbstractActivation):
         y = self.compute(x)
         return y * (1. - y)
 
+
 class Loss(AbstractActivation):
     pass
+
 
 class MeanSquaredError(Loss):
     def compute(self, Z):

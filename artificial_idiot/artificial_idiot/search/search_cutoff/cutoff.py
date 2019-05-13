@@ -38,10 +38,5 @@ class DepthLimitCutoff(Cutoff):
         return self.max_depth < depth
 
 
-if __name__ == '__main__':
-    cutoff = DepthLimitCutoff(max_depth=10)
-    assert(cutoff(None, depth=10) == False)
-    assert(cutoff(None, depth=9) == False)
-    assert(cutoff(None, depth=11) == True)
 
 

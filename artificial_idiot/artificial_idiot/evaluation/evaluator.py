@@ -85,8 +85,25 @@ class WeightedEvaluator(Evaluator):
         return X.reshape(1, -1) @ weights
 
 
+class FunctionalEvaluator(Evaluator):
+    """
+    Evaluate a state based on set of features computed by functions and
+    return single scalar indicating the value of the state.
+
+    The value is computed by feeding an arbitrary function to the state
+    """
+    def __init__(self, functions, *args, **kwargs):
+        self._functions = functions
+        super().__init__(*args, **kwargs)
+
+    def __call__(self, state, player, weights, *args, **kwargs):
+        X = np.concatenate([fn(state) for fn in self._functions])
+        # reshape to a row vector then perform the matrix multiplication
+        return X.reshape(1, -1) @ weights
+
+
 if __name__ == '__main__':
-    from artificial_idiot.state import State
+    from artificial_idiot.game.state import State
     import json
     from artificial_idiot.util.json_parser import JsonParser
     f = open("../tests/evaluator_test.json")

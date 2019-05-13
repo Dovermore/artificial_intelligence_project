@@ -1,9 +1,16 @@
-from artificial_idiot.game import *
-from artificial_idiot.search import *
-from artificial_idiot.cutoff import DepthLimitCutoff
-from artificial_idiot.evaluator import *
+import abc
+
+from artificial_idiot.search.random import Random
+from artificial_idiot.search.uct import UCTSearch
+from artificial_idiot.search.max_n import MaxN
+from artificial_idiot.search.search_cutoff.cutoff import DepthLimitCutoff
+from artificial_idiot.evaluation.evaluator import (
+    DummyEvaluator, WinLossEvaluator, MyEvaluator
+)
+from artificial_idiot.game.node import Node, BasicUCTNode
 from artificial_idiot.util.json_parser import JsonParser
-from artificial_idiot.state import State
+from artificial_idiot.game.state import State
+from artificial_idiot.game.game import Game, NodeGame
 import random
 import json
 
@@ -197,7 +204,7 @@ class RandomAgent(AbstractPlayer):
         if seed is None:
             seed = random.random()
         print("* seed is:", seed)
-        super().__init__(player, search_algorithm=RandomMove(seed),
+        super().__init__(player, search_algorithm=Random(seed),
                          initial_state=initial_state)
         pass
 
@@ -227,7 +234,7 @@ class Player(MaxNAgent):
     """
     def __init__(self, player):
         evaluator = MyEvaluator()
-        cutoff = DepthLimitCutoff(max_depth=3)
+        cutoff = DepthLimitCutoff(max_depth=6)
         super().__init__(player, cutoff=cutoff, evaluator=evaluator,
                          initial_state=None)
 
@@ -251,41 +258,3 @@ class BasicUCTPlayer(AbstractPlayer):
                                               self.game.initial_state)
         return self.convert_action(action, "referee")
 
-
-if __name__ == "__main__":
-
-    def random_agent_test():
-        player = RandomAgent(player="red", initial_state=None, seed=10)
-        red_move =('MOVE', ((-3, 0), (-2, -1)))
-        green_move = ("MOVE", ((0, -3), (0, -2)))
-        blue_move = ('MOVE', ((3,0), (2,0)))
-        assert (player.action() == red_move)
-        player.update("red", red_move)
-        player.update("green", green_move)
-        player.update("blue", blue_move)
-        assert (player.action() == ('MOVE', ((-3, 3), (-2, 2))))
-        player.update("blue", ("PASS", None))
-
-    def max_n_agent_test():
-        f = open("../tests/bug1.json")
-        pos_dict, colour, completed = JsonParser(json.load(f)).parse()
-        initial_state = State(pos_dict, colour, completed)
-        evaluator = MyEvaluator()
-        cutoff = DepthLimitCutoff(max_depth=3)
-        player = MaxNAgent(player="red", initial_state=initial_state,
-                           evaluator=evaluator, cutoff=cutoff)
-        print(player.state)
-        print(player.action())
-
-    def random_agent_pass_test():
-        f = open("../tests/bug1.json")
-        pos_dict, colour, completed = JsonParser(json.load(f)).parse()
-        initial_state = State(pos_dict, colour, completed)
-        player = RandomAgent(player="red", initial_state=initial_state,
-                             seed=10)
-        print(player.state)
-        print(player.action())
-
-    random_agent_test()
-    max_n_agent_test()
-    random_agent_pass_test()
