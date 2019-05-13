@@ -120,6 +120,7 @@ class Game(BoardProblem):
         # for each piece try all possible moves
         # Not using deepcopy here because no need to
         move_actions = []
+        # TODO change the order of the loops
         for q, r in state.piece_to_pos[state.colour]:
             for move in cls._move:
                 i, j = move
