@@ -5,7 +5,7 @@ from artificial_idiot.search.uct import UCTSearch
 from artificial_idiot.search.max_n import MaxN
 from artificial_idiot.search.search_cutoff.cutoff import DepthLimitCutoff
 from artificial_idiot.evaluation.evaluator import (
-    DummyEvaluator, WinLossEvaluator, MyEvaluator
+    DummyEvaluator, WinLossEvaluator, NaiveEvaluator
 )
 from artificial_idiot.game.node import Node, BasicUCTNode
 from artificial_idiot.util.json_parser import JsonParser
@@ -233,7 +233,7 @@ class Player(MaxNAgent):
     Here we use best hyperparameter
     """
     def __init__(self, player):
-        evaluator = MyEvaluator()
+        evaluator = NaiveEvaluator()
         cutoff = DepthLimitCutoff(max_depth=6)
         super().__init__(player, cutoff=cutoff, evaluator=evaluator,
                          initial_state=None)

@@ -5,7 +5,7 @@ from artificial_idiot.search.search import Search
 
 class MaxN(Search):
     """
-    Generic Maxn algorithm
+    Generic Max N algorithm
     """
 
     def __init__(self, evaluate, cut_off_test, n_player):
@@ -46,10 +46,9 @@ class MaxN(Search):
                 a_best = a
         return v_max, a_best
 
-
     def search(self, game, state, depth=1, **kwargs):
         # no exploration needed if only there is no choice to be made
-        actions =game.actions(state)
+        actions = game.actions(state)
         if len(actions) == 1: return actions[0]
         # cut off test
         _, a = self._recursive_max_search(game, state, depth)

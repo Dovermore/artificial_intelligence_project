@@ -54,10 +54,11 @@ class WinLossEvaluator(Evaluator):
         return 0
 
 
-class MyEvaluator(Evaluator):
+class NaiveEvaluator(Evaluator):
     """
     An evaluator that only considers
      1. amount of exited pieces
+     2. number of your pieces
     """
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -91,6 +92,9 @@ class FunctionalEvaluator(Evaluator):
     return single scalar indicating the value of the state.
 
     The value is computed by feeding an arbitrary function to the state
+
+    Assumption:
+    functions(state) -> list
     """
     def __init__(self, functions, *args, **kwargs):
         self._functions = functions
@@ -101,15 +105,3 @@ class FunctionalEvaluator(Evaluator):
         # reshape to a row vector then perform the matrix multiplication
         return X.reshape(1, -1) @ weights
 
-
-if __name__ == '__main__':
-    from artificial_idiot.game.state import State
-    import json
-    from artificial_idiot.util.json_parser import JsonParser
-    f = open("../tests/evaluator_test.json")
-    pos_dict, colour, completed = JsonParser(json.load(f)).parse()
-    state = State(pos_dict, colour, completed)
-    evaluator = MyEvaluator()
-    assert(evaluator(state, 'red') == 3)
-    assert(evaluator(state, 'green') == 2)
-    assert(evaluator(state, 'blue') == 4)
