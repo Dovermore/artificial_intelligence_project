@@ -1,7 +1,7 @@
 import sys
 from os import path
 sys.path.append(path.dirname(path.dirname(__file__)))
-from artificial_idiot.search.open_game import SimpleActionBook
+from artificial_idiot.search.action_book.action_book import SimpleActionBook
 
 name = "gather"
 
