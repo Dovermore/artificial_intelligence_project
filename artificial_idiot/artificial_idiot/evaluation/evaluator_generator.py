@@ -30,16 +30,17 @@ def grid_dist(pos1, pos2):
 
 
 def sum_shortest_exit_distance(state, player):
-    # the distance is 'infinite' if all exit positions are blocked
-    exit_positions = [pos for pos in _exit_positions[player] if not state.occupied(pos)]
+    # the distance is 'infinite' if all exit positions are blocked by other player
+    pieces = state.piece_to_pos[player]
+    exit_positions = [pos for pos in _exit_positions[player] if ((not state.occupied(pos)) or (pos in pieces))]
     distances = {}
     # when there are no pieces or distance is 0 use smallest distance
     smallest_distance = 0.001
-    for piece in state.piece_to_pos[player]:
+    for piece in pieces:
         distances[piece] = 1000000
         for exit_pos in exit_positions:
             distances[piece] = min(grid_dist(piece, exit_pos), distances[piece])
-            distances[piece] = max(grid_dist(piece, exit_pos), smallest_distance)
+            distances[piece] = max(distances[piece], smallest_distance)
     # return 0.001 if no pieces
     if len(distances) == 0:
         return smallest_distance

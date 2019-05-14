@@ -53,8 +53,8 @@ class TestNaiveEvaluator(TestCase):
         state = parse_state("../../tests/evaluator_test.json")
         print(state)
         evaluator = evaluator_generator(state)
-        self.assertAlmostEqual(evaluator('red'), 11.23, places=1)
-        self.assertAlmostEqual(evaluator('green'), 11.07, places=3)
+        self.assertAlmostEqual(evaluator('red'), 11, places=1)
+        self.assertAlmostEqual(evaluator('green'), 20.038888, places=3)
         self.assertEqual(evaluator('blue'), 708)
 
     def test_varied_distance(self):
@@ -62,7 +62,7 @@ class TestNaiveEvaluator(TestCase):
         state = parse_state("../../tests/varied_distance.json")
         print(state)
         evaluator = evaluator_generator(state)
-        self.assertAlmostEqual(evaluator('red'), 11.23, places=1)
+        self.assertAlmostEqual(evaluator('red'), 711, places=1)
         self.assertEqual(evaluator('green'), 11.7)
         self.assertEqual(evaluator('blue'), 11.35)
 
@@ -71,12 +71,13 @@ class TestSumShortestExitDistance(TestCase):
 
     def test_no_block(self):
         state = parse_state("../../tests/empty_board_for_red.json")
-        self.assertTrue(sum_shortest_exit_distance(state, 'red') == 12)
+        print(state)
+        self.assertEqual(sum_shortest_exit_distance(state, 'red'), 12)
 
     def test_one_exit_position(self):
         state = parse_state("../../tests/only_one_exit_pos_for_red.json")
-        self.assertTrue(sum_shortest_exit_distance(state, 'red') == 15)
+        self.assertEqual(sum_shortest_exit_distance(state, 'red'), 15)
 
     def test_no_exit(self):
         state = parse_state("../../tests/no_exit.json")
-        self.assertTrue(sum_shortest_exit_distance(state, 'red') >= 10000)
+        self.assertEqual(sum_shortest_exit_distance(state, 'red'), 4000000)

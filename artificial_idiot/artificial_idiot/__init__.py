@@ -1,5 +1,6 @@
 from artificial_idiot.player import *
 Player = Player
+Random = RandomAgent
 
 
 if __name__ == "__main__":

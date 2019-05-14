@@ -49,9 +49,9 @@ if sys.stdout.isatty():
     }
 else:
     _DISPLAY = { # something 5 characters wide for each colour:
-        'r': "  R  ", 
-        'g': "  G  ",
-        'b': "  B  ",
+        'r': "  🔴 ",
+        'g': "  ✅ ",
+        'b': "  🔵 ",
         ' ': "     "
     }
 
