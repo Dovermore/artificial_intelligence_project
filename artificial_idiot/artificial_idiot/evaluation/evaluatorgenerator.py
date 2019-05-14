@@ -55,7 +55,7 @@ def num_board_piece(state, player):
     return n_pieces
 
 
-class Evaluator(abc.ABC):
+class EvaluatorGenerator(abc.ABC):
     """
     The class to wrap a evaluation function disregard of the internal and
     provide a function interface to the player class for evaluating player's
@@ -79,7 +79,7 @@ class Evaluator(abc.ABC):
         pass
 
 
-class DummyEvaluator(Evaluator):
+class DummyEvaluator(EvaluatorGenerator):
     """
     An evaluator that only consider amount of exited pieces
     """
@@ -91,7 +91,7 @@ class DummyEvaluator(Evaluator):
         return 0
 
 
-class WinLossEvaluator(Evaluator):
+class WinLossEvaluator(EvaluatorGenerator):
     """
     Return 1 if win, -1 if lost, else 0
     """
@@ -116,9 +116,8 @@ class FunctionalEvaluator:
         self._value = dict()
 
     def __call__(self, player):
-        value = self._value[player]
-        if value:
-            return value
+        if player in self._value:
+            return self._value[player]
         X = np.array([fn(self._state, player) for fn in self._funcs])
         X = X.T
         value = np.dot(X, self._weights)
@@ -126,7 +125,7 @@ class FunctionalEvaluator:
         return value
 
 
-class FunctionalEvaluatorGenerator(Evaluator):
+class FunctionalEvaluatorGenerator(EvaluatorGenerator):
     """
     Evaluate a state based on set of features computed by functions and
     return single scalar indicating the value of the state.
@@ -142,10 +141,10 @@ class FunctionalEvaluatorGenerator(Evaluator):
         return FunctionalEvaluator(state, self._weights, self._functions)
 
 
-class NaiveEvaluator(Evaluator):
+class NaiveEvaluatorGenerator(EvaluatorGenerator):
     """
+    * weights are defined beforehand
     An evaluator that only considers
-    -- weights are defined beforehand
     1. Number of your pieces on the board
     2. Number of your exited pieces
     3. Reciprocal of the sum of grid distance of each nodes to nearest exit
@@ -153,19 +152,19 @@ class NaiveEvaluator(Evaluator):
 
     @staticmethod
     def reciprocal_distance(state, player):
-        return [1/sum_shortest_exit_distance(state, player)[0]]
+        return 1/sum_shortest_exit_distance(state, player)
 
     # weights in the format of [pieces, exited, distance]
     def __init__(self, weights,  *args, **kwargs):
         self._weights = weights
 
         func = [num_board_piece, num_exited_piece, self.reciprocal_distance]
-        self._eval = FunctionalEvaluator(func)
+        self._eval = FunctionalEvaluatorGenerator(self._weights, func)
         super().__init__(*args, **kwargs)
 
-    # returns how good the state is for a given player
-    def __call__(self, state, player, *args, **kwargs):
-        return self._eval(state, player, self._weights)
+    # returns an evaluator for that state
+    def __call__(self, state, *args, **kwargs):
+        return self._eval(state)
 
 
 

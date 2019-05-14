@@ -13,7 +13,7 @@ from artificial_idiot.search.search_cutoff import cutoff
 
 if __name__ == '__main__':
     MaxN = max_n.MaxN
-    from artificial_idiot.evaluation.evaluator import NaiveEvaluator
+    from artificial_idiot.evaluation.evaluatorgenerator import NaiveEvaluator
     from artificial_idiot.search.search_cutoff.cutoff import DepthLimitCutoff
     from artificial_idiot.game import Game
     from artificial_idiot.game.state import State

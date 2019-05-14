@@ -1,5 +1,5 @@
 from unittest import TestCase
-from artificial_idiot.evaluation.evaluator import *
+from artificial_idiot.evaluation.evaluatorgenerator import *
 from artificial_idiot.game.state import State
 from artificial_idiot.util.json_parser import JsonParser
 import json
@@ -21,25 +21,28 @@ class TestFunctionalEvaluator(TestCase):
         n_parameters = 3
         weights = [1]*n_parameters
         functions = [return_1]*n_parameters
-        evaluator = FunctionalEvaluator(functions)
+        evaluator_generator = FunctionalEvaluatorGenerator(weights, functions)
         state = parse_state("../../tests/evaluator_test.json")
-        self.assertEqual(evaluator(state, 'red', weights), 3)
-        self.assertEqual(evaluator(state, 'green', weights), 3)
-        self.assertEqual(evaluator(state, 'blue', weights), 3)
-
+        evaluator = evaluator_generator(state)
+        self.assertEqual(evaluator('red'), 3)
+        self.assertEqual(evaluator('green'), 3)
+        self.assertEqual(evaluator('blue'), 3)
 
 
 class TestNaiveEvaluator(TestCase):
 
-    def test_exit(self):
+    def test_no_exit_and_exited(self):
+        # blue have exited so it should have the highest value
+        # red can't exit because green is blocking it
         # weights in the format of [pieces, exited, distance]
         weights = [5, 2, 0.7]
-        evaluator = NaiveEvaluator(weights)
+        evaluator_generator = NaiveEvaluatorGenerator(weights)
         state = parse_state("../../tests/evaluator_test.json")
         print(state)
-        self.assertEqual(evaluator(state, 'red'), 11)
-        self.assertAlmostEqual(evaluator(state, 'green'), 20.1, places=1)
-        self.assertEqual(evaluator(state, 'blue'), 708)
+        evaluator = evaluator_generator(state)
+        self.assertAlmostEqual(evaluator('red'), 11, places=1)
+        self.assertAlmostEqual(evaluator('green'), 20.039, places=3)
+        self.assertEqual(evaluator('blue'), 708)
 
 
 class TestSumShortestExitDistance(TestCase):

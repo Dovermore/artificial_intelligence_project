@@ -1,1 +1,1 @@
-from artificial_idiot.evaluation import evaluator
+from artificial_idiot.evaluation import evaluatorgenerator

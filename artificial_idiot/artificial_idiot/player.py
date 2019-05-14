@@ -4,7 +4,7 @@ from artificial_idiot.search.random import Random
 from artificial_idiot.search.uct import UCTSearch
 from artificial_idiot.search.max_n import MaxN
 from artificial_idiot.search.search_cutoff.cutoff import DepthLimitCutoff
-from artificial_idiot.evaluation.evaluator import (
+from artificial_idiot.evaluation.evaluatorgenerator import (
     DummyEvaluator, WinLossEvaluator, NaiveEvaluator
 )
 from artificial_idiot.game.node import Node, BasicUCTNode
