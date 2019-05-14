@@ -31,25 +31,9 @@ class Network:
         """
         self.layers = layers
         self.loss = loss
-        self._learning_rate = learning_rate
+        self.learning_rate = learning_rate
         self.save_to = save_to
         self.checkpoint_path = checkpoint_path
-
-    @property
-    def learning_rate(self):
-        """
-        Gett of the learning rate of the network
-        :return: The learning rate
-        """
-        return self._learning_rate
-
-    @learning_rate.setter
-    def learning_rate(self, theta):
-        """
-        Setter of the learning rate
-        :param theta: The value to set the learning rate to.
-        """
-        self._learning_rate = theta
 
     def forward(self, inputs):
         """
@@ -62,15 +46,15 @@ class Network:
             activation = l.forward(activation)
         return activation
 
-    def backward(self, mini_batch):
+    def backward(self, batch):
         """
         One pass of backward propagation, updating parameters based on the
         given mini_batch of data
-        :param mini_batch: The minibatch of data to train on
+        :param batch: The mini-batch of data to train on
         """
 
         # X -> z1 -> a1 -> z2 -> a2 ... -> zn -> y_hat, loss = J(y - y_hat)
-        mini_batch_inputs, mini_batch_outputs = mini_batch
+        mini_batch_inputs, mini_batch_outputs = batch
         zs = deque([mini_batch_inputs])
         activation = mini_batch_inputs
         for layer in self.layers:
@@ -96,7 +80,7 @@ class Network:
         assert len(gradients) == 0
 
     @staticmethod
-    def read_from(file):
+    def from_file(file):
         with open(file, "rb") as file:
             return pickle.load(file)
 

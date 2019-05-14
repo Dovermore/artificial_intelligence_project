@@ -49,6 +49,7 @@ class LeakyRelu(AbstractActivation):
         g[g == 0] = 0.01
         return g
 
+
 class Linear(AbstractActivation):
     def compute(self, x):
         return x

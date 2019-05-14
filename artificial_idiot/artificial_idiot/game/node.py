@@ -171,7 +171,8 @@ class RLNode(Node):
         parent = node.parent
         action = node.action
         path_cost = node.path_cost
-        cls.__class__.__init__(state, parent, action, path_cost, 0)
+        cls(state, parent=parent, action=action,
+            path_cost=path_cost, rewards=(0, 0, 0))
 
     def child_node(self, game, action):
         """
