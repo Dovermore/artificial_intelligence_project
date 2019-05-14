@@ -30,13 +30,14 @@ class TestFunctionalEvaluator(TestCase):
 
 
 class TestNaiveEvaluator(TestCase):
+    weights = [5, 2, 0.7]
+    evaluator_generator = NaiveEvaluatorGenerator(weights)
 
     def test_no_exit_and_exited(self):
         # blue have exited so it should have the highest value
         # red can't exit because green is blocking it
         # weights in the format of [pieces, exited, distance]
-        weights = [5, 2, 0.7]
-        evaluator_generator = NaiveEvaluatorGenerator(weights)
+        evaluator_generator = self.evaluator_generator
         state = parse_state("../../tests/evaluator_test.json")
         print(state)
         evaluator = evaluator_generator(state)
@@ -48,14 +49,22 @@ class TestNaiveEvaluator(TestCase):
         # blue have exited so it should have the highest value
         # red can't exit because green is blocking it
         # weights in the format of [pieces, exited, distance]
-        weights = [5, 2, 0.7]
-        evaluator_generator = NaiveEvaluatorGenerator(weights)
+        evaluator_generator = self.evaluator_generator
         state = parse_state("../../tests/evaluator_test.json")
         print(state)
         evaluator = evaluator_generator(state)
-        self.assertAlmostEqual(evaluator('red'), 11, places=1)
-        self.assertAlmostEqual(evaluator('green'), 20.039, places=3)
+        self.assertAlmostEqual(evaluator('red'), 11.23, places=1)
+        self.assertAlmostEqual(evaluator('green'), 11.07, places=3)
         self.assertEqual(evaluator('blue'), 708)
+
+    def test_varied_distance(self):
+        evaluator_generator = self.evaluator_generator
+        state = parse_state("../../tests/varied_distance.json")
+        print(state)
+        evaluator = evaluator_generator(state)
+        self.assertAlmostEqual(evaluator('red'), 11.23, places=1)
+        self.assertEqual(evaluator('green'), 11.7)
+        self.assertEqual(evaluator('blue'), 11.35)
 
 
 class TestSumShortestExitDistance(TestCase):
