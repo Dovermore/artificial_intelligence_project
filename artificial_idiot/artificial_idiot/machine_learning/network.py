@@ -35,32 +35,36 @@ class Network:
         self.save_to = save_to
         self.checkpoint_path = checkpoint_path
 
-    def forward(self, inputs):
+    def forward(self, X, y=None):
         """
         Forward propagation of the neural network (or linear model)
-        :param inputs: The input vector
+        :param X: The feature vector
+        :param y: The labels
         :return: The output of network
         """
-        activation = inputs
-        for l in self.layers:
-            activation = l.forward(activation)
-        return activation
-
-    def backward(self, batch):
-        """
-        One pass of backward propagation, updating parameters based on the
-        given mini_batch of data
-        :param batch: The mini-batch of data to train on
-        """
-
         # X -> z1 -> a1 -> z2 -> a2 ... -> zn -> y_hat, loss = J(y - y_hat)
-        mini_batch_inputs, mini_batch_outputs = batch
-        zs = deque([mini_batch_inputs])
-        activation = mini_batch_inputs
+        zs = deque([X])
+        activation = X
         for layer in self.layers:
             z, activation = layer.forward(activation, True)
             zs.appendleft(z)
-        d_yhat = self.loss.derivative((activation, mini_batch_outputs))
+        if y is not None:
+            d_yhat = self.loss.derivative(activation, y)
+            return activation, zs, d_yhat
+        return activation
+
+    def backward(self, X, y):
+        """
+        One pass of backward propagation, updating parameters based on the
+        given mini_batch of data
+        :param X: value of X feature set
+        :param y: value of y label set
+        """
+        activation, zs, d_yhat = self.forward(X, y)
+        gradients = self._compute_gradients(zs, d_yhat)
+        self._apply_gradients(gradients)
+
+    def _compute_gradients(self, zs, d_yhat):
         z = zs.popleft()
         da = d_yhat
         gradients = deque()
@@ -73,7 +77,9 @@ class Network:
             gradients.appendleft(gradient)
             # DJ/Da_i-1 = DJ/Dz_i * Dz/Da_i-1
             da = layer.compute_prev_da(dz)
+        return gradients
 
+    def _apply_gradients(self, gradients):
         for layer in self.layers:
             # W_t+1 = W_t - theta * gard
             layer.update(self.learning_rate * gradients.popleft())

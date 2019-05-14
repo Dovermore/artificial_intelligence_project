@@ -7,14 +7,14 @@ class AbstractActivation(ABC):
     Abstract class for activation functions.
     """
     @abstractmethod
-    def compute(self, x):
+    def compute(self, X, y=None):
         """
         Computed during forward propagation
         """
         raise NotImplementedError()
 
     @abstractmethod
-    def derivative(self, x):
+    def derivative(self, X, y=None):
         """
         Computed during backward propagation
         :param x:
@@ -24,37 +24,37 @@ class AbstractActivation(ABC):
 
 
 class Relu(AbstractActivation):
-    def compute(self, x):
-        return np.maximum(0, x)
+    def compute(self, X, y=None):
+        return np.maximum(0, X)
 
-    def derivative(self, x):
-        return 1 * (x > 0)
+    def derivative(self, X, y=None):
+        return 1 * (X > 0)
 
 
 class Sigmoid(AbstractActivation):
-    def compute(self, x):
-        return 1 / (1 + np.exp(-x))
+    def compute(self, X, y=None):
+        return 1 / (1 + np.exp(-X))
 
-    def derivative(self, x):
-        y = self.compute(x)
+    def derivative(self, X, y=None):
+        y = self.compute(X)
         return y * (1 - y)
 
 
 class LeakyRelu(AbstractActivation):
-    def compute(self, x):
-        return np.maximum(0.01, x)
+    def compute(self, X, y=None):
+        return np.maximum(0.01, X)
 
-    def derivative(self, x):
-        g = 1 * (x > 0)
+    def derivative(self, X, y=None):
+        g = 1 * (X > 0)
         g[g == 0] = 0.01
         return g
 
 
 class Linear(AbstractActivation):
-    def compute(self, x):
-        return x
+    def compute(self, X, y=None):
+        return X
 
-    def derivative(self, x):
+    def derivative(self, X, y=None):
         return 1
 
 
@@ -63,27 +63,38 @@ class Loss(AbstractActivation):
 
 
 class XEntropy(Loss):
-    def _softmax(self, X):
-        expvx = np.exp(X - np.max(X, axis=1)[..., np.newaxis])
-        return expvx/np.sum(expvx, axis=1, keepdims=True)
+    def _softmax(self, X, y=None):
+        exponential_X = np.exp(X - np.max(X, axis=1)[..., np.newaxis])
+        return exponential_X/np.sum(exponential_X, axis=1, keepdims=True)
 
-    def compute(self, Z):
-        X, Y = Z
+    def compute(self, X, y=None):
         sf = self._softmax(X)
         return -np.log(sf[np.arange(X.shape[0]),
-                          np.argmax(Y, axis=1)]) / X.shape[0]
+                          np.argmax(y, axis=1)]) / X.shape[0]
 
-    def derivative(self, Z):
-        X, Y = Z
-        err = self._softmax(X)
-        return (err - Y) / X.shape[0]
+    def derivative(self, X, y=None):
+        error = self._softmax(X)
+        return (error - y) / X.shape[0]
 
 
 class MSE(Loss):
-    def compute(self, Z):
-        X, Y = Z
-        return (1. / 2. * X.shape[0]) * ((X - Y) ** 2.)
+    def compute(self, X, y=None):
+        return (1. / 2. * X.shape[0]) * ((X - y) ** 2.)
 
-    def derivative(self, Z):
-        X, Y = Z
-        return (X - Y) / X.shape[0]
+    def derivative(self, X, y=None):
+        return (X - y) / X.shape[0]
+
+
+class CrossEntropy(Loss):
+    def _softmax(self, X, y=None):
+        exponential_X = np.exp(X - np.max(X, axis=1)[..., np.newaxis])
+        return exponential_X/np.sum(exponential_X, axis=1, keepdims=True)
+
+    def compute(self, X, y=None):
+        sf = self._softmax(X)
+        return -np.log(sf[np.arange(X.shape[0]),
+                          np.argmax(y, axis=1)]) / X.shape[0]
+
+    def derivative(self, X, y=None):
+        error = self._softmax(X)
+        return (error - y) / X.shape[0]
