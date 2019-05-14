@@ -1,8 +1,5 @@
-import os
-
 from artificial_idiot.search.action_book.action_book import SimpleActionBook
 from artificial_idiot.search.search import Search
-dirname = os.path.dirname(__file__)
 
 
 class OpeningGame(Search):

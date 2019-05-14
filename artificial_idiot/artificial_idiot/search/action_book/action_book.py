@@ -1,9 +1,8 @@
 import abc
-import os
 from os import path
 from pickle import dump, load
-
-from artificial_idiot.search.open_game import dirname
+import os
+dirname = os.path.dirname(__file__)
 
 
 class AbstractActionBook:
