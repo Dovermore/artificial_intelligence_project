@@ -25,7 +25,7 @@ class State:
     #    player:: red:   red -> red,   green -> green, blue -> blue
     #    player:: green: red -> blue,  green -> red,   blue -> green
     #    player:: blue:  red -> green, green -> blue,  blue -> red
-    color_mapping = \
+    perspective_mapping = \
         {
             fr:
                 {
@@ -112,44 +112,21 @@ class State:
             pos = (y, x)
         return pos
 
-    # TODO use rotate pos there
     def to_red_perspective(self):
         """
         change player to red
         always return a new state
         :return: a state where current player is red
         """
-        pos_to_piece = {}
-        completed = {}
-
-        return state
-
-    @classmethod
-    def rotate_120(cls, state):
-        """
-        Helper function to create a new state by rotating the current state
-        Color of the pieces also change:
-        red -> green
-        blue -> red
-        green -> blue
-        :param state: The state to rotate
-        :return ns: the result of rotating state by 120 degrees clockwise
-        """
-        # change player
-        color = State.next_colour(state._colour)
-        # change color of completed nodes
-        completed = {}
-        for p in state.completed:
-            completed[State.next_colour(p)] = state.completed[p]
-        # rotate board
-        pos_to_piece = {}
-        for pos in state._pos_to_piece:
-            # https://www.redblobgames.com/grids/hexagons/#rotation
-            x, z = pos
-            y = -(x+z)
-            color = State.next_colour(state._pos_to_piece[pos])
-            pos_to_piece[(y, x)] = color
-        return State(pos_to_piece, color, completed)
+        mapping = self.perspective_mapping[self.colour]
+        pos_to_piece = {
+            self.rotate_pos(fr, mapping[fr], pos): mapping[fr]
+            for pos, fr in self._pos_to_piece.items()
+        }
+        completed = {
+            mapping[fr]: num for fr, num in self.completed.items()
+        }
+        return State(pos_to_piece, "red", completed)
 
     def __repr__(self, **kwargs):
         # need a copy here
@@ -202,7 +179,6 @@ if __name__ == '__main__':
     def rotate_test():
         test = State({(1, -1): "red", (0, 0): "green", (0, 1): "blue"}, "blue", {"blue": 1})
         check = State({(-1, 0): "red", (0, 1): "green", (0, 0): "blue"}, "red", {"red": 1})
-        assert (check == State.rotate_120(test))
         assert (check == State.to_red_perspective(test))
 
 

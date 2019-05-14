@@ -60,7 +60,7 @@ class Player:
         #    player:: red:   red -> red,   green -> green, blue -> blue
         #    player:: green: red -> blue,  green -> red,   blue -> green
         #    player:: blue:  red -> green, green -> blue,  blue -> red
-        self.referee_to_player_mapping = State.color_mapping[colour]
+        self.referee_to_player_mapping = State.perspective_mapping[colour]
         self.player_to_referee_mapping = {
             value: key for key, value in
             self.referee_to_player_mapping.items()}
