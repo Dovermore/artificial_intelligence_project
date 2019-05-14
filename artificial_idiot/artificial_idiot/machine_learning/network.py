@@ -5,7 +5,10 @@ import os.path as path
 from datetime import datetime
 
 
+dirname = os.path.dirname(__file__)
 start = datetime.now().strftime("%Y%m%d%H%M%S")
+default_save_path = path.join(dirname, start, "network")
+default_checkpoint_path = path.join(dirname, start, "checkpoints")
 
 
 class Network:
@@ -13,8 +16,8 @@ class Network:
     This class defines how to train the neural network
     """
     def __init__(self, layers, learning_rate, loss,
-                 save_to=path.join(".", start, "network"),
-                 checkpoint_path=path.join(".", start, "checkpoints")):
+                 save_to=default_save_path,
+                 checkpoint_path=default_checkpoint_path):
         """
         __init__ the nerwork class for training, by specifying a set of layers
         the dimension of layers must agree.
