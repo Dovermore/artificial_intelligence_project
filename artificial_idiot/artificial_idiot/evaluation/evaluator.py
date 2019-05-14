@@ -34,22 +34,25 @@ def sum_shortest_exit_distance(state, player):
     exit_positions = [pos for pos in _exit_positions[player] if not state.occupied(pos)]
     distances = {}
     for piece in state.piece_to_pos[player]:
-        distances[piece] = 100000
+        distances[piece] = 1000000
         for exit_pos in exit_positions:
             distances[piece] = min(grid_dist(piece, exit_pos), distances[piece])
-    return [sum(distances.values())]
+    # return 0.001 if no pieces
+    if len(distances) == 0:
+        return 0.001
+    return sum(distances.values())
 
 
 def num_exited_piece(state, player):
     completed = state.completed
     n_exited_pieces = completed[player]
-    return [n_exited_pieces]
+    return n_exited_pieces
 
 
 def num_board_piece(state, player):
     piece_to_pos = state.piece_to_pos
     n_pieces = len(piece_to_pos[player])
-    return [n_pieces]
+    return n_pieces
 
 
 class Evaluator(abc.ABC):
@@ -104,24 +107,39 @@ class WinLossEvaluator(Evaluator):
         return 0
 
 
-class FunctionalEvaluator(Evaluator):
+class FunctionalEvaluator:
+
+    def __init__(self, state, weights, funcs):
+        self._state = state
+        self._weights = weights
+        self._funcs = funcs
+        self._value = dict()
+
+    def __call__(self, player):
+        value = self._value[player]
+        if value:
+            return value
+        X = np.array([fn(self._state, player) for fn in self._funcs])
+        X = X.T
+        value = np.dot(X, self._weights)
+        self._value[player] = value
+        return value
+
+
+class FunctionalEvaluatorGenerator(Evaluator):
     """
     Evaluate a state based on set of features computed by functions and
     return single scalar indicating the value of the state.
 
     The value is computed by feeding an arbitrary function to the state
-
-    Assumption:
-    functions(state) -> list
     """
-    def __init__(self, functions, *args, **kwargs):
+    def __init__(self, weights, functions, *args, **kwargs):
         self._functions = functions
+        self._weights = weights
         super().__init__(*args, **kwargs)
 
-    def __call__(self, state, weights, *args, **kwargs):
-        X = np.array([fn(state) for fn in self._functions])
-        X = X.T
-        return np.dot(X, weights)
+    def __call__(self, state, *args, **kwargs):
+        return FunctionalEvaluator(state, self._weights, self._functions)
 
 
 class NaiveEvaluator(Evaluator):
@@ -141,7 +159,7 @@ class NaiveEvaluator(Evaluator):
     def __init__(self, weights,  *args, **kwargs):
         self._weights = weights
 
-        func = [num_board_piece, num_exited_piece, sum_shortest_exit_distance]
+        func = [num_board_piece, num_exited_piece, self.reciprocal_distance]
         self._eval = FunctionalEvaluator(func)
         super().__init__(*args, **kwargs)
 

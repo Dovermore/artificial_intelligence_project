@@ -11,8 +11,8 @@ def parse_state(file_name):
     return State(pos_dict, colour, completed)
 
 
-def foo(state):
-    return [1, 2, 3]
+def return_1(state, player):
+    return 1
 
 
 class TestFunctionalEvaluator(TestCase):
@@ -20,24 +20,26 @@ class TestFunctionalEvaluator(TestCase):
     def test_basic(self):
         n_parameters = 3
         weights = [1]*n_parameters
-        functions = [foo]*n_parameters
+        functions = [return_1]*n_parameters
         evaluator = FunctionalEvaluator(functions)
         state = parse_state("../../tests/evaluator_test.json")
-        utility_value = list(evaluator(state, weights))
-        self.assertListEqual(utility_value, [3, 6, 9])
+        self.assertEqual(evaluator(state, 'red', weights), 3)
+        self.assertEqual(evaluator(state, 'green', weights), 3)
+        self.assertEqual(evaluator(state, 'blue', weights), 3)
+
 
 
 class TestNaiveEvaluator(TestCase):
 
     def test_exit(self):
         # weights in the format of [pieces, exited, distance]
-        weights = [7, 9, 1]
+        weights = [5, 2, 0.7]
         evaluator = NaiveEvaluator(weights)
         state = parse_state("../../tests/evaluator_test.json")
         print(state)
-        self.assertTrue(evaluator(state, 'red') == 3)
-        self.assertTrue(evaluator(state, 'green') == 2)
-        self.assertTrue(evaluator(state, 'blue') == 4)
+        self.assertEqual(evaluator(state, 'red'), 11)
+        self.assertAlmostEqual(evaluator(state, 'green'), 20.1, places=1)
+        self.assertEqual(evaluator(state, 'blue'), 708)
 
 
 class TestSumShortestExitDistance(TestCase):
