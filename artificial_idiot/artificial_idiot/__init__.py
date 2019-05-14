@@ -1,11 +1,16 @@
 from artificial_idiot.player import *
-Player = Player
 
+# Player = PlayerFactory.get_type_factory(MaxNPlayer)()
+Player = PlayerFactory.get_type_factory(Player)(
+    search_algorithm=OpeningGame("gather"), game_type=Game,
+    evaluator=player_evaluator)
 
 if __name__ == "__main__":
+    import json
+    from artificial_idiot.util.json_parser import JsonParser
 
     def random_agent_test():
-        player = RandomAgent(player="red", initial_state=None, seed=10)
+        player = RandomAgent(colour="red", initial_state=None, seed=10)
         red_move =('MOVE', ((-3, 0), (-2, -1)))
         green_move = ("MOVE", ((0, -3), (0, -2)))
         blue_move = ('MOVE', ((3,0), (2,0)))
@@ -22,7 +27,7 @@ if __name__ == "__main__":
         initial_state = State(pos_dict, colour, completed)
         evaluator = MyEvaluator()
         cutoff = DepthLimitCutoff(max_depth=3)
-        player = MaxNAgent(player="red", initial_state=initial_state,
+        player = MaxNAgent(colour="red", initial_state=initial_state,
                            evaluator=evaluator, cutoff=cutoff)
         print(player.state)
         print(player.action())
@@ -31,7 +36,7 @@ if __name__ == "__main__":
         f = open("../tests/bug1.json")
         pos_dict, colour, completed = JsonParser(json.load(f)).parse()
         initial_state = State(pos_dict, colour, completed)
-        player = RandomAgent(player="red", initial_state=initial_state,
+        player = RandomAgent(colour="red", initial_state=initial_state,
                              seed=10)
         print(player.state)
         print(player.action())

@@ -6,7 +6,7 @@ from artificial_idiot.search.search import Search
 dirname = os.path.dirname(__file__)
 
 
-class OpeningGameSearch(Search):
+class OpeningGame(Search):
     """
     This class defines the open game search strategy
     """
@@ -20,19 +20,11 @@ class OpeningGameSearch(Search):
         """
         assert strategy in self.STRATEGIES
         self.action_book = SimpleActionBook.read(strategy)
-        self.action = self.action_book.get_action()
-
-    def can_search(self):
-        """
-        Is there more actions in this database?
-        :return: False if no more left
-        """
-        return self.action is not None
+        self.action = None
 
     def search(self, game, state, **kwargs):
-        action = self.action
-        self.action = self.action_book.get_action()
-        return action
+        self.action = self.action_book.get_action(state)
+        return self.action
 
 
 class AbstractActionBook:
@@ -49,8 +41,8 @@ class AbstractActionBook:
         self.save_to = path.join(dirname, "open_book", self.name)
 
     @abc.abstractmethod
-    def get_action(self):
-        raise NotImplementedError()
+    def get_action(self, state):
+        pass
 
     @abc.abstractmethod
     def put_action(self, state, action):
@@ -80,7 +72,7 @@ class SimpleActionBook(AbstractActionBook):
         super().__init__(name)
         self.actions = []
 
-    def get_action(self):
+    def get_action(self, state):
         if self.actions:
             return self.actions.pop(0)
 

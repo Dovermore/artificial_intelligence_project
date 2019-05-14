@@ -1,25 +1,25 @@
-import abc
-
 from artificial_idiot.search.random import Random
 from artificial_idiot.search.uct import UCTSearch
 from artificial_idiot.search.max_n import MaxN
+from artificial_idiot.search.open_game import OpeningGame
+
 from artificial_idiot.search.search_cutoff.cutoff import DepthLimitCutoff
 from artificial_idiot.evaluation.evaluator import (
     DummyEvaluator, WinLossEvaluator, MyEvaluator
 )
+
 from artificial_idiot.game.node import Node, BasicUCTNode
-from artificial_idiot.util.json_parser import JsonParser
 from artificial_idiot.game.state import State
 from artificial_idiot.game.game import Game, NodeGame
 import random
-import json
+from copy import deepcopy
 
 
 player_evaluator = DummyEvaluator()
 winloss_evaluator = WinLossEvaluator()
 
 
-class AbstractPlayer(abc.ABC):
+class Player:
     start_config = {
         (-3, 0): "red",
         (-3, 1): "red",
@@ -35,7 +35,7 @@ class AbstractPlayer(abc.ABC):
         (3, 0): "blue"
     }
 
-    def __init__(self, player, search_algorithm=None, game_type=Game,
+    def __init__(self, colour, search_algorithm=None, game_type=Game,
                  evaluator=player_evaluator, initial_state=None):
         """
         This method is called once at the beginning of the game to initialise
@@ -50,12 +50,12 @@ class AbstractPlayer(abc.ABC):
         You can parse any valid board state to test the Agent
         However the Agent assumes the states are valid
         """
-        self.player = player
+        self.colour = colour
         self.search_algorithm = search_algorithm
 
         self.code_map = State.code_map
         self.rev_code_map = State.rev_code_map
-        colour_code = self.code_map[player]
+        colour_code = self.code_map[colour]
 
         # cycle the players:
         #    player:: red:   red -> red,   green -> green, blue -> blue
@@ -75,7 +75,6 @@ class AbstractPlayer(abc.ABC):
         # Colour of the game is different from the color of the state
         self.game = game_type("red", state, evaluator)
 
-    @abc.abstractmethod
     def action(self):
         """
         This method is called at the beginning of each of your turns to request
@@ -87,7 +86,9 @@ class AbstractPlayer(abc.ABC):
         must be represented based on the above instructions for representing
         actions.
         """
-        return "PASS", None
+        action = self.search_algorithm.search(self.game,
+                                              self.game.initial_state)
+        return self.convert_action(action, "referee")
 
     def update(self, colour, action):
         """
@@ -140,11 +141,11 @@ class AbstractPlayer(abc.ABC):
         if action == "PASS":
             return action
         if convert_to == "player":
-            new_fr = State.rotate_pos(self.player, "red", fr)
-            new_to = State.rotate_pos(self.player, "red", to)
+            new_fr = State.rotate_pos(self.colour, "red", fr)
+            new_to = State.rotate_pos(self.colour, "red", to)
         elif convert_to == "referee":
-            new_fr = State.rotate_pos("red", self.player, fr)
-            new_to = State.rotate_pos("red", self.player, to)
+            new_fr = State.rotate_pos("red", self.colour, fr)
+            new_to = State.rotate_pos("red", self.colour, to)
         else:
             raise ValueError(convert_to + "mode is not valid")
         return new_fr, new_to, move
@@ -186,7 +187,7 @@ class AbstractPlayer(abc.ABC):
         return self.game.initial_state
 
 
-class ArtificialIdiot(AbstractPlayer):
+class ArtificialIdiot(Player):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -199,62 +200,56 @@ class ArtificialIdiot(AbstractPlayer):
         pass
 
 
-class RandomAgent(AbstractPlayer):
-    def __init__(self, player, initial_state=None, seed=None):
+class RandomAgent(Player):
+    def __init__(self, colour, initial_state=None, seed=None):
         if seed is None:
             seed = random.random()
         print("* seed is:", seed)
-        super().__init__(player, search_algorithm=Random(seed),
+        super().__init__(colour, search_algorithm=Random(seed),
                          initial_state=initial_state)
-        pass
-
-    def action(self):
-        player_action = self.search_algorithm.search(self.game,
-                                                     self.game.initial_state)
-        return self.convert_action(player_action, 'referee')
 
 
-class MaxNAgent(AbstractPlayer):
-    def __init__(self, player, initial_state, evaluator, cutoff):
+class MaxNAgent(Player):
+    def __init__(self, colour, initial_state, evaluator, cutoff):
         search_algorithm = MaxN(evaluator, cutoff, n_player=3)
-        super().__init__(player, search_algorithm=search_algorithm,
+        super().__init__(colour, search_algorithm=search_algorithm,
                          initial_state=initial_state)
-        pass
-
-    def action(self):
-        player_action = self\
-            .search_algorithm.search(self.game, self.game.initial_state)
-        return self.convert_action(player_action, 'referee')
 
 
-class Player(MaxNAgent):
+class MaxNPlayer(MaxNAgent):
     """
     A wrapper class for referee that uses interface given by referee
     Here we use best hyperparameter
     """
-    def __init__(self, player):
+    def __init__(self, colour):
         evaluator = MyEvaluator()
         cutoff = DepthLimitCutoff(max_depth=6)
-        super().__init__(player, cutoff=cutoff, evaluator=evaluator,
+        super().__init__(colour, cutoff=cutoff, evaluator=evaluator,
                          initial_state=None)
 
 
-class BasicUCTPlayer(AbstractPlayer):
+class BasicUCTPlayer(Player):
     """
     Basic UCT player. Uses upper confidence monte carlo search algorithm
     """
-    def __init__(self, player, evaluator=winloss_evaluator,
+    def __init__(self, colour, evaluator=winloss_evaluator,
                  game_type=NodeGame, node_type=BasicUCTNode,
                  initial_state=None, *args, **kwargs):
         search = UCTSearch(*args, **kwargs)
-        super().__init__(player, search, game_type, evaluator, initial_state)
+        super().__init__(colour, search, game_type, evaluator, initial_state)
         state = self.game.initial_state
         self.game = game_type(colour="red",
                               state=node_type(state),
                               evaluator=evaluator)
 
-    def action(self):
-        action = self.search_algorithm.search(self.game,
-                                              self.game.initial_state)
-        return self.convert_action(action, "referee")
+
+class PlayerFactory:
+    @staticmethod
+    def get_type_factory(type):
+        def get_player_factory(*args, **kwargs):
+            def get_player(player):
+                return type(player, *deepcopy(args), **deepcopy(kwargs))
+            return get_player
+        return get_player_factory
+
 
