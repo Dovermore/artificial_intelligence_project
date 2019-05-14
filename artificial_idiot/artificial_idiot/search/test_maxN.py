@@ -48,6 +48,5 @@ class TestMaxN(TestCase):
         print(state)
 
         game = Game('red', state)
-
         best_action = search.search(game, state)
         print(best_action)
