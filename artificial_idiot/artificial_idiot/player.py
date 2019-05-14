@@ -4,8 +4,8 @@ from artificial_idiot.search.random import Random
 from artificial_idiot.search.uct import UCTSearch
 from artificial_idiot.search.max_n import MaxN
 from artificial_idiot.search.search_cutoff.cutoff import DepthLimitCutoff
-from artificial_idiot.evaluation.evaluatorgenerator import (
-    DummyEvaluator, WinLossEvaluator, NaiveEvaluator
+from artificial_idiot.evaluation.evaluator_generator import (
+    DummyEvaluator, WinLossEvaluator, NaiveEvaluatorGenerator
 )
 from artificial_idiot.game.node import Node, BasicUCTNode
 from artificial_idiot.util.json_parser import JsonParser
@@ -73,7 +73,7 @@ class AbstractPlayer(abc.ABC):
         state = State(self.start_config, colour=self
                       .referee_to_player_mapping["red"])
         # Colour of the game is different from the color of the state
-        self.game = game_type("red", state, evaluator)
+        self.game = game_type("red", state)
 
     @abc.abstractmethod
     def action(self):
@@ -233,8 +233,9 @@ class Player(MaxNAgent):
     Here we use best hyperparameter
     """
     def __init__(self, player):
-        evaluator = NaiveEvaluator()
-        cutoff = DepthLimitCutoff(max_depth=6)
+        weights = [5, 2, 0.7]
+        evaluator = NaiveEvaluatorGenerator(weights)
+        cutoff = DepthLimitCutoff(max_depth=3)
         super().__init__(player, cutoff=cutoff, evaluator=evaluator,
                          initial_state=None)
 
@@ -250,8 +251,7 @@ class BasicUCTPlayer(AbstractPlayer):
         super().__init__(player, search, game_type, evaluator, initial_state)
         state = self.game.initial_state
         self.game = game_type(colour="red",
-                              state=node_type(state),
-                              evaluator=evaluator)
+                              state=node_type(state))
 
     def action(self):
         action = self.search_algorithm.search(self.game,

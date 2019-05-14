@@ -27,11 +27,15 @@ class MaxN(Search):
         if self._cut_off_test(state, depth=depth) or game.terminal_state(state):
             return self._evaluate(state), None
         # initialize utility to be the worst possible
-        v_max = [-inf] * self._n
+        v_max = None
         a_best = None
-        player = state.color
+        player = state.colour
+        print(player)
         for a in game.actions(state):
             v, _ = self._recursive_max_search(game, game.result(state, a), depth=depth+1)
+            if v_max is None:
+                print(a)
+                v_max = v
             # found a better utility
             if v(player) > v_max(player):
                 v_max = v
@@ -43,7 +47,7 @@ class MaxN(Search):
         actions = game.actions(state)
         if len(actions) == 1:
             return actions[0]
-        # cut off test
+        # find best action
         _, a = self._recursive_max_search(game, state, depth)
         return a
 

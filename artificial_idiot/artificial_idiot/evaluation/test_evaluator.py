@@ -1,5 +1,5 @@
 from unittest import TestCase
-from artificial_idiot.evaluation.evaluatorgenerator import *
+from artificial_idiot.evaluation.evaluator_generator import *
 from artificial_idiot.game.state import State
 from artificial_idiot.util.json_parser import JsonParser
 import json
@@ -49,12 +49,12 @@ class TestSumShortestExitDistance(TestCase):
 
     def test_no_block(self):
         state = parse_state("../../tests/empty_board_for_red.json")
-        self.assertTrue(sum_shortest_exit_distance(state, 'red') == [12])
+        self.assertTrue(sum_shortest_exit_distance(state, 'red') == 12)
 
     def test_one_exit_position(self):
         state = parse_state("../../tests/only_one_exit_pos_for_red.json")
-        self.assertTrue(sum_shortest_exit_distance(state, 'red') == [15])
+        self.assertTrue(sum_shortest_exit_distance(state, 'red') == 15)
 
     def test_no_exit(self):
         state = parse_state("../../tests/no_exit.json")
-        self.assertTrue(sum_shortest_exit_distance(state, 'red') >= [10000])
+        self.assertTrue(sum_shortest_exit_distance(state, 'red') >= 10000)

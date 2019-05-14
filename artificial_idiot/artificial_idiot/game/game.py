@@ -63,13 +63,13 @@ class Problem(abc.ABC):
         """
         return c + 1
 
-    @abc.abstractmethod
-    def value(self, state):
-        """
-        For optimization problems, each state has a value.  Hill-climbing
-        and related algorithms try to maximize this value.
-        """
-        pass
+    # @abc.abstractmethod
+    # def value(self, state):
+    #     """
+    #     For optimization problems, each state has a value.  Hill-climbing
+    #     and related algorithms try to maximize this value.
+    #     """
+    #     pass
 
 
 class BoardProblem(Problem, abc.ABC):
@@ -92,9 +92,9 @@ class Game(BoardProblem):
     static variables are defined in BoardProblem class
     """
 
-    def __init__(self, colour, state, evaluator):
+    def __init__(self, colour, state):
         super().__init__(state)
-        self.evaluator = evaluator
+        # self.evaluator = evaluator
         self.colour = colour
 
     @classmethod
@@ -187,8 +187,8 @@ class Game(BoardProblem):
         """
         self.initial_state = self.result(self.initial_state, action)
 
-    def value(self, state, *args, **kwargs):
-        return self.evaluator(state, *args, **kwargs)
+    # def value(self, state, *args, **kwargs):
+    #     return self.evaluator(state, *args, **kwargs)
 
     @staticmethod
     def terminal_state(state):
