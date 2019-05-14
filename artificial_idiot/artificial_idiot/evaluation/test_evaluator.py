@@ -44,6 +44,19 @@ class TestNaiveEvaluator(TestCase):
         self.assertAlmostEqual(evaluator('green'), 20.039, places=3)
         self.assertEqual(evaluator('blue'), 708)
 
+    def test_distance(self):
+        # blue have exited so it should have the highest value
+        # red can't exit because green is blocking it
+        # weights in the format of [pieces, exited, distance]
+        weights = [5, 2, 0.7]
+        evaluator_generator = NaiveEvaluatorGenerator(weights)
+        state = parse_state("../../tests/evaluator_test.json")
+        print(state)
+        evaluator = evaluator_generator(state)
+        self.assertAlmostEqual(evaluator('red'), 11, places=1)
+        self.assertAlmostEqual(evaluator('green'), 20.039, places=3)
+        self.assertEqual(evaluator('blue'), 708)
+
 
 class TestSumShortestExitDistance(TestCase):
 
