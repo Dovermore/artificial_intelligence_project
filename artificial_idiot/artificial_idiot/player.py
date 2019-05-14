@@ -55,16 +55,12 @@ class Player:
 
         self.code_map = State.code_map
         self.rev_code_map = State.rev_code_map
-        colour_code = self.code_map[colour]
 
         # cycle the players:
         #    player:: red:   red -> red,   green -> green, blue -> blue
         #    player:: green: red -> blue,  green -> red,   blue -> green
         #    player:: blue:  red -> green, green -> blue,  blue -> red
-        self.referee_to_player_mapping = {
-            col: self.rev_code_map[(self.code_map[col]-colour_code) % 3]
-            for col in self.code_map
-        }
+        self.referee_to_player_mapping = State.color_mapping[colour]
         self.player_to_referee_mapping = {
             value: key for key, value in
             self.referee_to_player_mapping.items()}
