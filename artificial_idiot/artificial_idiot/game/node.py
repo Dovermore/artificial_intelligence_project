@@ -82,6 +82,9 @@ class Node:
 
 
 class BasicUCTNode(Node):
+    """
+    Basically this node can be used for tabular Monte Carlo Tree search.
+    """
     c = 2
 
     def __init__(self, *args, **kwargs):
@@ -148,3 +151,39 @@ class BasicUCTNode(Node):
         return (child.wins / child.visits
                 + sqrt(self.c * log(self.visits) / child.visits))
 
+
+class RLNode(Node):
+    winning_reward = 10
+    capture_reward = 5
+    exit_reward = 2
+    losing_reward = -10
+    captured_reward = -5
+
+    def __init__(self, state, parent=None, action=None,
+                 path_cost=0, rewards=(0, 0, 0)):
+        super().__init__(state, parent, action, path_cost)
+        # The reward to each player on board
+        self.rewards = rewards
+
+    @classmethod
+    def from_node(cls, node):
+        state = node.state
+        parent = node.parent
+        action = node.action
+        path_cost = node.path_cost
+        cls.__class__.__init__(state, parent, action, path_cost, 0)
+
+    def child_node(self, game, action):
+        """
+        Generate child node based on game and action
+        """
+        if action not in self.children:
+            next_state = game.result(self.state, action)
+            next_node = self.__class__(next_state, self, action,
+                                       game.path_cost(
+                                           self.path_cost, self.state, action,
+                                           next_state))
+            self.children[action] = next_node
+        else:
+            next_node = self.children[action]
+        return next_node

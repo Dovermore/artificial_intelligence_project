@@ -61,7 +61,7 @@ class Loss(AbstractActivation):
     pass
 
 
-class CrossEntropy(Loss):
+class XEntropy(Loss):
     def _softmax(self, X):
         expvx = np.exp(X - np.max(X, axis=1)[..., np.newaxis])
         return expvx/np.sum(expvx, axis=1, keepdims=True)
@@ -78,7 +78,7 @@ class CrossEntropy(Loss):
         return (err - Y) / X.shape[0]
 
 
-class MeanSquaredError(Loss):
+class MSE(Loss):
     def compute(self, Z):
         X, Y = Z
         return (1. / 2. * X.shape[0]) * ((X - Y) ** 2.)

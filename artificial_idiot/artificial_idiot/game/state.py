@@ -112,13 +112,17 @@ class State:
             pos = (y, x)
         return pos
 
-    def to_red_perspective(self):
+    def red_perspective(self, colour):
         """
         change player to red
         always return a new state
         :return: a state where current player is red
         """
-        mapping = self.perspective_mapping[self.colour]
+        if colour == "red":
+            pos_to_piece = self.pos_to_piece
+            completed = copy(self.completed)
+            return State(pos_to_piece, "red", completed)
+        mapping = self.perspective_mapping[colour]
         pos_to_piece = {
             self.rotate_pos(fr, mapping[fr], pos): mapping[fr]
             for pos, fr in self._pos_to_piece.items()
@@ -179,7 +183,7 @@ if __name__ == '__main__':
     def rotate_test():
         test = State({(1, -1): "red", (0, 0): "green", (0, 1): "blue"}, "blue", {"blue": 1})
         check = State({(-1, 0): "red", (0, 1): "green", (0, 0): "blue"}, "red", {"red": 1})
-        assert (check == State.to_red_perspective(test))
+        assert (check == State.red_perspective(test, "blue"))
 
 
     def color_test():
