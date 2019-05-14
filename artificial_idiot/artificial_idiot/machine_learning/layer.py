@@ -4,10 +4,10 @@ import numpy as np
 
 class Layer(ABC):
     @abstractmethod
-    def forward(self, inputs, training=False):
+    def forward(self, X, training=False):
         """
         Compute forward value of a layer
-        :param inputs: The input to the layer, dimension must agree
+        :param X: The input to the layer, dimension must agree
         :param training: specifies how the behave differently for different
             phase
         :return: Forward layer output
@@ -49,8 +49,8 @@ class FullyConnected(Layer):
         self.W = weight_init(n_in, n_out)
         self.activation = activation
 
-    def forward(self, inputs, training=False):
-        z = inputs.dot(self.W)
+    def forward(self, X, training=False):
+        z = X.dot(self.W)
         a = self.activation.compute(z)
         if training:
             return z, a
@@ -89,14 +89,14 @@ class Convolution(Layer):
         self.filters = filter_init(self.fshape)
         self.activation = activation
 
-    def forward(self, inputs, training=False):
-        out_shape = (inputs.shape[1] - self.fshape[0]) / self.strides + 1
-        out = np.zeros((inputs.shape[0], out_shape, out_shape, self.fshape[-1]))
+    def forward(self, X, training=False):
+        out_shape = (X.shape[1] - self.fshape[0]) / self.strides + 1
+        out = np.zeros((X.shape[0], out_shape, out_shape, self.fshape[-1]))
         for j in range(out_shape):
             for i in range(out_shape):
                 out[:, j, i, :] = \
-                    np.sum(inputs[:, j * self.strides:j * self.strides
-                           + self.fshape[0], i * self.strides:i * self.strides
+                    np.sum(X[:, j * self.strides:j * self.strides
+                                                 + self.fshape[0], i * self.strides:i * self.strides
                            + self.fshape[1], :, np.newaxis] * self.filters,
                            axis=(1, 2, 3))
         if training:
@@ -145,8 +145,8 @@ class Flatten(Layer):
     def __init__(self, shape):
         self.shape = shape
 
-    def forward(self, inputs, train=False):
-        z = np.reshape(inputs, (inputs.shape[0], -1))
+    def forward(self, X, train=False):
+        z = np.reshape(X, (X.shape[0], -1))
         return z, z
 
     def compute_dz(self, z, da):

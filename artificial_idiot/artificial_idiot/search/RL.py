@@ -1,7 +1,8 @@
 from artificial_idiot.search.search import Search
 from artificial_idiot.game.state import State
 from artificial_idiot.machine_learning.network import Network
-from artificial_idiot.game.node import Node
+from artificial_idiot.game.node import Node, RLNode
+from collections import deque
 import numpy as np
 from random import random
 from artificial_idiot.util.misc import randint
@@ -25,46 +26,81 @@ class ParametrisedRL(Search):
             nn = Network.from_file(f)
         return cls(nn, feature_extractor)
 
-    def forward(self, states, colours):
+    def forward(self, states, train=False):
         array = []
-        for state, colour in zip(states, colours):
-            array.append(self.feature_extractor(state))
-        print(array)
-        return self.network.forward(np.array(array))
+        for state in states:
+            array.append(self.feature_extractor([state]))
+        array = np.array(array)
+        if train:
+            return self.network.forward(array, 1, train=train)
+        else:
+            return self.network.forward(np.array(array))
 
-    def td_train(self, game, initial_node=None, explore=0.1, n=1000,
-                 theta=0.05, checkpoint_interval=50, policy=None):
+    def policy(self, game, state, explore=0., train=False):
+        node = RLNode(state)
+        children = tuple(node.expand(game))
+        if random() < explore:
+            children = (children[randint(0, len(children))],)
+        states = [child.state for child in children]
+        if train:
+            values, zs = self.forward(states, train=train)
+            values = values.reshape(-1)
+        else:
+            values = self.forward(states).reshape(-1)
+        index = np.argmax(values)
+        child = children[index]
+        if train:
+            zs = deque(zs[0][[index]])
+            return child.action, child, values[index], zs
+        return child.action
+
+    def td_train(self, game, initial_state=None, explore=0.1, n=1000,
+                 theta=0.05, checkpoint_interval=50, gamma=0.9, policy=None):
         # TODO make it possible to plug in other agents by using
         self.network.learning_rate = theta
+        initial_node = RLNode(initial_state, rewards=(0, 0, 0))
         # Generate episodes of game based on current policy
         # -> Update the value for each player
+        losses = []
         for i in range(n):
             node = initial_node
             # We record three player simultaneously
             rewards = [[], [], []]
             states = [[], [], []]
-            cur_value = 0
+            current_value = self.forward([initial_state])[0]
+            # current_value = self.network.# TODO
             next_value = 0
-            while node is not None:
+            loss = 0
+            while not game.terminal_state(node.state):
                 # TODO replace this by any policy for bootstrapping
-                cur_value = next_value
-                node, next_value = self.policy(game, node, explore=explore)
-                colour = node.state.colour
-                for code in range(3):
-                    if len(rewards[i]) > 3:
-                        rewards.pop(0)
-                    rewards[i].append(node.reward[i])
-                    if len(states[i]) > 3:
-                        states.pop(0)
-                    states.append(node.state.red_perspective(colour))
-                code = node.state.code_map[colour]
-                state_vector = self.feature_extractor(states[code])
-                reward = sum(rewards[code])
+                # TODO use the current value to compute!
+                current_value = next_value
+                current_colour = node.state.colour
+                current_code = node.state.code_map[current_colour]
+                print(node, node.state)
+                action, node, next_value, zs = \
+                    self.policy(game, node.state, explore=explore, train=True)
+                for _colour, _code in State.code_map.items():
+                    rewards[_code].append(node.rewards[_code])
+                    if len(rewards[_code]) > 3:
+                        rewards[_code].pop(0)
+                    states[_code].append(node.state.red_perspective(
+                        current_colour))
+                    if len(states[_code]) > 3:
+                        states[_code].pop(0)
+                reward = sum(rewards[current_code])
+                state_vector = self.feature_extractor(states[current_code])
                 X = np.expand_dims(state_vector, axis=0)
-                y = np.array([next_value + reward])
-                self.network.backward((X, y))
+                y = np.array([next_value * gamma + reward])
+                self.network.backward(X, y)
+                y_hat = np.array([current_value])
+                if i % checkpoint_interval == 0:
+                    loss += self.network.loss.compute(y_hat, y)
             if i % checkpoint_interval == 0:
-                self.network.check_point()
+                losses.append((i, loss))
+                print(f"Episode: {i}\n"
+                      f"        loss={loss}")
+                self.network.save_checkpoint()
         self.network.save_final()
 
     # def policy(self, game, node, explore=0.):
@@ -78,31 +114,6 @@ class ParametrisedRL(Search):
     #         index = np.argmax(values)
     #         child = children[index]
     #         return child.action, values[index]
-
-    def policy(self, game, state, explore=0.):
-        node = Node(state)
-        children = tuple(node.expand(game))
-        if random() < explore:
-            return children[randint(0, len(children))]
-        else:
-            states = [child.state for child in children]
-            colours = [node.state.colour] * len(tuple(children))
-            values = self.forward(states, colours).reshape(-1)
-            index = np.argmax(values)
-            child = children[index]
-            return child.action, values[index]
-
-    def simulate_episode(self, game, initial_node=None,
-                         explore=0.1, policy=None):
-        if policy is None:
-            policy = self.policy
-        episode = [initial_node]
-        node = initial_node
-        while node is not None:
-            node = policy(game, node, explore=explore)
-            episode.append(node)
-        return episode
-
 
 def simple_grid_extractor(states):
     # TODO rotate based on colour

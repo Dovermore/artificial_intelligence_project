@@ -180,10 +180,31 @@ class RLNode(Node):
         """
         if action not in self.children:
             next_state = game.result(self.state, action)
+            state = self.state
+            colour = state.colour
+            code = state.code_map[colour]
+
+            fr, to, move = action
+
+            rewards = [0, 0, 0]
+            if move == "EXIT":
+                rewards[code] = self.exit_reward
+                if game.terminal_state(self.state):
+                    rewards = [self.losing_reward] * 3
+                    rewards[code] += self.winning_reward
+            if move == "JUMP":
+                captured_colour = state._pos_to_piece[((fr[0]+to[0])//2,
+                                                       (fr[1]+to[1])//2)]
+                captured_code = state.code_map[captured_colour]
+                rewards[code] = self.capture_reward
+                rewards[captured_code] = self.captured_reward
+            if move == "MOVE":
+                pass
+            rewards = tuple(rewards)
             next_node = self.__class__(next_state, self, action,
                                        game.path_cost(
                                            self.path_cost, self.state, action,
-                                           next_state))
+                                           next_state), rewards)
             self.children[action] = next_node
         else:
             next_node = self.children[action]

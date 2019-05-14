@@ -17,5 +17,5 @@ layers = [
 
 
 def simple_linear_network():
-    return network.Network(layers, theta, loss=activation.MSE)
+    return network.Network(layers, theta, loss=activation.MSE())
 

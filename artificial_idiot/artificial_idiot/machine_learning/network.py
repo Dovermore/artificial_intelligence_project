@@ -35,7 +35,7 @@ class Network:
         self.save_to = save_to
         self.checkpoint_path = checkpoint_path
 
-    def forward(self, X, y=None):
+    def forward(self, X, y=None, train=False):
         """
         Forward propagation of the neural network (or linear model)
         :param X: The feature vector
@@ -48,9 +48,8 @@ class Network:
         for layer in self.layers:
             z, activation = layer.forward(activation, True)
             zs.appendleft(z)
-        if y is not None:
-            d_yhat = self.loss.derivative(activation, y)
-            return activation, zs, d_yhat
+        if train:
+            return activation, zs
         return activation
 
     def backward(self, X, y):
@@ -60,7 +59,8 @@ class Network:
         :param X: value of X feature set
         :param y: value of y label set
         """
-        activation, zs, d_yhat = self.forward(X, y)
+        activation, zs = self.forward(X, 1, True)
+        d_yhat = self.loss.derivative(activation, y)
         gradients = self._compute_gradients(zs, d_yhat)
         self._apply_gradients(gradients)
 
