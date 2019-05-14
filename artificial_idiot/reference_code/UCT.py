@@ -250,7 +250,7 @@ class OthelloState:
             return [] # nothing sandwiched
 
     def IsOnBoard(self, x, y):
-        return x >= 0 and x < self.size and y >= 0 and y < self.size
+        return 0 <= x < self.size and y >= 0 and y < self.size
 
     def GetResult(self, playerjm):
         """ Get the game result from the viewpoint of playerjm.
@@ -346,7 +346,7 @@ def UCT(rootstate, itermax, verbose = False):
             state.DoMove(node.move)
 
         # Expand
-        if node.untriedMoves != []: # if we can expand (i.e. state/node is non-terminal)
+        if node.untriedMoves: # if we can expand (i.e. state/node is non-terminal)
             m = random.choice(node.untriedMoves)
             state.DoMove(m)
             node = node.AddChild(m,state) # add child and descend tree
