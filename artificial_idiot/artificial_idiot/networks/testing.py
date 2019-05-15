@@ -19,13 +19,16 @@ from artificial_idiot.player import Player
 import random
 from copy import deepcopy
 
+
+four_layer_relu_model = "/Users/Dovermore/Documents/2019t1/COMP30024-AritificialIntelligence/ArtificialIdiotProject/artificial_idiot/artificial_idiot/machine_learning/20190515204758/checkpoints/checkpoint_20190515205020"
+
 architectures = networks.architectures
 initial_state = State(Player.start_config, "red")
 game = Game("red", initial_state, DummyEvaluator())
 
-four_layer_relu_model = "/Users/Dovermore/Documents/2019t1/COMP30024-AritificialIntelligence/ArtificialIdiotProject/artificial_idiot/artificial_idiot/machine_learning/20190515204758/checkpoints/checkpoint_20190515205020"
 # agent = ParametrisedRL(*architectures["two_sig"])
-# agent = ParametrisedRL(*architectures["four_lkrl"])
 agent = ParametrisedRL.from_file(four_layer_relu_model, simple_grid_extractor)
 # agent.td_train(game, initial_state, debug=1, checkpoint_interval=10)
-agent.td_train(game, initial_state, debug=0.01)
+agent.td_train(game, initial_state, debug=2)
+
+

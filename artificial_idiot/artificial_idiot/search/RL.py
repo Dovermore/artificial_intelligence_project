@@ -22,8 +22,7 @@ class ParametrisedRL(Search):
 
     @classmethod
     def from_file(cls, path, feature_extractor):
-        with open(path, "rb") as f:
-            nn = Network.from_file(f)
+        nn = Network.from_file(path)
         return cls(nn, feature_extractor)
 
     def forward(self, states, train=False):
@@ -203,7 +202,7 @@ class ParametrisedRL(Search):
             episodes.append((episode_states, episode_actions, episode_rewards))
 
             # TODO process information from terminal node
-            if i % checkpoint_interval == 0:
+            if i % checkpoint_interval == checkpoint_interval - 1:
                 losses.append((i, loss))
                 print(f"Episode: {i}\n"
                       f"        loss={loss/len(episode_states)}")

@@ -191,13 +191,16 @@ class RLNode(Node):
                     rewards = [self.losing_reward] * 3
                     rewards[code] += self.winning_reward
             if move == "JUMP":
-                captured_colour = state._pos_to_piece[((fr[0]+to[0])//2,
+                jumpedover_colour = state._pos_to_piece[((fr[0]+to[0])//2,
                                                        (fr[1]+to[1])//2)]
-                captured_code = state.code_map[captured_colour]
-                rewards[code] = self.capture_reward
-                rewards[captured_code] = self.captured_reward
-            dist_before = game.h0(state, colour)
-            dist_after = game.h0(next_state, colour)
+                jumpedover_code = state.code_map[jumpedover_colour]
+                if code != jumpedover_code:
+                    rewards[code] = self.capture_reward
+                    rewards[jumpedover_code] = self.captured_reward
+            # dist_before = game.integer_distance(state, colour)
+            # dist_after = game.integer_distance(next_state, colour)
+            dist_before = game.float_distance(state, colour)
+            dist_after = game.float_distance(next_state, colour)
             rewards[code] += dist_before - dist_after
             rewards = tuple(rewards)
             next_node = self.__class__(next_state, self, action,

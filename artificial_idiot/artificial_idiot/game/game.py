@@ -195,12 +195,20 @@ class Game(BoardProblem):
             return max(state.state.completed.values()) == 4
         return max(state.completed.values()) == 4
 
-    def h0(self, state, colour):
+    def integer_distance(self, state, colour):
         dists = 0
-        for position in state.piece_to_pos[state.colour]:
+        for position in state.piece_to_pos[colour]:
             dists += (min([self.grid_dist(position, exit_position) for
                            exit_position in self._exit_positions[colour]])
                       + 1) // 2
+        return dists
+
+    def float_distance(self, state, colour):
+        dists = 0
+        for position in state.piece_to_pos[colour]:
+            dists += (min([self.grid_dist(position, exit_position) for
+                           exit_position in self._exit_positions[colour]])
+                      + 1) / 2
         return dists
 
     @staticmethod

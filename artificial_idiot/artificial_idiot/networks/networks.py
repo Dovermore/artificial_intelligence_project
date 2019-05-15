@@ -5,6 +5,11 @@ from artificial_idiot.networks.const import (
     N_simple_grid_extractor
 )
 
+from artificial_idiot.search.RL import (
+    simple_grid_extractor,
+    full_grid_extractor
+)
+
 
 def simple_linear_network():
     # Simple Linear unit
@@ -53,3 +58,8 @@ def four_layer_leaky_relu_network():
     return network.Network(layers, theta, loss=activation.MSE())
 
 
+architectures = {
+    "linear": (simple_linear_network(), simple_grid_extractor),
+    "two_sig": (two_layer_sigmoid_network(), simple_grid_extractor),
+    "four_lkrl": (four_layer_leaky_relu_network(), simple_grid_extractor)
+}
