@@ -209,6 +209,8 @@ class RLNode(Node):
             next_node = self.children[action]
         return next_node
 
+    # TODO transform action as well
+    #  this part logic is really ugly, don't look
     def original_perspective(self, colour):
         mapped_red = self.state.perspective_mapping[colour]["red"]
         mapped_red_code = self.state.code_map[mapped_red]

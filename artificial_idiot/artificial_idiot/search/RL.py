@@ -57,7 +57,7 @@ class ParametrisedRL(Search):
         return child.action
 
     def td_train(self, game, initial_state=None, explore=0.1, n=1000,
-                 theta=0.05, checkpoint_interval=50, gamma=0.9, policy=None,
+                 theta=0.05, checkpoint_interval=20, gamma=0.9, policy=None,
                  debug=0):
         # TODO make it possible to plug in other agents by using
         self.network.learning_rate = theta
@@ -65,6 +65,8 @@ class ParametrisedRL(Search):
         # Generate episodes of game based on current policy
         # -> Update the value for each player
         losses = []
+
+        episodes = []
         for i in range(n):
             node = initial_node
             # We record three player simultaneously
@@ -72,7 +74,13 @@ class ParametrisedRL(Search):
             player_states = [[], [], []]
             player_actions = [None, None, None]
             loss = 0
+
+            episode_actions = []
+            episode_states = []
+            episode_rewards = []
+
             while not game.terminal_state(node.state):
+
                 # TODO replace this by any policy for bootstrapping
                 # TODO use the current value to compute!
 
@@ -90,6 +98,7 @@ class ParametrisedRL(Search):
                     # In reality, we should be computing three values for each
                     # node. But we cheat here. We only compute the value wrt
                     # current actor: The values are like this. (for r only)
+                    #                     * here now
                     #         v   v'      v''
                     #             o
                     #           /
@@ -98,6 +107,7 @@ class ParametrisedRL(Search):
                     # Other       o - o - o - o
                     # branch                \
                     # unknown                 o
+                    # p_s[r]:[0   1   2   *]
                     # We say that vt'' -> vt', and vt' +
 
                     # (Experimental, try to solve the after state problem)
@@ -114,12 +124,11 @@ class ParametrisedRL(Search):
                         self.network.forward(np.array([current_state_vector]))
                     ### THERE is no reward here!
                     # 4. Get y from v'
-                    y = np.array([v_prime])
-                    # TODO this part can be simplified by using previous result
+                    y = v_prime
+
                     # Get X
                     # 1. Get prev state
-                    prev_state = self \
-                        .feature_extractor(player_states[current_code][1])
+                    prev_state = player_states[current_code][1]
                     # 2. Get feature vector as X
                     prev_state_vector = \
                         self.feature_extractor(prev_state)
@@ -141,12 +150,10 @@ class ParametrisedRL(Search):
                     # 4. Get reward
                     reward = sum(player_rewards[current_code])
                     # 5. Get v' + reward as y
-                    y = np.array([gamma * v_prime + reward])
-                    # TODO this part can be simplified by using previous result
+                    y = gamma * v_prime + reward
                     # Get X
                     # 1. Get prev state
-                    prev_state = self\
-                        .feature_extractor(player_states[current_code][0])
+                    prev_state = player_states[current_code][0]
                     # 2. Get feature vector as X
                     prev_state_vector = \
                         self.feature_extractor(prev_state)
@@ -160,16 +167,23 @@ class ParametrisedRL(Search):
 
                 # Rotate the state to make current colour be red
                 current_state = node.state.red_perspective(current_colour)
-                # action, node, next_value, player_zs = \
-                #     self.policy(game, node.state, explore=explore,
-                #                 train=True)
 
                 # Get the results
                 action, node = \
                     self.policy(game, current_state, explore=explore,
                                 train=True)
+                fr, to, move = action
+                fr = State.rotate_pos("red", current_colour, fr)
+                to = State.rotate_pos("red", current_colour, to)
+                action = (fr, to, move)
+                player_actions[current_code] = action
+
                 # Back to red perspective
                 node.original_perspective(current_colour)
+
+                episode_actions.append(action)
+                episode_states.append(node.state)
+                episode_rewards.append(node.rewards)
 
                 if debug:
                     print(node)
@@ -185,11 +199,14 @@ class ParametrisedRL(Search):
                         player_states[_code].pop(0)
             print(f"Episode: {i}")
 
+            # Store them for now
+            episodes.append((episode_states, episode_actions, episode_rewards))
+
             # TODO process information from terminal node
             if i % checkpoint_interval == 0:
                 losses.append((i, loss))
                 print(f"Episode: {i}\n"
-                      f"        loss={loss}")
+                      f"        loss={loss/len(episode_states)}")
                 self.network.save_checkpoint()
         self.network.save_final()
 

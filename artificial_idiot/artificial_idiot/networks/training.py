@@ -28,7 +28,7 @@ architectures = {
 initial_state = State(Player.start_config, "red")
 game = Game("red", initial_state, DummyEvaluator())
 
-agent = ParametrisedRL(*architectures["two_sig"])
-agent.td_train(game, initial_state, debug=1, checkpoint_interval=10)
-# agent.td_train(game, initial_state)
-
+# agent = ParametrisedRL(*architectures["two_sig"])
+agent = ParametrisedRL(*architectures["four_lkrl"])
+# agent.td_train(game, initial_state, debug=1, checkpoint_interval=10)
+agent.td_train(game, initial_state)
