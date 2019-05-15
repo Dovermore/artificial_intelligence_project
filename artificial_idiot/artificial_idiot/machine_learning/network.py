@@ -59,9 +59,11 @@ class Network:
         :param X: value of X feature set
         :param y: value of y label set
         """
-        activation, zs = self.forward(X, 1, True)
-        d_yhat = self.loss.derivative(activation, y)
-        gradients = self._compute_gradients(zs, d_yhat)
+        y_hat, zs = self.forward(X, 1, True)
+        dy_hat = self.loss.derivative(y_hat, y)
+        print("====================")
+        print(zs)
+        gradients = self._compute_gradients(zs, dy_hat)
         self._apply_gradients(gradients)
 
     def _compute_gradients(self, zs, d_yhat):

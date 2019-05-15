@@ -25,16 +25,14 @@ class State:
     #    player:: red:   red -> red,   green -> green, blue -> blue
     #    player:: green: red -> blue,  green -> red,   blue -> green
     #    player:: blue:  red -> green, green -> blue,  blue -> red
-    perspective_mapping = \
-        {
-            fr:
-                {
-                    to: REV_CODE_MAP[(to_code - fr_code) % 3]
-                    for to, to_code in CODE_MAP
-                    .items()
-                }
-            for fr, fr_code in CODE_MAP.items()
-        }
+    perspective_mapping = {
+        fr:
+            {
+                to: REV_CODE_MAP[(to_code - fr_code) % 3]
+                for to, to_code in CODE_MAP .items()
+            }
+        for fr, fr_code in CODE_MAP.items()
+    }
 
     # TODO make checking fo completed faster/ and more robust
     def __init__(self, pos_to_piece, colour, completed=None):
@@ -118,11 +116,13 @@ class State:
         always return a new state
         :return: a state where current player is red
         """
+        mapping = self.perspective_mapping[colour]
+        mapped_colour = mapping[self.colour]
+
         if colour == "red":
             pos_to_piece = self.pos_to_piece
             completed = copy(self.completed)
-            return State(pos_to_piece, "red", completed)
-        mapping = self.perspective_mapping[colour]
+            return State(pos_to_piece, mapped_colour, completed)
         pos_to_piece = {
             self.rotate_pos(fr, mapping[fr], pos): mapping[fr]
             for pos, fr in self._pos_to_piece.items()
@@ -130,7 +130,15 @@ class State:
         completed = {
             mapping[fr]: num for fr, num in self.completed.items()
         }
-        return State(pos_to_piece, "red", completed)
+        return State(pos_to_piece, mapped_colour, completed)
+
+    def original_perspective(self, colour):
+        """
+        Change from rotated perspective back to original mapping
+        :param colour: The colour that's being rotated
+        :return: The reverse rotated map
+        """
+        return self.red_perspective(self.perspective_mapping[colour]["red"])
 
     def __repr__(self, **kwargs):
         # need a copy here
@@ -140,13 +148,13 @@ class State:
         #                 in pos_to_piece.items()}
         pos_to_piece = {key: self.print_map[value] for key, value
                         in pos_to_piece.items()}
-
         msg = f"Colour: {self._colour}"
         if "message" in kwargs:
             kwargs["message"] += msg
         else:
             kwargs["message"] = msg
-        return print_board(pos_to_piece, **kwargs, printed=False) + \
+        return f"Colour: {self.colour}\n" + \
+               print_board(pos_to_piece, **kwargs, printed=False) + \
             "\n# Completed: " + str(self.completed)
 
     def __hash__(self):
@@ -183,7 +191,15 @@ if __name__ == '__main__':
     def rotate_test():
         test = State({(1, -1): "red", (0, 0): "green", (0, 1): "blue"}, "blue", {"blue": 1})
         check = State({(-1, 0): "red", (0, 1): "green", (0, 0): "blue"}, "red", {"red": 1})
-        assert (check == State.red_perspective(test, "blue"))
+        red_perspective = test.red_perspective("blue")
+        blue_perspective = red_perspective.original_perspective("blue")
+        print(test)
+        print(check)
+        print(red_perspective)
+        print(blue_perspective)
+
+        assert (check == red_perspective)
+        assert (test == blue_perspective)
 
 
     def color_test():

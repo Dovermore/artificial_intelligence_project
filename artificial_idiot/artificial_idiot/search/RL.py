@@ -29,7 +29,7 @@ class ParametrisedRL(Search):
     def forward(self, states, train=False):
         array = []
         for state in states:
-            array.append(self.feature_extractor([state]))
+            array.append(self.feature_extractor(state))
         array = np.array(array)
         if train:
             return self.network.forward(array, 1, train=train)
@@ -50,8 +50,9 @@ class ParametrisedRL(Search):
         index = np.argmax(values)
         child = children[index]
         if train:
-            zs = deque(zs[0][[index]])
-            return child.action, child, values[index], zs
+            # zs = deque([z[index] for z in zs])
+            # return child.action, child, values[index], zs
+            return child.action, child
         return child.action
 
     def td_train(self, game, initial_state=None, explore=0.1, n=1000,
@@ -65,37 +66,103 @@ class ParametrisedRL(Search):
         for i in range(n):
             node = initial_node
             # We record three player simultaneously
-            rewards = [[], [], []]
-            states = [[], [], []]
-            current_value = self.forward([initial_state])[0]
-            # current_value = self.network.# TODO
-            next_value = 0
+            player_rewards = [[], [], []]
+            player_states = [[], [], []]
+            player_actions = [None, None, None]
             loss = 0
             while not game.terminal_state(node.state):
                 # TODO replace this by any policy for bootstrapping
                 # TODO use the current value to compute!
-                current_value = next_value
+
                 current_colour = node.state.colour
                 current_code = node.state.code_map[current_colour]
-                print(node, node.state)
-                action, node, next_value, zs = \
-                    self.policy(game, node.state, explore=explore, train=True)
+
+                action = player_actions[current_code]
+                # Update
+                if action is not None:
+                    # (Experimental) Update estimation of v+1 based on v
+                    # Update the estimation of v+1 and v'
+                    # Get y
+                    # 1. Get current state
+                    current_state = node.state.red_perspective(current_colour)
+                    # 2. Get feature vector
+                    current_state_vector = \
+                        self.feature_extractor(current_state)
+                    # 3. Compute v'
+                    v_prime = \
+                        self.network.forward(np.array([current_state_vector]))
+                    ### THERE is no reward here!
+                    # 4. Get y from v'
+                    y = np.array([v_prime])
+                    # TODO this part can be simplified by using previous result
+                    # Get X
+                    # 1. Get prev state
+                    prev_state = self \
+                        .feature_extractor(player_states[current_code][1])
+                    # 2. Get feature vector as X
+                    prev_state_vector = \
+                        self.feature_extractor(prev_state)
+                    X = np.array([prev_state_vector])
+                    # Backward propagation
+                    self.network.backward(X, y)
+
+                    # Update the estimation of previous state v and v'
+                    # Get y
+                    # 1. Get current state
+                    # current_state = \
+                    #     node.state.red_perspective(current_colour)
+                    # 2. Get feature vector
+                    # current_state_vector = \
+                    #     self.feature_extractor(current_state)
+                    # 3. Compute v'
+                    v_prime = \
+                        self.network.forward(np.array([current_state_vector]))
+                    # 4. Get reward
+                    reward = sum(player_rewards[current_code])
+                    # 5. Get v' + reward as y
+                    y = np.array([v_prime + reward])
+                    # TODO this part can be simplified by using previous result
+                    # Get X
+                    # 1. Get prev state
+                    prev_state = self\
+                        .feature_extractor(player_states[current_code][0])
+                    # 2. Get feature vector as X
+                    prev_state_vector = \
+                        self.feature_extractor(prev_state)
+                    X = np.array([prev_state_vector])
+                    # Backward propagation
+                    self.network.backward(X, y)
+
+                    if i % checkpoint_interval == 0:
+                        y_hat = self.network.forward(X)
+                        loss += self.network.loss.compute(y_hat, y)
+
+                # Rotate the state to make current colour be red
+                current_state = node.state.red_perspective(current_colour)
+                # action, node, next_value, player_zs = \
+                #     self.policy(game, node.state, explore=explore,
+                #                 train=True)
+
+                # Get the results
+                action, node = \
+                    self.policy(game, current_state, explore=explore,
+                                train=True)
+                # Back to red perspective
+                state = node.state
+                node = RLNode(state.original_perspective(current_colour))
+
+                # print(node)
+
                 for _colour, _code in State.code_map.items():
-                    rewards[_code].append(node.rewards[_code])
-                    if len(rewards[_code]) > 3:
-                        rewards[_code].pop(0)
-                    states[_code].append(node.state.red_perspective(
+                    player_rewards[_code].append(node.rewards[_code])
+                    if len(player_rewards[_code]) > 3:
+                        player_rewards[_code].pop(0)
+                    player_states[_code].append(node.state.red_perspective(
                         current_colour))
-                    if len(states[_code]) > 3:
-                        states[_code].pop(0)
-                reward = sum(rewards[current_code])
-                state_vector = self.feature_extractor(states[current_code])
-                X = np.expand_dims(state_vector, axis=0)
-                y = np.array([next_value * gamma + reward])
-                self.network.backward(X, y)
-                y_hat = np.array([current_value])
-                if i % checkpoint_interval == 0:
-                    loss += self.network.loss.compute(y_hat, y)
+                    if len(player_states[_code]) > 3:
+                        player_states[_code].pop(0)
+
+            # TODO process information from terminal node
             if i % checkpoint_interval == 0:
                 losses.append((i, loss))
                 print(f"Episode: {i}\n"
@@ -115,11 +182,14 @@ class ParametrisedRL(Search):
     #         child = children[index]
     #         return child.action, values[index]
 
-def simple_grid_extractor(states):
-    # TODO rotate based on colour
+
+def simple_grid_extractor(state):
+    """
+    A chain of states to
+    :param state:
+    :return:
+    """
     # First Represent States
-    assert len(states) > 0
-    state = states[0]
     state_vector = []
     for r in range(-3, 4):
         for q in range(max(-3, -3-r), min(4, 4+r)):
