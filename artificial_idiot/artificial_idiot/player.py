@@ -236,7 +236,7 @@ class Player(MaxNAgent):
         # self.utility_pieces, num_exited_piece, self.utility_distance
         weights = [1, 100, 1]
         evaluator = SimpleEG(weights)
-        cutoff = DepthLimitCutoff(max_depth=4)
+        cutoff = DepthLimitCutoff(max_depth=3)
         super().__init__(player, cutoff=cutoff, evaluator=evaluator,
                          initial_state=None)
 
@@ -249,7 +249,7 @@ class VOneAgent(MaxNAgent):
     def __init__(self, player):
         weights = [5, 2, 0.7]
         evaluator = NaiveEvaluatorGenerator(weights)
-        cutoff = DepthLimitCutoff(max_depth=4)
+        cutoff = DepthLimitCutoff(max_depth=3)
         super().__init__(player, cutoff=cutoff, evaluator=evaluator,
                          initial_state=None)
 
