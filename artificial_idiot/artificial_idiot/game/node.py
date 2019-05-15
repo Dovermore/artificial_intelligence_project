@@ -208,3 +208,16 @@ class RLNode(Node):
         else:
             next_node = self.children[action]
         return next_node
+
+    def original_perspective(self, colour):
+        mapped_red = self.state.perspective_mapping[colour]["red"]
+        mapped_red_code = self.state.code_map[mapped_red]
+        self.state = self.state.original_perspective(colour)
+        self.rewards = tuple(self.rewards[(code + 3 - mapped_red_code) % 3] for
+                             code in range(3))
+
+    def __repr__(self, transition=False, **kwargs):
+        return super().__repr__(transition, **kwargs) + f"{self.rewards}"
+
+
+

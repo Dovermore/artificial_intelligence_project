@@ -29,5 +29,6 @@ initial_state = State(Player.start_config, "red")
 game = Game("red", initial_state, DummyEvaluator())
 
 agent = ParametrisedRL(*architectures["two_sig"])
-agent.td_train(game, initial_state)
+agent.td_train(game, initial_state, debug=0.2)
+# agent.td_train(game, initial_state)
 

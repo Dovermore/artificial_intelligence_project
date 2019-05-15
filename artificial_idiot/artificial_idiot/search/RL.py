@@ -2,10 +2,10 @@ from artificial_idiot.search.search import Search
 from artificial_idiot.game.state import State
 from artificial_idiot.machine_learning.network import Network
 from artificial_idiot.game.node import Node, RLNode
-from collections import deque
 import numpy as np
 from random import random
 from artificial_idiot.util.misc import randint
+from time import sleep
 
 
 class ParametrisedRL(Search):
@@ -56,7 +56,8 @@ class ParametrisedRL(Search):
         return child.action
 
     def td_train(self, game, initial_state=None, explore=0.1, n=1000,
-                 theta=0.05, checkpoint_interval=50, gamma=0.9, policy=None):
+                 theta=0.05, checkpoint_interval=50, gamma=0.9, policy=None,
+                 debug=0):
         # TODO make it possible to plug in other agents by using
         self.network.learning_rate = theta
         initial_node = RLNode(initial_state, rewards=(0, 0, 0))
@@ -133,7 +134,7 @@ class ParametrisedRL(Search):
                     # Backward propagation
                     self.network.backward(X, y)
 
-                    if i % checkpoint_interval == 0:
+                    if i % checkpoint_interval == 0 or debug:
                         y_hat = self.network.forward(X)
                         loss += self.network.loss.compute(y_hat, y)
 
@@ -148,10 +149,11 @@ class ParametrisedRL(Search):
                     self.policy(game, current_state, explore=explore,
                                 train=True)
                 # Back to red perspective
-                state = node.state
-                node = RLNode(state.original_perspective(current_colour))
+                node.original_perspective(current_colour)
 
-                # print(node)
+                if debug:
+                    print(node)
+                    sleep(debug)
 
                 for _colour, _code in State.code_map.items():
                     player_rewards[_code].append(node.rewards[_code])
@@ -161,6 +163,10 @@ class ParametrisedRL(Search):
                         current_colour))
                     if len(player_states[_code]) > 3:
                         player_states[_code].pop(0)
+                if debug:
+                    print(player_rewards)
+            print("----------------------------------------")
+            print(f"Episode: {i}")
 
             # TODO process information from terminal node
             if i % checkpoint_interval == 0:
