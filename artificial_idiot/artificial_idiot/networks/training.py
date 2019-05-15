@@ -19,11 +19,15 @@ from artificial_idiot.player import Player
 import random
 from copy import deepcopy
 
+architectures = {
+    "linear": (networks.simple_linear_network(), simple_grid_extractor),
+    "two_sig": (networks.two_layer_sigmoid_network(), simple_grid_extractor),
+    "four_lkrl": (networks.four_layer_leaky_relu_network(),
+                  simple_grid_extractor)
+}
 initial_state = State(Player.start_config, "red")
 game = Game("red", initial_state, DummyEvaluator())
 
-nn = networks.simple_linear_network()
-
-agent = ParametrisedRL(nn, simple_grid_extractor)
+agent = ParametrisedRL(*architectures["two_sig"])
 agent.td_train(game, initial_state)
 

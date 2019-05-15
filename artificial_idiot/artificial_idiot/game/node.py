@@ -183,9 +183,7 @@ class RLNode(Node):
             state = self.state
             colour = state.colour
             code = state.code_map[colour]
-
             fr, to, move = action
-
             rewards = [0, 0, 0]
             if move == "EXIT":
                 rewards[code] = self.exit_reward
@@ -198,8 +196,9 @@ class RLNode(Node):
                 captured_code = state.code_map[captured_colour]
                 rewards[code] = self.capture_reward
                 rewards[captured_code] = self.captured_reward
-            if move == "MOVE":
-                pass
+            dist_before = game.h0(state, colour)
+            dist_after = game.h0(next_state, colour)
+            rewards[code] += dist_before - dist_after
             rewards = tuple(rewards)
             next_node = self.__class__(next_state, self, action,
                                        game.path_cost(

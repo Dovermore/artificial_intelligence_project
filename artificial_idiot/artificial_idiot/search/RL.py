@@ -199,7 +199,6 @@ def simple_grid_extractor(state):
             state_vector += append
     return state_vector
 
-
     # def tree_policy(self, game):
     #     """
     #     Get the child node of a UCT node. If the node is expanded then return

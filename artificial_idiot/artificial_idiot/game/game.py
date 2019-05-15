@@ -195,6 +195,35 @@ class Game(BoardProblem):
             return max(state.state.completed.values()) == 4
         return max(state.completed.values()) == 4
 
+    def h0(self, state, colour):
+        dists = 0
+        for position in state.piece_to_pos[state.colour]:
+            dists += (min([self.grid_dist(position, exit_position) for
+                           exit_position in self._exit_positions[colour]])
+                      + 1) // 2
+        return dists
+
+    @staticmethod
+    def grid_dist(pos1, pos2):
+        """
+        Get the grid distance between two different grid locations
+        :param pos1: first position (tuple)
+        :param pos2: second position (tuple)
+        :return: The `manhattan` distance between those two positions
+        """
+        x1, y1 = pos1
+        x2, y2 = pos2
+
+        dy = y2 - y1
+        dx = x2 - x1
+
+        # If different sign, take the max of difference in position
+        if dy * dx < 0:
+            return max([abs(dy), abs(dx)])
+        # Same sign or zero just take sum
+        else:
+            return abs(dy + dx)
+
     def __str__(self):
         return str(self.initial_state)
 
