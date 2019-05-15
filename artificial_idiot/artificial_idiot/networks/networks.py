@@ -2,7 +2,8 @@ from artificial_idiot.machine_learning import (
     layer, activation, network, misc
 )
 from artificial_idiot.networks.const import (
-    N_simple_grid_extractor
+    N_simple_grid_extractor,
+    N_full_grid_extractor
 )
 
 from artificial_idiot.search.RL import (
@@ -58,8 +59,72 @@ def four_layer_leaky_relu_network():
     return network.Network(layers, theta, loss=activation.MSE())
 
 
+def full4Llkrl():
+    n_in = N_full_grid_extractor
+    n_out1 = n_in * 2 // 3
+    n_out2 = n_out1 * 2 // 3
+    n_out3 = n_out2 * 2 // 3
+    n_out4 = 1
+    theta = 0.05
+    layers = [
+        layer.FullyConnected(n_in, n_out1, activation=activation.LeakyRelu(),
+                             weight_init=misc.normalised_initialiser(1)),
+        layer.FullyConnected(n_out1, n_out2, activation=activation.LeakyRelu(),
+                             weight_init=misc.normalised_initialiser(1)),
+        layer.FullyConnected(n_out2, n_out3, activation=activation.LeakyRelu(),
+                             weight_init=misc.normalised_initialiser(1)),
+        layer.FullyConnected(n_out3, n_out4, activation=activation.LeakyRelu(),
+                             weight_init=misc.normalised_initialiser(1)),
+    ]
+    return network.Network(layers, theta, loss=activation.MSE())
+
+
+def full4Sigmoid():
+    n_in = N_full_grid_extractor
+    n_out1 = n_in * 2 // 3
+    n_out2 = n_out1 * 2 // 3
+    n_out3 = n_out2 * 2 // 3
+    n_out4 = 1
+    theta = 0.05
+    layers = [
+        layer.FullyConnected(n_in, n_out1, activation=activation.Sigmoid(),
+                             weight_init=misc.normalised_initialiser(1)),
+        layer.FullyConnected(n_out1, n_out2, activation=activation.Sigmoid(),
+                             weight_init=misc.normalised_initialiser(1)),
+        layer.FullyConnected(n_out2, n_out3, activation=activation.Sigmoid(),
+                             weight_init=misc.normalised_initialiser(1)),
+        layer.FullyConnected(n_out3, n_out4, activation=activation.Linear(),
+                             weight_init=misc.normalised_initialiser(1)),
+    ]
+    return network.Network(layers, theta, loss=activation.MSE())
+
+
+def full5Relu():
+    n_in = N_full_grid_extractor
+    n_out1 = n_in * 2 // 3
+    n_out2 = n_out1 * 2 // 3
+    n_out3 = n_out2 * 2 // 3
+    n_out4 = n_out3 * 2 // 3
+    n_out5 = 1
+    theta = 0.05
+    layers = [
+        layer.FullyConnected(n_in, n_out1, activation=activation.LeakyRelu(),
+                             weight_init=misc.normalised_initialiser(1)),
+        layer.FullyConnected(n_out1, n_out2, activation=activation.LeakyRelu(),
+                             weight_init=misc.normalised_initialiser(1)),
+        layer.FullyConnected(n_out2, n_out3, activation=activation.LeakyRelu(),
+                             weight_init=misc.normalised_initialiser(1)),
+        layer.FullyConnected(n_out3, n_out4, activation=activation.LeakyRelu(),
+                             weight_init=misc.normalised_initialiser(1)),
+        layer.FullyConnected(n_out4, n_out5, activation=activation.Linear(),
+                             weight_init=misc.normalised_initialiser(1)),
+    ]
+    return network.Network(layers, theta, loss=activation.MSE())
+
+
 architectures = {
     "linear": (simple_linear_network(), simple_grid_extractor),
     "two_sig": (two_layer_sigmoid_network(), simple_grid_extractor),
-    "four_lkrl": (four_layer_leaky_relu_network(), simple_grid_extractor)
+    "four_lkrl": (four_layer_leaky_relu_network(), simple_grid_extractor),
+    "full_four_lkrl": (full4Llkrl(), full_grid_extractor)
 }

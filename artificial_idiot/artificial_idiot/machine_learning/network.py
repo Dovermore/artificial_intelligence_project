@@ -51,6 +51,8 @@ class Network:
             zs.appendleft(z)
             # print(activation)
         # print("====================")
+        # print(activation)
+        # print("====================")
         if train:
             return activation, zs
         return activation
@@ -84,6 +86,7 @@ class Network:
         :param y: value of y label set
         """
         y_hat, zs = self.forward(X, 1, True)
+        print(y_hat, y)
         dy_hat = self.loss.derivative(y_hat, y)
         gradients = self._compute_gradients(zs, dy_hat)
         self._apply_gradients(gradients)

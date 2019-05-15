@@ -195,7 +195,8 @@ class ParametrisedRL(Search):
                     # Backward propagation
                     self.network.backward(X, y)
 
-                    if i % checkpoint_interval == 0 or debug:
+                    if i % checkpoint_interval == \
+                            checkpoint_interval - 1 or debug:
                         y_hat = self.network.forward(X)
                         loss += self.network.loss.compute(y_hat, y)
 
@@ -241,7 +242,6 @@ class ParametrisedRL(Search):
 
             # TODO process information from terminal node
 
-
             if i % checkpoint_interval == checkpoint_interval - 1:
                 losses.append((i, loss))
                 print(f"Episode: {i}\n"
@@ -276,7 +276,7 @@ def full_grid_extractor(state):
     state_vector = simple_grid_extractor(state)
     # Extract completed pieces
     for i in range(3):
-        colour = state.code_map[i]
+        colour = state.rev_code_map[i]
         number = state.completed[colour]
         state_vector.append(number)
 
