@@ -153,11 +153,12 @@ class BasicUCTNode(Node):
 
 
 class RLNode(Node):
-    winning_reward = 10
-    capture_reward = 5
-    exit_reward = 2
-    losing_reward = -10
-    captured_reward = -5
+    # This RL node does nothing!
+    winning_reward = 0
+    capture_reward = 0
+    exit_reward = 0
+    losing_reward = 0
+    captured_reward = 0
 
     def __init__(self, state, parent=None, action=None,
                  path_cost=0, rewards=(0, 0, 0)):
@@ -186,17 +187,17 @@ class RLNode(Node):
             fr, to, move = action
             rewards = [0, 0, 0]
             if move == "EXIT":
-                rewards[code] = self.exit_reward
-                if game.terminal_state(self.state):
+                if game.terminal_state(next_state):
                     rewards = [self.losing_reward] * 3
-                    rewards[code] += self.winning_reward
+                    rewards[code] = self.winning_reward
+                rewards[code] += self.exit_reward
             if move == "JUMP":
                 jumpedover_colour = state._pos_to_piece[((fr[0]+to[0])//2,
                                                        (fr[1]+to[1])//2)]
                 jumpedover_code = state.code_map[jumpedover_colour]
                 if code != jumpedover_code:
-                    rewards[code] = self.capture_reward
-                    rewards[jumpedover_code] = self.captured_reward
+                    rewards[code] += self.capture_reward
+                    rewards[jumpedover_code] += self.captured_reward
             # dist_before = game.integer_distance(state, colour)
             # dist_after = game.integer_distance(next_state, colour)
             dist_before = game.float_distance(state, colour)
@@ -225,4 +226,18 @@ class RLNode(Node):
         return super().__repr__(transition, **kwargs) + f"{self.rewards}"
 
 
+class InitialRLNode(RLNode):
+    winning_reward = 10
+    capture_reward = 5
+    exit_reward = 2
+    losing_reward = -10
+    captured_reward = -5
+
+
+class WinningRLNode(RLNode):
+    winning_reward = 12
+    capture_reward = 0
+    exit_reward = 4
+    losing_reward = -12
+    captured_reward = 0
 

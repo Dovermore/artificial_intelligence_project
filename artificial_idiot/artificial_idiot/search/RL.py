@@ -1,11 +1,14 @@
 from artificial_idiot.search.search import Search
 from artificial_idiot.game.state import State
 from artificial_idiot.machine_learning.network import Network
-from artificial_idiot.game.node import Node, RLNode
+from artificial_idiot.game.node import (
+    Node, RLNode, InitialRLNode, WinningRLNode
+)
 import numpy as np
 from random import random
 from artificial_idiot.util.misc import randint
 from time import sleep
+from scipy.special import softmax
 
 
 class ParametrisedRL(Search):
@@ -18,7 +21,7 @@ class ParametrisedRL(Search):
         self.feature_extractor = feature_extractor
 
     def search(self, game, state, **kwargs):
-        return self.policy(game, state, 0)
+        return self.greedy_policy(game, state, 0)
 
     @classmethod
     def from_file(cls, path, feature_extractor):
@@ -35,8 +38,11 @@ class ParametrisedRL(Search):
         else:
             return self.network.forward(np.array(array))
 
-    def policy(self, game, state, explore=0., train=False):
-        node = RLNode(state)
+    def greedy_policy(self, game, state, explore=0., node_type=InitialRLNode,
+                      train=False):
+        if game.terminal_state(state):
+            return None, None
+        node = node_type(state)
         children = tuple(node.expand(game))
         if random() < explore:
             children = (children[randint(0, len(children))],)
@@ -46,7 +52,6 @@ class ParametrisedRL(Search):
             values = values.reshape(-1)
         else:
             values = self.forward(states).reshape(-1)
-        # TODO change the policy to a distribution!
         index = np.argmax(values)
         child = children[index]
         if train:
@@ -55,12 +60,43 @@ class ParametrisedRL(Search):
             return child.action, child
         return child.action
 
+    def choice_policy(self, game, state, explore=0., node_type=InitialRLNode,
+                      train=False):
+        if game.terminal_state(state):
+            return None, None
+        node = node_type(state)
+        children = tuple(node.expand(game))
+        if random() < explore:
+            children = (children[randint(0, len(children))],)
+        states = [child.state for child in children]
+        if train:
+            values, zs = self.forward(states, train=train)
+            values = values.reshape(-1)
+        else:
+            values = self.forward(states).reshape(-1)
+        probs = softmax(values)
+        child = np.random.choice(children, size=1, p=probs)[0]
+        print(probs)
+        if train:
+            # zs = deque([z[index] for z in zs])
+            # return child.action, child, values[index], zs
+            return child.action, child
+        return child.action
+
     def td_train(self, game, initial_state=None, explore=0.1, n=1000,
-                 theta=0.05, checkpoint_interval=20, gamma=0.9, policy=None,
-                 debug=0):
-        # TODO make it possible to plug in other agents by using
+                 theta=0.05, checkpoint_interval=20, gamma=0.9,
+                 node_type=InitialRLNode, policy="choice", debug=0):
+        # TODO make it possible to plug in other agents
         self.network.learning_rate = theta
-        initial_node = RLNode(initial_state, rewards=(0, 0, 0))
+        initial_node = node_type(initial_state, rewards=(0, 0, 0))
+
+        if policy == "greedy":
+            policy = self.greedy_policy
+        elif policy == "choice":
+            policy = self.choice_policy
+        else:
+            raise ValueError("Invalid policy")
+
         # Generate episodes of game based on current policy
         # -> Update the value for each player
         losses = []
@@ -78,7 +114,7 @@ class ParametrisedRL(Search):
             episode_states = []
             episode_rewards = []
 
-            while not game.terminal_state(node.state):
+            while True:
 
                 # TODO replace this by any policy for bootstrapping
                 # TODO use the current value to compute!
@@ -168,9 +204,12 @@ class ParametrisedRL(Search):
                 current_state = node.state.red_perspective(current_colour)
 
                 # Get the results
-                action, node = \
-                    self.policy(game, current_state, explore=explore,
-                                train=True)
+                action, node = policy(game, current_state, explore=explore,
+                                      node_type=node_type, train=True)
+
+                if node is None or action is None:
+                    break
+
                 fr, to, move = action
                 fr = State.rotate_pos("red", current_colour, fr)
                 to = State.rotate_pos("red", current_colour, to)
@@ -202,6 +241,8 @@ class ParametrisedRL(Search):
             episodes.append((episode_states, episode_actions, episode_rewards))
 
             # TODO process information from terminal node
+
+
             if i % checkpoint_interval == checkpoint_interval - 1:
                 losses.append((i, loss))
                 print(f"Episode: {i}\n"
