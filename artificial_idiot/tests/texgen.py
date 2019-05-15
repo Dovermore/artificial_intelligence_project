@@ -47,7 +47,14 @@ class BoardViewCanvas(tkinter.Canvas):
 
         # pack into interface
         self.pack()
-    
+
+
+    def reset(self):
+        print('clicked')
+        for piece in self.board.pieces.values():
+            piece.col = None
+            piece.paint(None)
+
     # called in the beginning
     def initialise(self):
         # build game board
@@ -62,6 +69,11 @@ class BoardViewCanvas(tkinter.Canvas):
         self.exited = tkinter.Entry(self)
         self.exited.insert(tkinter.END, '0, 0, 0')
         self.exited.place(relx=0.5, rely=0.05, anchor='n')
+
+        # clearing button
+        self.clear_button = tkinter.Button(self.root, text='clear', command=self.reset)
+        self.clear_button.place(relx=0.7, rely=0.05, anchor='n')
+
 
     def clicked(self, event):
         click = self.find_withtag(tkinter.CURRENT)
