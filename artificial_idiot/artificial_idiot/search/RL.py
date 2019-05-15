@@ -144,40 +144,40 @@ class ParametrisedRL(Search):
                     # p_s[r]:[0   1   2   *]
                     # We say that vt'' -> vt', and vt' +
 
-                    # (Experimental, try to solve the after state problem)
-                    # Update estimation of v' based on v''
-                    # Then update the estimation v based on v'
-                    # Get y
-                    # 1. Get current state
-                    current_state = node.state.red_perspective(current_colour)
-                    # 2. Get feature vector
-                    current_state_vector = \
-                        self.feature_extractor(current_state)
-                    # 3. Compute v'
-                    v_prime = \
-                        self.network.forward(np.array([current_state_vector]))
-                    ### THERE is no reward here!
-                    # 4. Get y from v'
-                    y = v_prime
-
-                    # Get X
-                    # 1. Get prev state
-                    prev_state = player_states[current_code][1]
-                    # 2. Get feature vector as X
-                    prev_state_vector = \
-                        self.feature_extractor(prev_state)
-                    X = np.array([prev_state_vector])
-                    # Backward propagation
-                    self.network.backward(X, y)
+                    # # (Experimental, try to solve the after state problem)
+                    # # Update estimation of v' based on v''
+                    # # Then update the estimation v based on v'
+                    # # Get y
+                    # # 1. Get current state
+                    # current_state = node.state.red_perspective(current_colour)
+                    # # 2. Get feature vector
+                    # current_state_vector = \
+                    #     self.feature_extractor(current_state)
+                    # # 3. Compute v'
+                    # v_prime = \
+                    #     self.network.forward(np.array([current_state_vector]))
+                    # ### THERE is no reward here!
+                    # # 4. Get y from v'
+                    # y = v_prime
+                    #
+                    # # Get X
+                    # # 1. Get prev state
+                    # prev_state = player_states[current_code][1]
+                    # # 2. Get feature vector as X
+                    # prev_state_vector = \
+                    #     self.feature_extractor(prev_state)
+                    # X = np.array([prev_state_vector])
+                    # # Backward propagation
+                    # self.network.backward(X, y)
 
                     # Update the estimation of previous state v and v'
                     # Get y
                     # 1. Get current state
-                    # current_state = \
-                    #     node.state.red_perspective(current_colour)
+                    current_state = \
+                        node.state.red_perspective(current_colour)
                     # 2. Get feature vector
-                    # current_state_vector = \
-                    #     self.feature_extractor(current_state)
+                    current_state_vector = \
+                        self.feature_extractor(current_state)
                     # 3. Compute v'
                     v_prime = \
                         self.network.forward(np.array([current_state_vector]))

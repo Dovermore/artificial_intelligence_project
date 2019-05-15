@@ -212,9 +212,9 @@ if __name__ == '__main__':
         assert(State.rotate_pos("green", "blue", (0, -3)) == (3,0))
         assert(State.rotate_pos("green", "red", (0, -3)) == (-3, 3))
 
-    # test next color
+    # UCT next color
     color_test()
-    # test rotate state
+    # UCT rotate state
     rotate_test()
     # rotate action
     rotate_action_test()

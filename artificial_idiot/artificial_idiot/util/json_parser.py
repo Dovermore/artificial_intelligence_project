@@ -64,5 +64,5 @@ if __name__ == "__main__":
             assert(piece_dict_ans == dict(json_parser.parse_piece_a()))
             assert(pos_dict_ans == dict(pos_dict))
 
-    # test
+    # UCT
     test_initial_state()

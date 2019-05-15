@@ -16,28 +16,21 @@ from artificial_idiot.game.node import *
 
 architectures = networks.architectures
 
-
-loading = True
-if loading:
-    time_stamp = 20190515224313
-    path = f"/Users/Dovermore/Documents/2019t1/COMP30024-AritificialIntelligence/ArtificialIdiotProject/artificial_idiot/artificial_idiot/machine_learning/{time_stamp}"
-    checkpoint_path = f"{path}/checkpoints"
-    checkpoint_files = glob.glob(f'{checkpoint_path}/*')
-    latest_checkpoint = max(checkpoint_files, key=os.path.getctime)
-    final_file = f"{path}/network"
-    model = latest_checkpoint
-    agent = ParametrisedRL.from_file(model, simple_grid_extractor)
-else:
-    # agent = ParametrisedRL(*architectures["two_sig"])
-    agent = ParametrisedRL(*architectures["four_lkrl"])
-    pass
+time_stamp = 20190516001133
+path = f"/Users/Dovermore/Documents/2019t1/COMP30024-AritificialIntelligence/ArtificialIdiotProject/artificial_idiot/artificial_idiot/machine_learning/{time_stamp}"
+checkpoint_path = f"{path}/checkpoints"
+checkpoint_files = glob.glob(f'{checkpoint_path}/*')
+latest_checkpoint = max(checkpoint_files, key=os.path.getctime)
+final_file = f"{path}/network"
+model = latest_checkpoint
+agent = ParametrisedRL.from_file(model, simple_grid_extractor)
 
 
 # node_type = WinningRLNode
 node_type = InitialRLNode
 
-# policy = "greedy"
-policy = "choice"
+policy = "greedy"
+# policy = "choice"
 
 # debug = 3
 # debug = 2

@@ -13,7 +13,7 @@ player package/class specifications (positional arguments):
   
   The first 3 arguments are 'package specifications'. These specify which Python
   package/module to import and search for a class named 'Player' (to instantiate
-  for each player in the game). When we test your programs this will just be
+  for each player in the game). When we UCT your programs this will just be
   your top-level package (i.e. 'your_team_name').
   
   If you want to play games with another player class from another package (e.g.
@@ -92,7 +92,7 @@ LOGFILE_NOVALUE = "game.log"
 PKG_SPEC_HELP = """
 The first 3 arguments are 'package specifications'. These specify which Python
 package/module to import and search for a class named 'Player' (to instantiate
-for each player in the game). When we test your programs this will just be
+for each player in the game). When we UCT your programs this will just be
 your top-level package (i.e. 'your_team_name').
 
 If you want to play games with another player class from another package (e.g.

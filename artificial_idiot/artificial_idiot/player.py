@@ -2,7 +2,7 @@ from artificial_idiot.search.random import Random
 from artificial_idiot.search.uct import UCTSearch
 from artificial_idiot.search.max_n import MaxN
 from artificial_idiot.search.open_game import OpeningGame
-
+from artificial_idiot.search.RL import ParametrisedRL
 from artificial_idiot.search.search_cutoff.cutoff import DepthLimitCutoff
 from artificial_idiot.evaluation.evaluator import (
     DummyEvaluator, WinLossEvaluator, MyEvaluator
@@ -47,7 +47,7 @@ class Player:
         program will play as (Red, Green or Blue). The value will be one of the
         strings "red", "green", or "blue" correspondingly.
 
-        You can parse any valid board state to test the Agent
+        You can parse any valid board state to UCT the Agent
         However the Agent assumes the states are valid
         """
         self.colour = colour
@@ -237,6 +237,16 @@ class BasicUCTPlayer(Player):
         self.game = game_type(colour="red",
                               state=node_type(state),
                               evaluator=evaluator)
+
+
+class RLPlayer(Player):
+    """
+    Basic TD learning agent
+    """
+    def __init__(self, colour, search_algorithm=ParametrisedRL, game_type=Game,
+                 evaluator=player_evaluator, initial_state=None):
+        super().__init__(colour, search_algorithm, game_type, evaluator,
+                         initial_state)
 
 
 class PlayerFactory:

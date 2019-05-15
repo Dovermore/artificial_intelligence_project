@@ -3,7 +3,7 @@ import abc
 
 class Cutoff(abc.ABC):
     """
-    The class to wrap a cut off test function disregard of the internal and
+    The class to wrap a cut off UCT function disregard of the internal and
     provide a function interface to the player class for evaluating when
     evaluation is no longer needed
     """

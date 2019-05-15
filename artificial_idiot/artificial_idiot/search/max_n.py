@@ -31,7 +31,7 @@ class MaxN(Search):
         return v
 
     def _recursive_max_search(self, game, state, depth):
-        # cut off test
+        # cut off UCT
         if self._cut_off_test(state, depth=depth) or game.terminal_state(state):
             return self._evaluate(state), None
         player = state.code_map[state.colour]
@@ -50,7 +50,7 @@ class MaxN(Search):
         # no exploration needed if only there is no choice to be made
         actions = game.actions(state)
         if len(actions) == 1: return actions[0]
-        # cut off test
+        # cut off UCT
         _, a = self._recursive_max_search(game, state, depth)
         return a
 
@@ -68,7 +68,7 @@ class MaxN(Search):
 #         return self._eval(state, player_index)
 #
 #     def search(self, game, state, depth=1, **kwargs):
-#         # cut off test
+#         # cut off UCT
 #         if self._cut_off_test(state, depth=depth):
 #             return self._evaluate(state), None
 #         player = state.code_map[state.colour]

@@ -266,7 +266,7 @@ class RewardedGame(Game):
 
 
 if __name__ == "__main__":
-    # test to convert player pieces
+    # UCT to convert player pieces
     from artificial_idiot.util.json_parser import JsonParser
     import json
 

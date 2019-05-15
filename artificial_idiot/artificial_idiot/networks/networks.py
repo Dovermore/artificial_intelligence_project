@@ -122,11 +122,26 @@ def full5Relu():
     return network.Network(layers, theta, loss=activation.MSE())
 
 
+def full_two_layer_sigmoid_network():
+    n_in = N_full_grid_extractor
+    n_out1 = n_in // 2
+    n_out2 = 1
+    theta = 0.05
+    layers = [
+        layer.FullyConnected(n_in, n_out1, activation=activation.Sigmoid(),
+                             weight_init=misc.normalised_initialiser(1)),
+        layer.FullyConnected(n_out1, n_out2, activation=activation.Linear(),
+                             weight_init=misc.normalised_initialiser(1)),
+    ]
+    return network.Network(layers, theta, loss=activation.MSE())
+
+
 architectures = {
-    "linear": (simple_linear_network(), simple_grid_extractor),
-    "two_sig": (two_layer_sigmoid_network(), simple_grid_extractor),
-    "four_lkrl": (four_layer_leaky_relu_network(), simple_grid_extractor),
+    "simple_linear": (simple_linear_network(), simple_grid_extractor),
+    "simple_two_sig": (two_layer_sigmoid_network(), simple_grid_extractor),
+    "simple_four_lkrl": (four_layer_leaky_relu_network(), simple_grid_extractor),
     "full_four_lkrl": (full4Llkrl(), full_grid_extractor),
     "full_five_relu": (full5Relu(), full_grid_extractor),
     "full_four_sig": (full4Sigmoid(), full_grid_extractor),
+    "full_two_sig": (full_two_layer_sigmoid_network(), full_grid_extractor),
 }
