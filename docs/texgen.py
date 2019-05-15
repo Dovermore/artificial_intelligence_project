@@ -88,6 +88,7 @@ class ExportButton:
     def click(self):
         tikz = self.render_to_tikz(self.board)
         print(tikz)
+
     def render_to_tikz(self, board):
         block_coord_strs = []
         piece_coord_strs = []
@@ -102,6 +103,9 @@ class ExportButton:
         template = TEMPLATE.replace("SUBSTITUTE_BLOCKS", all_block_coords)
         template = template.replace("SUBSTITUTE_PIECES", all_piece_coords)
         return template
+
+    def export_json(self, board):
+        print()
 
 class Board:
     def __init__(self, canvas):

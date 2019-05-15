@@ -50,3 +50,12 @@ class TestMaxN(TestCase):
         game = Game('red', state)
         best_action = search.search(game, state)
         print(best_action)
+
+    def test_avoid_eaten(self):
+        search = self.search
+        state = parse_state("../../tests/avoid_eaten.json")
+        print(state)
+
+        game = Game('red', state)
+        best_action = search.search(game, state)
+        print(best_action)

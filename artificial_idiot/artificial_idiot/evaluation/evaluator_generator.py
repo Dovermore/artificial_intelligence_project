@@ -1,5 +1,6 @@
 import abc
 import numpy as np
+from math import log
 
 _exit_positions = {
     "red": ((3, -3), (3, -2), (3, -1), (3, 0)),
@@ -30,20 +31,15 @@ def grid_dist(pos1, pos2):
 
 
 def sum_shortest_exit_distance(state, player):
-    # the distance is 'infinite' if all exit positions are blocked by other player
     pieces = state.piece_to_pos[player]
     exit_positions = [pos for pos in _exit_positions[player] if ((not state.occupied(pos)) or (pos in pieces))]
     distances = {}
-    # when there are no pieces or distance is 0 use smallest distance
-    smallest_distance = 0.001
     for piece in pieces:
         distances[piece] = 1000000
         for exit_pos in exit_positions:
             distances[piece] = min(grid_dist(piece, exit_pos), distances[piece])
-            distances[piece] = max(distances[piece], smallest_distance)
-    # return 0.001 if no pieces
     if len(distances) == 0:
-        return smallest_distance
+        return 0
     return sum(distances.values())
 
 
@@ -156,13 +152,20 @@ class NaiveEvaluatorGenerator(EvaluatorGenerator):
 
     @staticmethod
     def reciprocal_distance(state, player):
-        return 1/sum_shortest_exit_distance(state, player)
+        value = sum_shortest_exit_distance(state, player)
+        if value == 0:
+            value = 0.5
+        return 1/value
+
+    @staticmethod
+    def negative_distance(state, player):
+        return -sum_shortest_exit_distance(state, player)
 
     # weights in the format of [pieces, exited, distance]
     def __init__(self, weights,  *args, **kwargs):
         self._weights = weights
 
-        func = [num_board_piece, num_exited_piece, self.reciprocal_distance]
+        func = [num_board_piece, num_exited_piece, self.negative_distance]
         self._eval = FunctionalEvaluatorGenerator(self._weights, func)
         super().__init__(*args, **kwargs)
 
@@ -171,4 +174,46 @@ class NaiveEvaluatorGenerator(EvaluatorGenerator):
         return self._eval(state)
 
 
+class SimpleEvaluatorGenerator(EvaluatorGenerator):
+    """
+    * weights are defined beforehand
+    An evaluator that only considers
+    1. Number of your pieces
+    2. Distance to exit
+    """
 
+    @staticmethod
+    def utility_distance(state, player):
+        MAX_DISTANCE = 24
+        dist = sum_shortest_exit_distance(state, player)
+        # distance has no utility if exit is blocked
+        if dist > MAX_DISTANCE:
+            return 0
+        # exited pieces have value -1 each
+        dist -= num_exited_piece(state, player)
+        # mirror and shift s to maximize value, it is max N after all
+        s = -dist + MAX_DISTANCE
+        # further discussed in report
+        if 0 <= s <= MAX_DISTANCE:
+            return -1/MAX_DISTANCE*s**2+4*s
+        elif MAX_DISTANCE < s <= 28:
+            return 2*s**2-94*s+1176
+        else:
+            raise ValueError("distance is not in range of 0 <= s <= 28")
+
+    @staticmethod
+    def utility_pieces(state, player):
+        n = num_exited_piece(state, player) + num_board_piece(state, player)
+        return 10*log(n)+3*n
+
+    # weights in the format of [utility_distance, utility_pieces]
+    def __init__(self, weights=(1, 1),  *args, **kwargs):
+        self._weights = weights
+
+        func = [self.utility_distance, self.utility_pieces]
+        self._eval = FunctionalEvaluatorGenerator(self._weights, func)
+        super().__init__(*args, **kwargs)
+
+    # returns an evaluator for that state
+    def __call__(self, state, *args, **kwargs):
+        return self._eval(state)

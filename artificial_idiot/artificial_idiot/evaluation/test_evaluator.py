@@ -43,26 +43,14 @@ class TestNaiveEvaluator(TestCase):
         evaluator = evaluator_generator(state)
         self.assertAlmostEqual(evaluator('red'), 11, places=1)
         self.assertAlmostEqual(evaluator('green'), 20.039, places=3)
-        self.assertEqual(evaluator('blue'), 708)
-
-    def test_distance(self):
-        # blue have exited so it should have the highest value
-        # red can't exit because green is blocking it
-        # weights in the format of [pieces, exited, distance]
-        evaluator_generator = self.evaluator_generator
-        state = parse_state("../../tests/evaluator_test.json")
-        print(state)
-        evaluator = evaluator_generator(state)
-        self.assertAlmostEqual(evaluator('red'), 11, places=1)
-        self.assertAlmostEqual(evaluator('green'), 20.038888, places=3)
-        self.assertEqual(evaluator('blue'), 708)
+        self.assertEqual(evaluator('blue'), 8.7)
 
     def test_varied_distance(self):
         evaluator_generator = self.evaluator_generator
         state = parse_state("../../tests/varied_distance.json")
         print(state)
         evaluator = evaluator_generator(state)
-        self.assertAlmostEqual(evaluator('red'), 711, places=1)
+        self.assertAlmostEqual(evaluator('red'), 11.7, places=1)
         self.assertEqual(evaluator('green'), 11.7)
         self.assertEqual(evaluator('blue'), 11.35)
 
