@@ -246,7 +246,7 @@ class Chexers:
         ran = range(-3, +3+1)
         for qr in [(q,r) for q in ran for r in ran if -q-r in ran]:
             cells.append(_DISPLAY[self.board[qr]])
-        score_template = "Red: {r} exits, Green: {g} exits, Blue: {b} exits."
+        score_template = "🔴: {r}, ✅: {g}, 🔵: {b}."
         score_str = score_template.format(**self.score)
         return template.format(score_str, *cells)
 

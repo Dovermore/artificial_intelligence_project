@@ -64,8 +64,21 @@ class TestSumShortestExitDistance(TestCase):
 
     def test_one_exit_position(self):
         state = parse_state("../../tests/only_one_exit_pos_for_red.json")
+        print(state)
         self.assertEqual(sum_shortest_exit_distance(state, 'red'), 15)
 
     def test_no_exit(self):
         state = parse_state("../../tests/no_exit.json")
+        print(state)
         self.assertEqual(sum_shortest_exit_distance(state, 'red'), 4000000)
+
+    def test_move_one_by_one(self):
+        utility = SimpleEG.utility_distance
+        state1 = parse_state("../../tests/move1.json")
+        state2 = parse_state("../../tests/move2.json")
+        player = 'red'
+        print(state1)
+        print(state2)
+        self.assertGreater(utility(state1, player), utility(state2, player))
+
+

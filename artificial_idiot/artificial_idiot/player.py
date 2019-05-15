@@ -5,7 +5,7 @@ from artificial_idiot.search.uct import UCTSearch
 from artificial_idiot.search.max_n import MaxN
 from artificial_idiot.search.search_cutoff.cutoff import DepthLimitCutoff
 from artificial_idiot.evaluation.evaluator_generator import (
-    DummyEvaluator, WinLossEvaluator, NaiveEvaluatorGenerator
+    DummyEvaluator, WinLossEvaluator, NaiveEvaluatorGenerator, SimpleEG
 )
 from artificial_idiot.game.node import Node, BasicUCTNode
 from artificial_idiot.util.json_parser import JsonParser
@@ -228,6 +228,20 @@ class MaxNAgent(AbstractPlayer):
 
 
 class Player(MaxNAgent):
+    """
+    A wrapper class for referee that uses interface given by referee
+    Here we use best hyperparameter
+    """
+    def __init__(self, player):
+        # self.utility_pieces, num_exited_piece, self.utility_distance
+        weights = [1, 100, 1]
+        evaluator = SimpleEG(weights)
+        cutoff = DepthLimitCutoff(max_depth=3)
+        super().__init__(player, cutoff=cutoff, evaluator=evaluator,
+                         initial_state=None)
+
+
+class VOneAgent(MaxNAgent):
     """
     A wrapper class for referee that uses interface given by referee
     Here we use best hyperparameter

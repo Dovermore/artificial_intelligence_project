@@ -202,15 +202,29 @@ class SimpleEG(EvaluatorGenerator):
         return sum([SimpleEG.utilty_distance_piece(piece, state, player) for piece in pieces])
 
     @staticmethod
+    def utility_completed_piece(state, player):
+        # return 0 if the player don't enough pieces
+        NEEDED = 4
+        exited = num_exited_piece(state, player)
+        n = exited + num_board_piece(state, player)
+        if n < NEEDED:
+            return 0
+        else:
+            return exited
+
+    @staticmethod
     def utility_pieces(state, player):
         n = num_exited_piece(state, player) + num_board_piece(state, player)
+        # log(0) is close to -inf
+        if n == 0:
+            return -1000000
         return 10*log(n)+3*n
 
     # weights in the format of [utility_distance, utility_pieces]
     def __init__(self, weights,  *args, **kwargs):
         self._weights = weights
 
-        func = [self.utility_pieces, num_exited_piece, self.utility_distance]
+        func = [self.utility_pieces, self.utility_completed_piece, self.utility_distance]
         self._eval = FunctionalEvaluatorGenerator(self._weights, func)
         super().__init__(*args, **kwargs)
 

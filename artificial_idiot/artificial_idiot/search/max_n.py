@@ -31,10 +31,10 @@ class MaxN(Search):
         v_max = None
         a_best = None
         for a in game.actions(state):
-            result_state = game.result(state, a)
-            v, _ = self._recursive_max_search(game, result_state, depth=depth+1)
-            print(result_state)
-            print(f'{v(player):.2f} value for {player} for ^^^ state \nResult {v("red"):.2f} for red')
+            # result_state = game.result(state, a)
+            # v, _ = self._recursive_max_search(game, result_state, depth=depth+1)
+            # print(result_state)
+            # print(f'{v(player):.2f} value for {player} for ^^^ state \nResult {v("red"):.2f} for red')
             if v_max is None:
                 a_best = a
                 v_max = v
