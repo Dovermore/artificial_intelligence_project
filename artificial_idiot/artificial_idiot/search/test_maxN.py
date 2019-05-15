@@ -1,7 +1,7 @@
 from unittest import TestCase
 from artificial_idiot.game.game import Game
 from artificial_idiot.game.state import State
-from artificial_idiot.evaluation.evaluator_generator import NaiveEvaluatorGenerator
+from artificial_idiot.evaluation.evaluator_generator import NaiveEvaluatorGenerator, SimpleEG
 from artificial_idiot.util.json_parser import JsonParser
 from artificial_idiot.search.max_n import MaxN
 from artificial_idiot.search.search_cutoff.cutoff import DepthLimitCutoff
@@ -24,24 +24,6 @@ class TestMaxN(TestCase):
     cutoff = DepthLimitCutoff(3)
     search = MaxN(evaluator_generator, cutoff, 3)
 
-    def test_must_exit(self):
-        search = self.search
-        state = parse_state("../../tests/all_should_exit.json")
-        print(state)
-
-        game = Game('red', state)
-
-        best_action = search.search(game, state)
-        self.assertTupleEqual(best_action, ((3, 0), None, 'EXIT'))
-
-        state = change_state_color(state, 'green')
-        best_action = search.search(game, state)
-        self.assertTupleEqual(best_action, ((-3, 3), None, 'EXIT'))
-
-        state = change_state_color(state, 'blue')
-        best_action = search.search(game, state)
-        self.assertTupleEqual(best_action, ((0, -3), None, 'EXIT'))
-
     def test_initial_move(self):
         search = self.search
         state = parse_state("../../tests/red_initial_state.json")
@@ -56,6 +38,80 @@ class TestMaxN(TestCase):
         state = parse_state("../../tests/avoid_eaten.json")
         print(state)
 
+        game = Game('red', state)
+        best_action = search.search(game, state)
+        print(best_action)
+
+
+class TestMyMaxN(TestCase):
+    # self.utility_pieces, num_exited_piece, self.utility_distance
+    weights = [1, 100, 1]
+    evaluator_generator = SimpleEG(weights)
+    cutoff = DepthLimitCutoff(3)
+    search = MaxN(evaluator_generator, cutoff, 3)
+
+    def test_must_exit(self):
+        search = self.search
+        state = parse_state("../../tests/must_exit_0.json")
+        print(state)
+        game = Game('red', state)
+        best_action = search.search(game, state)
+        self.assertEqual(best_action[-1], 'EXIT')
+
+        state = parse_state("../../tests/must_exit_1.json")
+        print(state)
+        best_action = search.search(game, state)
+        self.assertEqual(best_action[-1], 'EXIT')
+
+        state = parse_state("../../tests/must_exit_2.json")
+        print(state)
+        best_action = search.search(game, state)
+        self.assertEqual(best_action[-1], 'EXIT')
+
+        state = parse_state("../../tests/must_exit_3.json")
+        print(state)
+        best_action = search.search(game, state)
+        self.assertEqual(best_action[-1], 'EXIT')
+
+    def test_avoid_eaten(self):
+        search = self.search
+        state = parse_state("../../tests/avoid_eaten.json")
+        print(state)
+
+        game = Game('red', state)
+        best_action = search.search(game, state)
+        self.assertTupleEqual(best_action, ((-2, -1), (-3, 0), 'MOVE'))
+
+    def test_move_one_by_one(self):
+        utility = SimpleEG.utility_distance
+        state1 = parse_state("../../tests/move1.json")
+        state2 = parse_state("../../tests/move2.json")
+        player = 'red'
+        print(state1)
+        print(state2)
+        self.assertGreater(utility(state1, player), utility(state2, player))
+
+    def test_eat_blue(self):
+        search = self.search
+        state = parse_state("../../tests/eat_blue.json")
+        print(state)
+
+        game = Game('red', state)
+        best_action = search.search(game, state)
+        self.assertTupleEqual(best_action, ((0, 0), (2, -2), 'JUMP'))
+
+    def test_should_not_exit(self):
+        search = self.search
+        state = parse_state("../../tests/should_not_exit.json")
+        print(state)
+        game = Game('red', state)
+        best_action = search.search(game, state)
+        print(best_action)
+
+    def test_move_not_jump(self):
+        search = self.search
+        state = parse_state("../../tests/move_not_jump.json")
+        print(state)
         game = Game('red', state)
         best_action = search.search(game, state)
         print(best_action)
