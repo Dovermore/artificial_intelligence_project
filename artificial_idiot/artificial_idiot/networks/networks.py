@@ -126,5 +126,7 @@ architectures = {
     "linear": (simple_linear_network(), simple_grid_extractor),
     "two_sig": (two_layer_sigmoid_network(), simple_grid_extractor),
     "four_lkrl": (four_layer_leaky_relu_network(), simple_grid_extractor),
-    "full_four_lkrl": (full4Llkrl(), full_grid_extractor)
+    "full_four_lkrl": (full4Llkrl(), full_grid_extractor),
+    "full_five_relu": (full5Relu(), full_grid_extractor),
+    "full_four_sig": (full4Sigmoid(), full_grid_extractor),
 }

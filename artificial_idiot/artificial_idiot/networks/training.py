@@ -19,7 +19,7 @@ architectures = networks.architectures
 
 loading = False
 if loading:
-    time_stamp = 20190515224313
+    time_stamp = 20190515230437
     path = f"/Users/Dovermore/Documents/2019t1/COMP30024-AritificialIntelligence/ArtificialIdiotProject/artificial_idiot/artificial_idiot/machine_learning/{time_stamp}"
     checkpoint_path = f"{path}/checkpoints"
     checkpoint_files = glob.glob(f'{checkpoint_path}/*')
@@ -29,7 +29,8 @@ if loading:
     agent = ParametrisedRL.from_file(model, simple_grid_extractor)
 else:
     # agent = ParametrisedRL(*architectures["two_sig"])
-    agent = ParametrisedRL(*architectures["full_four_lkrl"])
+    # agent = ParametrisedRL(*architectures["full_four_lkrl"])
+    agent = ParametrisedRL(*architectures["full_four_sig"])
     pass
 
 

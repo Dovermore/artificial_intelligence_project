@@ -228,11 +228,11 @@ class RLNode(Node):
 
 
 class InitialRLNode(RLNode):
-    winning_reward = 10
-    capture_reward = 5
-    exit_reward = 2
-    losing_reward = -10
-    captured_reward = -5
+    winning_reward = 20
+    capture_reward = 6
+    exit_reward = 3
+    losing_reward = -20
+    captured_reward = -6
     moving_reward = 1
 
 
