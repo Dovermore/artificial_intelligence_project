@@ -3,6 +3,14 @@ import numpy as np
 
 
 class Layer(ABC):
+    def __init__(self):
+        # TODO implement dropout
+        # For drop-out
+        self.mask = None
+        # TODO implement momentum gradient descent
+        # For momentum gradient descent
+        self.velocity = 0
+
     @abstractmethod
     def forward(self, X, training=False):
         """
@@ -44,12 +52,14 @@ class Layer(ABC):
 
 class FullyConnected(Layer):
     def __init__(self, n_in, n_out, activation, weight_init):
+        super().__init__()
         self.n_in = n_in
         self.n_out = n_out
         self.W = weight_init(n_in, n_out)
         self.activation = activation
 
-    def forward(self, X, training=False):
+    # TODO add mask for drpout
+    def forward(self, X, training=False, dropout=0.6):
         z = X.dot(self.W)
         a = self.activation.compute(z)
         if training:
@@ -84,6 +94,7 @@ class Convolution(Layer):
     """
     # TODO change to horizontal_stride and vertical_stride
     def __init__(self, fshape, activation, filter_init, strides=1):
+        super().__init__()
         self.fshape = fshape
         self.strides = strides
         self.filters = filter_init(self.fshape)
@@ -143,6 +154,7 @@ class Flatten(Layer):
     Flattens a convolution layer to a 1-d vector (Used in FC)
     """
     def __init__(self, shape):
+        super().__init__()
         self.shape = shape
 
     def forward(self, X, train=False):

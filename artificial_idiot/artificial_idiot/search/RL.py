@@ -47,6 +47,7 @@ class ParametrisedRL(Search):
             values = values.reshape(-1)
         else:
             values = self.forward(states).reshape(-1)
+        # TODO change the policy to a distribution!
         index = np.argmax(values)
         child = children[index]
         if train:
@@ -89,7 +90,7 @@ class ParametrisedRL(Search):
                     # In reality, we should be computing three values for each
                     # node. But we cheat here. We only compute the value wrt
                     # current actor: The values are like this. (for r only)
-                    #        vt  vt'     vt''
+                    #         v   v'      v''
                     #             o
                     #           /
                     # o - o - o - o           o
@@ -99,8 +100,9 @@ class ParametrisedRL(Search):
                     # unknown                 o
                     # We say that vt'' -> vt', and vt' +
 
-                    # (Experimental) Update estimation of v+1 based on v
-                    # Update the estimation of v+1 and v'
+                    # (Experimental, try to solve the after state problem)
+                    # Update estimation of v' based on v''
+                    # Then update the estimation v based on v'
                     # Get y
                     # 1. Get current state
                     current_state = node.state.red_perspective(current_colour)
@@ -191,24 +193,12 @@ class ParametrisedRL(Search):
                 self.network.save_checkpoint()
         self.network.save_final()
 
-    # def policy(self, game, node, explore=0.):
-    #     children = node.expand(game)
-    #     if random() < explore:
-    #         return children[randint(0, len(children))]
-    #     else:
-    #         states = [child.state for child in children]
-    #         colours = [node.state.colour] * len(children)
-    #         values = self.forward(states, colours).reshape(-1)
-    #         index = np.argmax(values)
-    #         child = children[index]
-    #         return child.action, values[index]
-
 
 def simple_grid_extractor(state):
     """
-    A chain of states to
-    :param state:
-    :return:
+    Encode the state by simply using a 37 * 3 vector
+    :param state: The state to extract representation from
+    :return: The vectorised state for feeding into neural network
     """
     # First Represent States
     state_vector = []
@@ -220,26 +210,26 @@ def simple_grid_extractor(state):
             state_vector += append
     return state_vector
 
-    # def tree_policy(self, game):
-    #     """
-    #     Get the child node of a UCT node. If the node is expanded then return
-    #     the best node, else get a random unexplored node
-    #     :param game: The game the node is in (rules of expansion)
-    #     :return: A move given by the above selection rule
-    #     """
-    #     # Initialise the nodes
-    #     if self.unexpanded_children is None:
-    #         self.unexpanded_children = list(self.expand(game))
-    #         shuffle(self.unexpanded_children)
-    #     remaining = len(self.unexpanded_children)
-    #     if remaining > 0:
-    #         child = self.unexpanded_children.pop()
-    #         return child
-    #     else:
-    #         # Somehow this beats max([(f(v),v) for v in children])
-    #         children = list(self.children.values())
-    #         # This is a leaf node
-    #         if not len(children):
-    #             return None
-    #         keys = [self.child_value(child) for child in children]
-    #         return children[keys.index(max(keys))]
+
+def full_grid_extractor(state):
+    """
+    Encode the state by 37 * 3 + 3 for completed and
+    :param state: The state to extract representation from
+    :return: The vectorised state for feeding into neural network
+    """
+    state_vector = simple_grid_extractor(state)
+    # Extract completed pieces
+    for i in range(3):
+        colour = state.code_map[i]
+        number = state.completed[colour]
+        state_vector.append(number)
+
+    # Encode the turn of player
+    next_code = state.code_map[state.colour]
+    for i in range(3):
+        if i == next_code:
+            state_vector.append(1)
+        else:
+            state_vector.append(0)
+    return state_vector
+
