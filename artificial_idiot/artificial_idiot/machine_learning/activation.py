@@ -42,7 +42,7 @@ class Sigmoid(AbstractActivation):
 
 class LeakyRelu(AbstractActivation):
     def compute(self, X, y=None):
-        return np.maximum(0.01, X)
+        return np.maximum(0.01 * X, X)
 
     def derivative(self, X, y=None):
         g = 1 * (X > 0)

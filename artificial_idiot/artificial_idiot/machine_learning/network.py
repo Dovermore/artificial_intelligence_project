@@ -45,24 +45,15 @@ class Network:
         # X -> z1 -> a1 -> z2 -> a2 ... -> zn -> y_hat, loss = J(y - y_hat)
         zs = deque([X])
         activation = X
+        # print("====================")
         for layer in self.layers:
             z, activation = layer.forward(activation, True)
             zs.appendleft(z)
+            # print(activation)
+        # print("====================")
         if train:
             return activation, zs
         return activation
-
-    def backward(self, X, y):
-        """
-        One pass of backward propagation, updating parameters based on the
-        given mini_batch of data
-        :param X: value of X feature set
-        :param y: value of y label set
-        """
-        y_hat, zs = self.forward(X, 1, True)
-        dy_hat = self.loss.derivative(y_hat, y)
-        gradients = self._compute_gradients(zs, dy_hat)
-        self._apply_gradients(gradients)
 
     def _compute_gradients(self, zs, d_yhat):
         z = zs.popleft()
@@ -84,6 +75,18 @@ class Network:
             # W_t+1 = W_t - theta * gard
             layer.update(self.learning_rate * gradients.popleft())
         assert len(gradients) == 0
+
+    def backward(self, X, y):
+        """
+        One pass of backward propagation, updating parameters based on the
+        given mini_batch of data
+        :param X: value of X feature set
+        :param y: value of y label set
+        """
+        y_hat, zs = self.forward(X, 1, True)
+        dy_hat = self.loss.derivative(y_hat, y)
+        gradients = self._compute_gradients(zs, dy_hat)
+        self._apply_gradients(gradients)
 
     @staticmethod
     def from_file(file):

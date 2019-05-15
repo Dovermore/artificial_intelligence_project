@@ -76,7 +76,6 @@ class ParametrisedRL(Search):
             values = self.forward(states).reshape(-1)
         probs = softmax(values)
         child = np.random.choice(children, size=1, p=probs)[0]
-        print(probs)
         if train:
             # zs = deque([z[index] for z in zs])
             # return child.action, child, values[index], zs

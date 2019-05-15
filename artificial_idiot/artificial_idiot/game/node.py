@@ -159,6 +159,7 @@ class RLNode(Node):
     exit_reward = 0
     losing_reward = 0
     captured_reward = 0
+    moving_reward = 0
 
     def __init__(self, state, parent=None, action=None,
                  path_cost=0, rewards=(0, 0, 0)):
@@ -202,7 +203,7 @@ class RLNode(Node):
             # dist_after = game.integer_distance(next_state, colour)
             dist_before = game.float_distance(state, colour)
             dist_after = game.float_distance(next_state, colour)
-            rewards[code] += dist_before - dist_after
+            rewards[code] += self.moving_reward * (dist_before - dist_after)
             rewards = tuple(rewards)
             next_node = self.__class__(next_state, self, action,
                                        game.path_cost(
@@ -232,6 +233,7 @@ class InitialRLNode(RLNode):
     exit_reward = 2
     losing_reward = -10
     captured_reward = -5
+    moving_reward = 1
 
 
 class WinningRLNode(RLNode):
@@ -240,4 +242,5 @@ class WinningRLNode(RLNode):
     exit_reward = 4
     losing_reward = -12
     captured_reward = 0
+    moving_reward = 2
 

@@ -58,10 +58,12 @@ class FullyConnected(Layer):
         self.W = weight_init(n_in, n_out)
         self.activation = activation
 
-    # TODO add mask for drpout
+    # TODO add mask for dropout
     def forward(self, X, training=False, dropout=0.6):
         z = X.dot(self.W)
+        # print(z)
         a = self.activation.compute(z)
+        # print(a)
         if training:
             return z, a
         return a
