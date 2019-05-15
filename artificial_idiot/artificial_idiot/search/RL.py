@@ -81,6 +81,24 @@ class ParametrisedRL(Search):
                 action = player_actions[current_code]
                 # Update
                 if action is not None:
+                    # Here is the model assumption
+                    # The player's turn (who's time to choose action)
+                    # --------------------
+                    # g   b   r   g   b   r   g ...
+                    # 1   2   3   4   5   6   7
+                    # In reality, we should be computing three values for each
+                    # node. But we cheat here. We only compute the value wrt
+                    # current actor: The values are like this. (for r only)
+                    #        vt  vt'     vt''
+                    #             o
+                    #           /
+                    # o - o - o - o           o
+                    #   ^       \           /
+                    # Other       o - o - o - o
+                    # branch                \
+                    # unknown                 o
+                    # We say that vt'' -> vt', and vt' +
+
                     # (Experimental) Update estimation of v+1 based on v
                     # Update the estimation of v+1 and v'
                     # Get y
@@ -121,7 +139,7 @@ class ParametrisedRL(Search):
                     # 4. Get reward
                     reward = sum(player_rewards[current_code])
                     # 5. Get v' + reward as y
-                    y = np.array([v_prime + reward])
+                    y = np.array([gamma * v_prime + reward])
                     # TODO this part can be simplified by using previous result
                     # Get X
                     # 1. Get prev state
@@ -163,9 +181,6 @@ class ParametrisedRL(Search):
                         current_colour))
                     if len(player_states[_code]) > 3:
                         player_states[_code].pop(0)
-                if debug:
-                    print(player_rewards)
-            print("----------------------------------------")
             print(f"Episode: {i}")
 
             # TODO process information from terminal node
