@@ -4,7 +4,7 @@ from artificial_idiot.search import search
 from artificial_idiot.search import max_n
 from artificial_idiot.search import open_game
 from artificial_idiot.search import random
-from artificial_idiot.search import paranoid
+from artificial_idiot.search import mini_max
 from artificial_idiot.search import uct
 
 

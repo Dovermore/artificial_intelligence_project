@@ -35,7 +35,7 @@ class DepthLimitCutoff(Cutoff):
         pass
 
     def __call__(self, state, depth=None, *args, **kwargs):
-        return self.max_depth < depth
+        return not (depth < self.max_depth)
 
 
 

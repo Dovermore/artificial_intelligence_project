@@ -7,12 +7,11 @@ from artificial_idiot.search.search_cutoff.cutoff import DepthLimitCutoff
 from artificial_idiot.evaluation.evaluator_generator import (
     DummyEvaluator, WinLossEvaluator, NaiveEvaluatorGenerator, SimpleEG
 )
+from artificial_idiot.search.mini_max import AlphaBetaSearch
 from artificial_idiot.game.node import Node, BasicUCTNode
-from artificial_idiot.util.json_parser import JsonParser
 from artificial_idiot.game.state import State
 from artificial_idiot.game.game import Game, NodeGame
 import random
-import json
 
 
 player_evaluator = DummyEvaluator()
@@ -206,7 +205,6 @@ class RandomAgent(AbstractPlayer):
         print("* seed is:", seed)
         super().__init__(player, search_algorithm=Random(seed),
                          initial_state=initial_state)
-        pass
 
     def action(self):
         player_action = self.search_algorithm.search(self.game,
@@ -219,7 +217,6 @@ class MaxNAgent(AbstractPlayer):
         search_algorithm = MaxN(evaluator, cutoff, n_player=3)
         super().__init__(player, search_algorithm=search_algorithm,
                          initial_state=initial_state)
-        pass
 
     def action(self):
         player_action = self\
@@ -239,6 +236,18 @@ class Player(MaxNAgent):
         cutoff = DepthLimitCutoff(max_depth=3)
         super().__init__(player, cutoff=cutoff, evaluator=evaluator,
                          initial_state=None)
+
+
+class ParnoidPlayer(AbstractPlayer):
+    def __init__(self, player, initial_state, evaluator, cutoff):
+        search_algorithm = AlphaBetaSearch(evaluator, cutoff)
+        super().__init__(player, search_algorithm=search_algorithm,
+                         initial_state=initial_state)
+
+    def action(self):
+        player_action = self\
+            .search_algorithm.search(self.game, self.game.initial_state)
+        return self.convert_action(player_action, 'referee')
 
 
 class VOneAgent(MaxNAgent):
