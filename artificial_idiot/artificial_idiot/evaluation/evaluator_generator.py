@@ -179,7 +179,7 @@ class NaiveEvaluatorGenerator(EvaluatorGenerator):
         return self._eval(state)
 
 
-class SimpleEG(EvaluatorGenerator):
+class AdvanceEG(EvaluatorGenerator):
     """
     * weights are defined beforehand
     An evaluator that only considers
@@ -199,7 +199,7 @@ class SimpleEG(EvaluatorGenerator):
     @staticmethod
     def utility_distance(state, player):
         pieces = state.piece_to_pos[player]
-        return sum([SimpleEG.utilty_distance_piece(piece, state, player) for piece in pieces])
+        return sum([AdvanceEG.utilty_distance_piece(piece, state, player) for piece in pieces])
 
     @staticmethod
     def utility_completed_piece(state, player):

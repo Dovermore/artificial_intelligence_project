@@ -1,7 +1,7 @@
 from unittest import TestCase
 from artificial_idiot.game.game import Game
 from artificial_idiot.game.state import State
-from artificial_idiot.evaluation.evaluator_generator import NaiveEvaluatorGenerator, SimpleEG
+from artificial_idiot.evaluation.evaluator_generator import NaiveEvaluatorGenerator, AdvanceEG
 from artificial_idiot.util.json_parser import JsonParser
 from artificial_idiot.search.max_n import MaxN
 from artificial_idiot.search.search_cutoff.cutoff import DepthLimitCutoff
@@ -46,7 +46,7 @@ def change_state_color(state, color):
 class TestMyMaxN(TestCase):
     # self.utility_pieces, num_exited_piece, self.utility_distance
     weights = [1, 100, 1]
-    evaluator_generator = SimpleEG(weights)
+    evaluator_generator = AdvanceEG(weights)
     cutoff = DepthLimitCutoff(3)
     search = MaxN(evaluator_generator, cutoff, 3)
 

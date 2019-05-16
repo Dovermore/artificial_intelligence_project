@@ -5,7 +5,7 @@ from artificial_idiot.search.uct import UCTSearch
 from artificial_idiot.search.max_n import MaxN
 from artificial_idiot.search.search_cutoff.cutoff import DepthLimitCutoff
 from artificial_idiot.evaluation.evaluator_generator import (
-    DummyEvaluator, WinLossEvaluator, NaiveEvaluatorGenerator, SimpleEG
+    DummyEvaluator, WinLossEvaluator, NaiveEvaluatorGenerator, AdvanceEG
 )
 from artificial_idiot.search.mini_max import AlphaBetaSearch
 from artificial_idiot.game.node import Node, BasicUCTNode
@@ -211,6 +211,19 @@ class RandomAgent(AbstractPlayer):
                                                      self.game.initial_state)
         return self.convert_action(player_action, 'referee')
 
+########################################################################################
+
+class ParanoidPlayer(AbstractPlayer):
+    def __init__(self, weights, evaluator_generator, cutoff, player):
+        search_algorithm = AlphaBetaSearch(evaluator_generator, cutoff)
+        super().__init__(player, search_algorithm=search_algorithm)
+
+    def action(self):
+        player_action = self\
+            .search_algorithm.search(self.game, self.game.initial_state)
+        print(player_action)
+        return self.convert_action(player_action, 'referee')
+
 
 class MaxNAgent(AbstractPlayer):
     def __init__(self, player, initial_state, evaluator, cutoff):
@@ -223,44 +236,34 @@ class MaxNAgent(AbstractPlayer):
             .search_algorithm.search(self.game, self.game.initial_state)
         return self.convert_action(player_action, 'referee')
 
-
-class Player(MaxNAgent):
+class MaxNPlayer_Naive(MaxNAgent):
     """
     A wrapper class for referee that uses interface given by referee
     Here we use best hyperparameter
     """
     def __init__(self, player):
         # self.utility_pieces, num_exited_piece, self.utility_distance
-        weights = [1, 100, 1]
-        evaluator = SimpleEG(weights)
-        cutoff = DepthLimitCutoff(max_depth=3)
-        super().__init__(player, cutoff=cutoff, evaluator=evaluator,
-                         initial_state=None)
-
-
-class ParnoidPlayer(AbstractPlayer):
-    def __init__(self, player, initial_state, evaluator, cutoff):
-        search_algorithm = AlphaBetaSearch(evaluator, cutoff)
-        super().__init__(player, search_algorithm=search_algorithm,
-                         initial_state=initial_state)
-
-    def action(self):
-        player_action = self\
-            .search_algorithm.search(self.game, self.game.initial_state)
-        return self.convert_action(player_action, 'referee')
-
-
-class VOneAgent(MaxNAgent):
-    """
-    A wrapper class for referee that uses interface given by referee
-    Here we use best hyperparameter
-    """
-    def __init__(self, player):
-        weights = [5, 2, 0.7]
+        weights = [90, 100, 1]
         evaluator = NaiveEvaluatorGenerator(weights)
         cutoff = DepthLimitCutoff(max_depth=3)
         super().__init__(player, cutoff=cutoff, evaluator=evaluator,
                          initial_state=None)
+
+
+class ParanoidPlayer_Advance(ParanoidPlayer):
+    def __init__(self, player):
+        weights = [2, 100, 1]
+        evaluator_generator = AdvanceEG(weights)
+        cutoff = DepthLimitCutoff(2)
+        super().__init__(weights, evaluator_generator, cutoff, player)
+
+
+class ParanoidPlayer_Naive(ParanoidPlayer):
+    def __init__(self, player):
+        weights = [90, 100, 1]
+        evaluator_generator = NaiveEvaluatorGenerator(weights)
+        cutoff = DepthLimitCutoff(2)
+        super().__init__(weights, evaluator_generator, cutoff, player)
 
 
 class BasicUCTPlayer(AbstractPlayer):

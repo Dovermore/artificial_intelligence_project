@@ -1,5 +1,4 @@
 from artificial_idiot.player import *
-Player = Player
-Random = RandomAgent
-VOne = VOneAgent
-
+P0 = ParanoidPlayer_Advance
+P1 = ParanoidPlayer_Naive
+P2 = MaxNPlayer_Naive

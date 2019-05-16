@@ -17,6 +17,8 @@ class PlayerWrapper:
       methods of the same name.
     Each method enforces resource limits on the real Player's computation.
     """
+    _print_map = {"red": "🔴", "green": "✅", "blue": "🔵"}
+
     def __init__(self, colour, player_loc, options):
         self.colour = colour
         self.output = options.verbosity > 0
@@ -41,7 +43,8 @@ class PlayerWrapper:
         self._message(self.space.status())
 
     def action(self):
-        self._message(f"asking {self.colour} player for next action...")
+        color = self._print_map[self.colour]
+        self._message(f"asking {color} {self.colour} player for next action...")
         with self.space, self.timer:
             # ask the real player
             action = self.player.action()
@@ -52,6 +55,7 @@ class PlayerWrapper:
         return action
 
     def update(self, colour, action):
+        color = self._print_map[self.colour]
         self._message(f"updating {self.colour} player with {colour}'s "
             f"action {action}...")
         with self.space, self.timer:

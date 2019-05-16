@@ -73,7 +73,7 @@ class TestSumShortestExitDistance(TestCase):
         self.assertEqual(sum_shortest_exit_distance(state, 'red'), 4000000)
 
     def test_move_one_by_one(self):
-        utility = SimpleEG.utility_distance
+        utility = AdvanceEG.utility_distance
         state1 = parse_state("../../tests/move1.json")
         state2 = parse_state("../../tests/move2.json")
         player = 'red'
