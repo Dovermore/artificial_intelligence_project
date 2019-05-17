@@ -1,7 +1,9 @@
 from unittest import TestCase
 from artificial_idiot.game.game import Game
 from artificial_idiot.game.state import State
-from artificial_idiot.evaluation.evaluator_generator import NaiveEvaluatorGenerator, AdvanceEG
+from artificial_idiot.evaluation.evaluator_generator import (
+    NaiveEvaluatorGenerator, AdvanceEG
+)
 from artificial_idiot.util.json_parser import JsonParser
 from artificial_idiot.search.max_n import MaxN
 from artificial_idiot.search.search_cutoff.cutoff import DepthLimitCutoff

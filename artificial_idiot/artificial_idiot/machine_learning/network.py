@@ -40,6 +40,7 @@ class Network:
         Forward propagation of the neural network (or linear model)
         :param X: The feature vector
         :param y: The labels
+        :param train: if training mode is on
         :return: The output of network
         """
         # X -> z1 -> a1 -> z2 -> a2 ... -> zn -> y_hat, loss = J(y - y_hat)

@@ -1,7 +1,9 @@
 from artificial_idiot.player import *
+# from artificial_idiot.evaluation.evaluator_generator import
 P0 = ParanoidPlayer_Advance
 P1 = ParanoidPlayer_Naive
-P2 = MaxNPlayer_Naive
+# FIXME what is this class?
+# P2 = MaxNPlayer_Naive
 Player = Player
 
 
@@ -30,6 +32,7 @@ if __name__ == "__main__":
         f = open("../tests/bug1.json")
         pos_dict, colour, completed = JsonParser(json.load(f)).parse()
         initial_state = State(pos_dict, colour, completed)
+        # FIXME What is this?
         evaluator = MyEvaluator()
         cutoff = DepthLimitCutoff(max_depth=3)
         player = MaxNAgent(colour="red", initial_state=initial_state,

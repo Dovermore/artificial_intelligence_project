@@ -17,8 +17,9 @@ class AbstractActivation(ABC):
     def derivative(self, X, y=None):
         """
         Computed during backward propagation
-        :param x:
-        :return:
+        :param X: Input to activation function
+        :param y: placeholder
+        :return: the value after activation
         """
         raise NotImplementedError()
 
@@ -71,7 +72,7 @@ class SoftMax(AbstractActivation):
         return np.ones(X.shape)
 
 
-class Loss(AbstractActivation):
+class Loss(AbstractActivation, ABC):
     pass
 
 

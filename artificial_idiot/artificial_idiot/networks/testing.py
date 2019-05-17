@@ -2,7 +2,7 @@ from artificial_idiot.networks import networks
 from artificial_idiot.search.RL import (
     ParametrisedRL, simple_grid_extractor, full_grid_extractor
 )
-from artificial_idiot.evaluation.evaluator import (
+from artificial_idiot.evaluation.evaluator_generator import (
     DummyEvaluator
 )
 import glob

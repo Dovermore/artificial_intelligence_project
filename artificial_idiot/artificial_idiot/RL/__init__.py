@@ -1,4 +1,5 @@
 from artificial_idiot.player import *
+from artificial_idiot.search.RL import simple_grid_extractor
 import glob
 import os
 

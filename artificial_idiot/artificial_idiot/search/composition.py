@@ -7,4 +7,6 @@ class CompositionSearch(Search):
     #           ->
     #  2 player -> paranoid
     #  1 player -> part A heuristic
-    pass
+    def search(self, game, state, **kwargs):
+        pass
+

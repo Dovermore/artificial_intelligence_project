@@ -206,7 +206,7 @@ class RandomAgent(Player):
                          initial_state=initial_state)
 
 
-class ParanoidPlayer(AbstractPlayer):
+class ParanoidPlayer(Player):
     def __init__(self, weights, evaluator_generator, cutoff, player):
         search_algorithm = AlphaBetaSearch(evaluator_generator, cutoff)
         super().__init__(player, search_algorithm=search_algorithm)
@@ -255,7 +255,7 @@ class ParanoidPlayer_Naive(ParanoidPlayer):
         super().__init__(weights, evaluator_generator, cutoff, player)
 
 
-class BasicUCTPlayer(AbstractPlayer):
+class BasicUCTPlayer(Player):
     """
     Basic UCT player. Uses upper confidence monte carlo search algorithm
     """
