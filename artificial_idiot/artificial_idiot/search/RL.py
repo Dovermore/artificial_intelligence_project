@@ -101,6 +101,8 @@ class ParametrisedRL(Search):
         losses = []
 
         episodes = []
+        count = 0
+        length = 0
         for i in range(n):
             node = initial_node
             # We record three player simultaneously
@@ -113,7 +115,7 @@ class ParametrisedRL(Search):
             episode_states = []
             episode_rewards = []
 
-            while True:
+            while game.terminal_state(node.state):
 
                 # TODO replace this by any policy for bootstrapping
                 # TODO use the current value to compute!
@@ -195,10 +197,9 @@ class ParametrisedRL(Search):
                     # Backward propagation
                     self.network.backward(X, y)
 
-                    if i % checkpoint_interval == \
-                            checkpoint_interval - 1 or debug:
-                        y_hat = self.network.forward(X)
-                        loss += self.network.loss.compute(y_hat, y)
+                    y_hat = self.network.forward(X)
+                    loss += self.network.loss.compute(y_hat, y)
+                    count += 1
 
                 # Rotate the state to make current colour be red
                 current_state = node.state.red_perspective(current_colour)
@@ -235,17 +236,24 @@ class ParametrisedRL(Search):
                         current_colour))
                     if len(player_states[_code]) > 3:
                         player_states[_code].pop(0)
+
+            # TODO Final state processing
+            for i in range(3):
+                pass
+
             print(f"Episode: {i}")
 
             # Store them for now
             episodes.append((episode_states, episode_actions, episode_rewards))
-
-            # TODO process information from terminal node
+            length += len(episode_states)
 
             if i % checkpoint_interval == checkpoint_interval - 1:
                 losses.append((i, loss))
                 print(f"Episode: {i}\n"
-                      f"        loss={loss/len(episode_states)}")
+                      f"        loss={loss/count}\n"
+                      f"        average episode={length/checkpoint_interval}")
+                count = 0
+                length = 0
                 self.network.save_checkpoint()
         self.network.save_final()
 

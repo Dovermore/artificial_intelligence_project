@@ -244,3 +244,20 @@ class WinningRLNode(RLNode):
     captured_reward = 0
     moving_reward = 2
 
+
+class SimpleRLNode(RLNode):
+    winning_reward = 20
+    capture_reward = 0
+    exit_reward = 0
+    losing_reward = 0
+    captured_reward = 0
+    moving_reward = 0
+
+
+class SimpleRLNode2(RLNode):
+    winning_reward = 1
+    capture_reward = 0
+    exit_reward = 0
+    losing_reward = 0
+    captured_reward = 0
+    moving_reward = 0

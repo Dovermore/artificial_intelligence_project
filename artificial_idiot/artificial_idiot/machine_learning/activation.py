@@ -58,6 +58,19 @@ class Linear(AbstractActivation):
         return 1
 
 
+class SoftMax(AbstractActivation):
+
+    def compute(self, X, y=None):
+        assert np.ndim(X) == 2
+        x = X - np.max(X, axis=1, keepdims=True)
+        exp_x = np.exp(x)
+        s = exp_x / np.sum(exp_x, axis=1, keepdims=True)
+        return s
+
+    def derivative(self, X, y=None):
+        return np.ones(X.shape)
+
+
 class Loss(AbstractActivation):
     pass
 
@@ -85,16 +98,18 @@ class MSE(Loss):
         return (X - y) / X.shape[0]
 
 
-class CrossEntropy(Loss):
-    def _softmax(self, X, y=None):
-        exponential_X = np.exp(X - np.max(X, axis=1)[..., np.newaxis])
-        return exponential_X/np.sum(exponential_X, axis=1, keepdims=True)
+class BinaryXEntropy(Loss):
+    def __init__(self):
+        super().__init__()
+        self.epsilon = 1e-12
 
     def compute(self, X, y=None):
-        sf = self._softmax(X)
-        return -np.log(sf[np.arange(X.shape[0]),
-                          np.argmax(y, axis=1)]) / X.shape[0]
+        outputs = np.clip(X, self.epsilon, 1 - self.epsilon)
+        return np.mean(-np.sum(y * np.log(X) + (1 - y) * np.log(1 - outputs),
+                               axis=1))
 
     def derivative(self, X, y=None):
-        error = self._softmax(X)
-        return (error - y) / X.shape[0]
+        X = np.clip(X, self.epsilon, 1 - self.epsilon)
+        divisor = np.maximum(X * (1 - X), self.epsilon)
+        return (X - y) / divisor
+

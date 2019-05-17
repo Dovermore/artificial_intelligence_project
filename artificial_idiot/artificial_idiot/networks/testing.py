@@ -1,6 +1,6 @@
 from artificial_idiot.networks import networks
 from artificial_idiot.search.RL import (
-    ParametrisedRL, simple_grid_extractor
+    ParametrisedRL, simple_grid_extractor, full_grid_extractor
 )
 from artificial_idiot.evaluation.evaluator import (
     DummyEvaluator
@@ -16,21 +16,24 @@ from artificial_idiot.game.node import *
 
 architectures = networks.architectures
 
-time_stamp = 20190516001133
+# extractor = simple_grid_extractor
+extractor = full_grid_extractor
+time_stamp = 20190516082441
 path = f"/Users/Dovermore/Documents/2019t1/COMP30024-AritificialIntelligence/ArtificialIdiotProject/artificial_idiot/artificial_idiot/machine_learning/{time_stamp}"
 checkpoint_path = f"{path}/checkpoints"
 checkpoint_files = glob.glob(f'{checkpoint_path}/*')
 latest_checkpoint = max(checkpoint_files, key=os.path.getctime)
 final_file = f"{path}/network"
 model = latest_checkpoint
-agent = ParametrisedRL.from_file(model, simple_grid_extractor)
+agent = ParametrisedRL.from_file(model, extractor)
 
 
 # node_type = WinningRLNode
-node_type = InitialRLNode
+# node_type = InitialRLNode
+node_type = SimpleRLNode
 
-policy = "greedy"
-# policy = "choice"
+# policy = "greedy"
+policy = "choice"
 
 # debug = 3
 # debug = 2
