@@ -271,7 +271,7 @@ class State:
             return State(self.piece_hexes - {aargs[0]} | {aargs[1]}, self.board)
 
     def is_goal(self):
-        """Goal test: The game is won when all pieces have exited."""
+        """Goal UCT: The game is won when all pieces have exited."""
         return not self.piece_hexes
 
     # we need to store states in sets and dictionaries, so we had better make

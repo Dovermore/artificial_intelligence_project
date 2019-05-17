@@ -15,7 +15,7 @@ if __name__ == '__main__':
     MaxN = max_n.MaxN
     from artificial_idiot.evaluation.evaluator_generator import NaiveEvaluator
     from artificial_idiot.search.search_cutoff.cutoff import DepthLimitCutoff
-    from artificial_idiot.game import Game
+    from artificial_idiot.game.game import Game
     from artificial_idiot.game.state import State
     from artificial_idiot.util.json_parser import JsonParser
     import json

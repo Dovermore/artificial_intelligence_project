@@ -15,7 +15,7 @@ class PlayerWrapper:
     * `.init()` method constructs the Player instance (calling `.__init__()`)
     * `.action()` and `.update()` methods just delegate to the real Player's
       methods of the same name.
-    Each method enforces resource limits on the real Player's computation.
+    Each method enforces book_generator limits on the real Player's computation.
     """
     _print_map = {"red": "🔴", "green": "✅", "blue": "🔵"}
 
@@ -23,7 +23,7 @@ class PlayerWrapper:
         self.colour = colour
         self.output = options.verbosity > 0
         
-        # create some context managers for resource limiting
+        # create some context managers for book_generator limiting
         self.timer = _CountdownTimer(options.time, self.colour)
         self.space = _MemoryWatcher(options.space)
         

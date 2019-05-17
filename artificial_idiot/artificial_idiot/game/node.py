@@ -82,6 +82,9 @@ class Node:
 
 
 class BasicUCTNode(Node):
+    """
+    Basically this node can be used for tabular Monte Carlo Tree search.
+    """
     c = 2
 
     def __init__(self, *args, **kwargs):
@@ -148,3 +151,113 @@ class BasicUCTNode(Node):
         return (child.wins / child.visits
                 + sqrt(self.c * log(self.visits) / child.visits))
 
+
+class RLNode(Node):
+    # This RL node does nothing!
+    winning_reward = 0
+    capture_reward = 0
+    exit_reward = 0
+    losing_reward = 0
+    captured_reward = 0
+    moving_reward = 0
+
+    def __init__(self, state, parent=None, action=None,
+                 path_cost=0, rewards=(0, 0, 0)):
+        super().__init__(state, parent, action, path_cost)
+        # The reward to each player on board
+        self.rewards = rewards
+
+    @classmethod
+    def from_node(cls, node):
+        state = node.state
+        parent = node.parent
+        action = node.action
+        path_cost = node.path_cost
+        cls(state, parent=parent, action=action,
+            path_cost=path_cost, rewards=(0, 0, 0))
+
+    def child_node(self, game, action):
+        """
+        Generate child node based on game and action
+        """
+        if action not in self.children:
+            next_state = game.result(self.state, action)
+            state = self.state
+            colour = state.colour
+            code = state.code_map[colour]
+            fr, to, move = action
+            rewards = [0, 0, 0]
+            if move == "EXIT":
+                if game.terminal_state(next_state):
+                    rewards = [self.losing_reward] * 3
+                    rewards[code] = self.winning_reward
+                rewards[code] += self.exit_reward
+            if move == "JUMP":
+                jumpedover_colour = state._pos_to_piece[((fr[0]+to[0])//2,
+                                                       (fr[1]+to[1])//2)]
+                jumpedover_code = state.code_map[jumpedover_colour]
+                if code != jumpedover_code:
+                    rewards[code] += self.capture_reward
+                    rewards[jumpedover_code] += self.captured_reward
+            # dist_before = game.integer_distance(state, colour)
+            # dist_after = game.integer_distance(next_state, colour)
+            dist_before = game.float_distance(state, colour)
+            dist_after = game.float_distance(next_state, colour)
+            rewards[code] += self.moving_reward * (dist_before - dist_after)
+            rewards = tuple(rewards)
+            next_node = self.__class__(next_state, self, action,
+                                       game.path_cost(
+                                           self.path_cost, self.state, action,
+                                           next_state), rewards)
+            self.children[action] = next_node
+        else:
+            next_node = self.children[action]
+        return next_node
+
+    # TODO transform action as well
+    #  this part logic is really ugly, don't look
+    def original_perspective(self, colour):
+        mapped_red = self.state.perspective_mapping[colour]["red"]
+        mapped_red_code = self.state.code_map[mapped_red]
+        self.state = self.state.original_perspective(colour)
+        self.rewards = tuple(self.rewards[(code + 3 - mapped_red_code) % 3] for
+                             code in range(3))
+
+    def __repr__(self, transition=False, **kwargs):
+        return super().__repr__(transition, **kwargs) + f"{self.rewards}"
+
+
+class InitialRLNode(RLNode):
+    winning_reward = 20
+    capture_reward = 6
+    exit_reward = 3
+    losing_reward = -20
+    captured_reward = -6
+    moving_reward = 1
+
+
+class WinningRLNode(RLNode):
+    winning_reward = 12
+    capture_reward = 0
+    exit_reward = 4
+    losing_reward = -12
+    captured_reward = 0
+    moving_reward = 2
+
+
+class SimpleRLNode(RLNode):
+    winning_reward = 20
+    capture_reward = 0
+    exit_reward = 0
+    losing_reward = 0
+    captured_reward = 0
+    moving_reward = 0
+
+
+class SimpleRLNode2(RLNode):
+    winning_reward = 1
+    capture_reward = 0
+    exit_reward = 0
+    losing_reward = 0
+    captured_reward = 0
+    moving_reward = 0

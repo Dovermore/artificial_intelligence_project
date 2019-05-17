@@ -37,7 +37,7 @@ MANIFEST
 pip-log.txt
 pip-delete-this-directory.txt
 
-# Unit test / coverage reports
+# Unit UCT / coverage reports
 htmlcov/
 .tox/
 .nox/
@@ -204,3 +204,5 @@ fabric.properties
 *.mov
 
 .DS_Store
+
+**/[0-9]+

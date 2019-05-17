@@ -8,6 +8,7 @@ from referee.game import Chexers, IllegalActionException
 from referee.player import PlayerWrapper, ResourceLimitException, set_space_line
 from referee.options import get_options
 
+
 def main():
     # Parse command-line options into a namespace for use throughout this
     # program
@@ -35,7 +36,7 @@ def main():
             say(e)
     except ResourceLimitException as e:
         info("game error", options)
-        say("error: resource limit exceeded!")
+        say("error: book_generator limit exceeded!")
         if options.verbosity > 0:
             say(e)
 
