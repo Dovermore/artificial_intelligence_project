@@ -246,7 +246,7 @@ if __name__ == "__main__":
 
         print(game)
         state = game.initial_state
-        state = game.result(state, ((-3, 0), (-1,-2), "JUMP"))
+        state = game.result(state, ((-3, 0), (-1, -2), "JUMP"))
         assert(dict(state.pos_to_piece) == pos_dict_ans)
         assert(game.colour == player_ans)
         print(state.completed)
