@@ -2,8 +2,11 @@ from artificial_idiot.util.misc import is_in
 from artificial_idiot.game.state import State
 from artificial_idiot.game.node import Node
 import abc
-from artificial_idiot.search import AStar
 from functools import lru_cache
+from copy import deepcopy
+from collections import defaultdict as dd
+from artificial_idiot.util.queue import PriorityQueueImproved
+from artificial_idiot.util.misc import print_board
 
 
 class Problem(abc.ABC):
@@ -22,6 +25,7 @@ class Problem(abc.ABC):
         """
         self.initial_state = state
         self.goal = goal
+        self.colour = None
 
     @abc.abstractmethod
     def actions(self, state):
@@ -57,7 +61,7 @@ class Problem(abc.ABC):
     def path_cost(self, c, state1, action, state2):
         """
         Return the cost of a solution path that arrives at state2 from
-        state1 via action, assuming cost c to get up to state1. If the problem
+        state1 via action, assuming cost c to get up to state1. If the game
         is such that the path doesn't matter, this function will only look at
         state2.  If the path does matter, it will consider c and maybe state1
         and action. The default method costs 1 for every step in the path.
@@ -97,10 +101,76 @@ class Game(BoardProblem):
         super().__init__(state)
         # self.evaluator = evaluator
         self.colour = colour
-        # heuristic distance
-        a_star = AStar()
-        # add heuristic distance to state
-        State.heuristic_distance = a_star.build_heuristic_distance(self, state)
+        self.heuristic_distance = dd(float)
+        self.build_heuristic_distance(deepcopy(state))
+        State.heuristic_distance = self.heuristic_distance
+        print(print_board(self.heuristic_distance))
+        print(self.initial_state)
+
+    def build_heuristic_distance(self, state):
+        """
+        Build the heuristic map used for searching by Dijkstra's Algorithm
+        """
+        # Remove other players (this static search don't care
+        # about other players)
+        self.colour = state.colour
+        colours_to_remove = set(state.code_map.keys())
+        colours_to_remove.remove(self.colour)
+        # Remove other colours
+        initial_state = self.remove_colours(state, colours_to_remove)
+        # Now remove the player colour
+        # TODO improve this to only consider necessary pieces?
+        self.goal = self.generate_goal(initial_state, self.colour)
+
+        goal = self.goal
+        frontier = PriorityQueueImproved('min',
+                                         f=self.heuristic_distance.__getitem__)
+        # For all exit positions (We don't care about other players)
+        for pos in self.exit_positions[self.colour]:
+            # Set initial heuristic to 1, and add to start
+            self.heuristic_distance[pos] = 1
+            frontier.append(pos)
+
+        # While search is not ended
+        while frontier:
+            pos = frontier.pop()
+            q, r = pos
+            # Explore all space near current place
+            cost = self.heuristic_distance[pos]
+            for dq, dr in self.moves:
+                for move in range(1, 2):
+                    next_pos = (q + dq * move, r + dr * move)
+                    # If the moved position is valid, update it with cost + 1,
+                    # Else simply continue next loop
+                    if (not State.inboard(next_pos) or
+                            next_pos in goal.pos_to_piece):
+                        continue
+                    # Get value in dictionary
+                    h_val = self.heuristic_distance.get(next_pos, None)
+
+                    # Not yet navigated to or can be updated
+                    if h_val is None or h_val > cost + 1:
+                        # Update dictionary entry
+                        self.heuristic_distance[next_pos] = cost + 1
+                        # Update the value in queue
+                        frontier.append(next_pos)
+
+    @staticmethod
+    def remove_colours(state, colours):
+        pos_to_piece = state.pos_to_piece
+        state_colour = state.colour
+        # remove goal colour
+        pos_to_piece = {k: v for k, v in pos_to_piece.items()
+                        if v not in colours}
+        return State(pos_to_piece, state_colour)
+
+    def generate_goal(self, state, colour):
+        piece_remaining = len(state.piece_to_pos[colour])
+        completed = deepcopy(state.completed)
+        completed[colour] += piece_remaining
+        state = self.remove_colours(state, [colour])
+        state.completed = completed
+        return state
 
     @classmethod
     @lru_cache(10000)
@@ -239,6 +309,8 @@ class Game(BoardProblem):
 
     def __str__(self):
         return str(self.initial_state)
+
+
 
 
 class NodeGame(Game):

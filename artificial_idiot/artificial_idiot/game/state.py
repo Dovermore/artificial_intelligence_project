@@ -117,6 +117,17 @@ class State:
             colour = self.rev_code_map[i]
         return colour
 
+    # @classmethod
+    # def next_colour(cls, colour):
+    #     """
+    #     :return: The next active colour after current execution
+    #     """
+    #     i = (cls.code_map[colour] + 1) % 3
+    #     # went over, start again
+    #     colour = cls.rev_code_map[i]
+    #     print(f'i : {i}, color {colour}')
+    #     return colour
+
     @classmethod
     def rotate_pos(cls, fr_color, to_color, pos):
         if pos is None:

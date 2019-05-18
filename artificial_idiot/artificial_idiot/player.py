@@ -69,6 +69,8 @@ class Player:
         # The initial player is red, convert it to the rotate perspective
         state = State(self.start_config, colour=self
                       .referee_to_player_mapping["red"])
+
+        print('initial state read in', state)
         # Colour of the game is different from the color of the state
         self.game = game_type("red", state)
 
@@ -85,6 +87,9 @@ class Player:
         """
         action = self.search_algorithm.search(self.game,
                                               self.game.initial_state)
+        print(action)
+        print(self.game.initial_state.colour)
+        print(self.game.initial_state)
         return self.convert_action(action, "referee")
 
     def update(self, colour, action):

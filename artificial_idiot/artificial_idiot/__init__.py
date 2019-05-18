@@ -1,14 +1,11 @@
-from artificial_idiot.player import *
+from artificial_idiot.player import ParanoidPlayer_Naive, RandomAgent, MaxNPlayer, Player, Game
 
-print(help('modules'))
 print("======================")
-P0 = ParanoidPlayer_Naive
-P1 = RandomAgent
-P2 = MaxNAgent
-Player = Player
-
+P0 = RandomAgent
+P1 = MaxNPlayer
+P2 = ParanoidPlayer_Naive
 
 # Player = PlayerFactory.get_type_factory(MaxNPlayer)()
-Player = PlayerFactory.get_type_factory(Player)(
-    search_algorithm=OpenGameBook("gather"), game_type=Game,
-    evaluator=player_evaluator)
+# Player = PlayerFactory.get_type_factory(Player)(
+#     search_algorithm=OpenGameBook("gather"), game_type=Game,
+#     evaluator=player_evaluator)
