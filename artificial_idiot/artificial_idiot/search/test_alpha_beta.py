@@ -18,7 +18,7 @@ class TestParnoidPlayer(TestCase):
     # self.utility_pieces, num_exited_piece, self.utility_distance
     weights = [2, 100, 1]
     evaluator_generator = AdvanceEG(weights)
-    cutoff = DepthLimitCutoff(2)
+    cutoff = DepthLimitCutoff(3)
     search = AlphaBetaSearch(evaluator_generator, cutoff)
 
 
