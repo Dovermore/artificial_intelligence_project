@@ -241,8 +241,8 @@ class MaxNPlayer(MaxNAgent):
 
 class ParanoidPlayer_Advance(ParanoidAgent):
     def __init__(self, color):
-        weights = [1, 100, 1]
-        evaluator_generator = AdvanceEG(weights)
+        weights = [100, 101, 1]
+        evaluator_generator = NaiveEvaluatorGenerator(weights)
         cutoff = DepthLimitCutoff(4)
         super().__init__(color, evaluator_generator, cutoff)
 

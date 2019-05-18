@@ -70,7 +70,7 @@ class TestParnoidPlayer(TestCase):
         game = Game('red', state)
         best_action = search.search(game, state)
         print(best_action)
-        self.assertEqual(((-3, 2), (-2, 1), 'MOVE'), best_action)
+        self.assertEqual(((-3, 3), (-2, 2), 'MOVE'), best_action)
 
     def test_avoid_eaten(self):
         search = self.search
