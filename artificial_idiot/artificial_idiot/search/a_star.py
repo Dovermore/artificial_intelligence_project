@@ -25,8 +25,8 @@ class AStar(Search):
     def search(self, game, state, **kwargs):
         if self.solution is None:
             # TODO finish this part
-            self._build_heuristic_distance()
-            self.astar_search(game, )
+            self._build_heuristic_distance(game)
+            self.astar_search(game, self.heuristic_distance.__getitem__)
 
     @classmethod
     def best_first_graph_search(cls, problem, f, show=False, **kwargs):
