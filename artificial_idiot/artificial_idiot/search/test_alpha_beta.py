@@ -30,6 +30,22 @@ class TestParnoidPlayer(TestCase):
         best_action = search.search(game, state)
         print(best_action)
 
+    def test_must_exit(self):
+        search = self.search
+        state = parse_state("../../tests/must_exit_0.json")
+        print(state)
+        game = Game('red', state)
+        best_action = search.search(game, state)
+        self.assertEqual(best_action[-1], 'EXIT')
+
+    def test_eat_green(self):
+        search = self.search
+        state = parse_state("../../tests/eat_green.json")
+        print(state)
+        game = Game('red', state)
+        best_action = search.search(game, state)
+        self.assertTupleEqual(((0, 0), (2, -2), 'JUMP'), best_action)
+
     def test_move(self):
         search = self.search
         state = parse_state("../../tests/move.json")
@@ -47,14 +63,14 @@ class TestParnoidPlayer(TestCase):
         best_action = search.search(game, state)
         self.assertEqual(((0, 0), (2, -2), 'JUMP'), best_action)
 
-    def test_must_exit(self):
+    def test_inch_forward(self):
         search = self.search
-        state = parse_state("../../tests/must_exit_0.json")
+        state = parse_state("../../tests/inch_forward.json")
         print(state)
         game = Game('red', state)
         best_action = search.search(game, state)
         print(best_action)
-        self.assertEqual(best_action[-1], 'EXIT')
+        self.assertEqual(((-3, 2), (-2, 1), 'MOVE'), best_action)
 
     def test_avoid_eaten(self):
         search = self.search
@@ -74,22 +90,13 @@ class TestParnoidPlayer(TestCase):
         best_action = search.search(game, state)
         self.assertTupleEqual(((0, 0), (2, -2), 'JUMP'), best_action)
 
-    def test_eat_green(self):
-        search = self.search
-        state = parse_state("../../tests/eat_green.json")
-        print_board(state.pos_to_piece, debug=True)
-
-        game = Game('red', state)
-        best_action = search.search(game, state)
-        self.assertTupleEqual(((0, 0), (2, -2), 'JUMP'), best_action)
-
     def test_should_not_exit(self):
         search = self.search
         state = parse_state("../../tests/should_not_exit.json")
         print(state)
         game = Game('red', state)
         best_action = search.search(game, state)
-        self.assertNotEqual('EXIT', best_action[-1])
+        self.assertNotEqual(best_action[-1], 'EXIT')
 
     def test_move_not_jump(self):
         search = self.search
@@ -98,6 +105,14 @@ class TestParnoidPlayer(TestCase):
         game = Game('red', state)
         best_action = search.search(game, state)
         print(best_action)
+
+    def test_pass(self):
+        search = self.search
+        state = parse_state("../../tests/pass.json")
+        print(state)
+        game = Game('blue', state)
+        best_action = search.search(game, state)
+        self.assertTupleEqual((None, None, 'PASS'), best_action)
 
     def test_weird(self):
         search = self.search

@@ -42,7 +42,12 @@ def shortest_exit_distance(piece, state, player):
 
 
 def exit_distance(piece, state, player):
-    return State.heuristic_distance[piece]
+    if player == 'red':
+        return 3 - piece[0]
+    if player == 'green':
+        return 3 - piece[1]
+    if player == 'blue':
+        return 3 + piece[0]
 
 
 def sum_exit_distance(state, player):
@@ -169,7 +174,6 @@ class NaiveEvaluatorGenerator(EvaluatorGenerator):
 
     @staticmethod
     def negative_distance(state, player):
-        print(state)
         return -sum_exit_distance(state, player)
 
     # weights in the format of [pieces, exited, distance]

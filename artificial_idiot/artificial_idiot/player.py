@@ -70,7 +70,6 @@ class Player:
         state = State(self.start_config, colour=self
                       .referee_to_player_mapping["red"])
 
-        print('initial state read in', state)
         # Colour of the game is different from the color of the state
         self.game = game_type("red", state)
 
@@ -216,7 +215,6 @@ class ParanoidAgent(Player):
     def action(self):
         player_action = self\
             .search_algorithm.search(self.game, self.game.initial_state)
-        print(player_action)
         return self.convert_action(player_action, 'referee')
 
 

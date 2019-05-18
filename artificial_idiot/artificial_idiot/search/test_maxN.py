@@ -100,7 +100,7 @@ class TestMyMaxN(TestCase):
         game = Game('red', state)
         best_action = search.search(game, state)
         print(best_action)
-        self.assertEqual(((0, 0), (2, -2), 'JUMP'), best_action)
+        self.assertEqual(((-3, 2), (-2, 1), 'MOVE'), best_action)
 
     def test_avoid_eaten(self):
         search = self.search
@@ -151,3 +151,11 @@ class TestMyMaxN(TestCase):
         game = Game('red', state)
         best_action = search.search(game, state)
         print(best_action)
+
+    def test_pass(self):
+        search = self.search
+        state = parse_state("../../tests/pass.json")
+        print(state)
+        game = Game('blue', state)
+        best_action = search.search(game, state)
+        self.assertTupleEqual((None, None, 'PASS'), best_action)

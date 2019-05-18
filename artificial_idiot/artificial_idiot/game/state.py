@@ -20,7 +20,6 @@ class State:
     code_map = CODE_MAP
     rev_code_map = REV_CODE_MAP
     print_map = {"red": "🔴", "green": "✅", "blue": "🔵"}
-    heuristic_distance = None
 
     # cycle the players:
     #    player:: red:   red -> red,   green -> green, blue -> blue
@@ -105,28 +104,28 @@ class State:
     def colour(self):
         return self._colour
 
-    def next_colour(self, colour):
-        """
-        :return: The next active colour after current execution
-        """
-        i = (self.code_map[colour] + 1) % 3
-        # went over, start again
-        colour = self.rev_code_map[i]
-        while colour not in self.remaining_colours:
-            i = (i + 1) % 3
-            colour = self.rev_code_map[i]
-        return colour
-
-    # @classmethod
-    # def next_colour(cls, colour):
+    # def next_colour(self, colour):
     #     """
     #     :return: The next active colour after current execution
     #     """
-    #     i = (cls.code_map[colour] + 1) % 3
+    #     i = (self.code_map[colour] + 1) % 3
     #     # went over, start again
-    #     colour = cls.rev_code_map[i]
-    #     print(f'i : {i}, color {colour}')
+    #     colour = self.rev_code_map[i]
+    #     while colour not in self.remaining_colours:
+    #         i = (i + 1) % 3
+    #         colour = self.rev_code_map[i]
     #     return colour
+
+    @classmethod
+    def next_colour(cls, colour):
+        """
+        :return: The next active colour after current execution
+        """
+        i = (cls.code_map[colour] + 1) % 3
+        # went over, start again
+        colour = cls.rev_code_map[i]
+        # print(f'i : {i}, color {colour}')
+        return colour
 
     @classmethod
     def rotate_pos(cls, fr_color, to_color, pos):
