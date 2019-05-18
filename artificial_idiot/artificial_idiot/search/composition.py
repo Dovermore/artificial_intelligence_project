@@ -4,7 +4,7 @@ from artificial_idiot.search.search import Search
 class CompositionSearch(Search):
     # TODO Combine different strategies:
     #  3 player -> beginning: book + A star + search
-    #  2 player -> paranoid
+    #  2 player -> search
     #  1 player -> part A heuristic
     def __init__(self, three=None, two=None, one=None):
         self.three = three
