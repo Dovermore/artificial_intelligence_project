@@ -80,10 +80,11 @@ class BoardProblem(Problem, abc.ABC):
         "blue": ((0, -3), (-1, -2), (-2, -1), (-3, 0))
     }
 
-    # possible moves.
+    # order of forwardness
     moves = (
-        (+1, -1), (1, 0), (0, 1),
-        (-1, +1), (-1, 0), (0, -1)
+        (1, 0), (+1, -1),
+        (0, 1), (0, -1),
+        (-1, 1), (-1, 0)
     )
 
 
@@ -115,12 +116,19 @@ class Game(BoardProblem):
             action (tuple) -- encoded as ((from position), (to position))
         """
         actions = []
+
         if cls.terminal_state(state):
             return actions
-        # Jump -> move -> exit
+
+        # exit has the highest value
+        exit_ready_pos = cls.exit_positions[state.colour]
+        for q, r in state.piece_to_pos[state.colour]:
+            if (q, r) in exit_ready_pos:
+                actions.append(((q, r), None, "EXIT"))
+
+        # Sort by moving direction then Jump and Move
         # for each piece try all possible moves
         # Not using deepcopy here because no need to
-        move_actions = []
         for move in cls.moves:
             for q, r in state.piece_to_pos[state.colour]:
                 i, j = move
@@ -128,21 +136,12 @@ class Game(BoardProblem):
                 jump_to = (q + i * 2, r + j * 2)
                 # If that direction is possible to move
                 if state.inboard(move_to):
-                    if not state.occupied(move_to):
-                        move_actions.append(((q, r), move_to, "MOVE"))
-                    # Jump (still need to check inboard)
-                    elif state.inboard(jump_to) and \
-                            not state.occupied(jump_to):
-                        actions.append(((q, r), jump_to, "JUMP"))
-        # no move possible return None
-        if move_actions:
-            for action in move_actions:
-                actions.append(action)
-        for q, r in state.piece_to_pos[state.colour]:
-            exit_ready_pos = cls.exit_positions[state.colour]
-            # exit
-            if (q, r) in exit_ready_pos:
-                actions.append(((q, r), None, "EXIT"))
+                    if state.occupied(move_to):
+                        if state.inboard(jump_to) and not state.occupied(jump_to):
+                            actions.append(((q, r), jump_to, "JUMP"))
+                    else:
+                        actions.append(((q, r), move_to, "MOVE"))
+
         return actions if len(actions) > 0 else [(None, None, "PASS")]
 
     def result(self, state, action):

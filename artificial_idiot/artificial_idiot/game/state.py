@@ -77,6 +77,12 @@ class State:
     def occupied(self, pos):
         return pos in self._pos_to_piece
 
+    def piece_at_pos(self, pos):
+        if pos in self._pos_to_piece:
+            return self.pos_to_piece[pos]
+        else:
+            return None
+
     @property
     def piece_to_pos(self):
         # Only compute this when needed

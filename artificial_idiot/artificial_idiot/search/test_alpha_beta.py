@@ -16,8 +16,8 @@ def parse_state(file_name):
 
 
 class TestParnoidPlayer(TestCase):
-    # self.utility_pieces, num_exited_piece, self.utility_distance
-    weights = [100, 101, 1]
+    # utility_pieces, num_exited_piece, total_number_pieces, utility_distance
+    weights = [10, 100, 20, 1]
     evaluator_generator = NaiveEvaluatorGenerator(weights)
     cutoff = DepthLimitCutoff(4)
     search = AlphaBetaSearch(evaluator_generator, cutoff)
@@ -53,7 +53,7 @@ class TestParnoidPlayer(TestCase):
         game = Game('red', state)
         best_action = search.search(game, state)
         print(best_action)
-        self.assertEqual(((0, 0), (1, -1), 'MOVE'), best_action)
+        self.assertEqual(((1, 0), 'MOVE'), best_action[1:])
 
     def test_jump(self):
         search = self.search
@@ -70,7 +70,7 @@ class TestParnoidPlayer(TestCase):
         game = Game('red', state)
         best_action = search.search(game, state)
         print(best_action)
-        self.assertEqual(((-3, 3), (-2, 2), 'MOVE'), best_action)
+        self.assertEqual(((-3, 2), (-2, 2), 'MOVE'), best_action)
 
     def test_avoid_eaten(self):
         search = self.search
