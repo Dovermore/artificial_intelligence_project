@@ -2,7 +2,7 @@ from artificial_idiot.player import ParanoidPlayer_Naive, RandomAgent, MaxNPlaye
 
 print("======================")
 red = MaxNPlayer
-green = MaxNPlayer
+green = RandomAgent
 blue = ParanoidPlayer_Naive
 
 # Player = PlayerFactory.get_type_factory(MaxNPlayer)()
