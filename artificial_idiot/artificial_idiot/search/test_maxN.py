@@ -52,26 +52,19 @@ class TestMyMaxN(TestCase):
     cutoff = DepthLimitCutoff(3)
     search = MaxN(evaluator_generator, cutoff, 3)
 
+    def test_initial(self):
+        search = self.search
+        state = parse_state("../../tests/red_initial_state.json")
+        print(state)
+        game = Game('red', state)
+        best_action = search.search(game, state)
+        print(best_action)
+
     def test_must_exit(self):
         search = self.search
         state = parse_state("../../tests/must_exit_0.json")
         print(state)
         game = Game('red', state)
-        best_action = search.search(game, state)
-        self.assertEqual(best_action[-1], 'EXIT')
-
-        state = parse_state("../../tests/must_exit_1.json")
-        print(state)
-        best_action = search.search(game, state)
-        self.assertEqual(best_action[-1], 'EXIT')
-
-        state = parse_state("../../tests/must_exit_2.json")
-        print(state)
-        best_action = search.search(game, state)
-        self.assertEqual(best_action[-1], 'EXIT')
-
-        state = parse_state("../../tests/must_exit_3.json")
-        print(state)
         best_action = search.search(game, state)
         self.assertEqual(best_action[-1], 'EXIT')
 
@@ -112,6 +105,14 @@ class TestMyMaxN(TestCase):
     def test_weird(self):
         search = self.search
         state = parse_state("../../tests/weird.json")
+        print(state)
+        game = Game('red', state)
+        best_action = search.search(game, state)
+        print(best_action)
+
+    def test_busy(self):
+        search = self.search
+        state = parse_state("../../tests/busy.json")
         print(state)
         game = Game('red', state)
         best_action = search.search(game, state)

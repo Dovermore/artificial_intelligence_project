@@ -11,7 +11,7 @@ class AlphaBetaSearch(Search):
         self.utility_generator = utility_generator
 
     def min_value(self, game, state, depth, a, p):
-        if -self.terminal_test(state, depth):
+        if self.terminal_test(state, depth):
             utility = self.utility_generator(state)
             return utility('red'), None
         depth += 1

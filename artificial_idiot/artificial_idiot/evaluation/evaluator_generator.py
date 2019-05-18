@@ -1,6 +1,7 @@
 import abc
 import numpy as np
 from math import log
+from artificial_idiot.game.state import State
 
 _exit_positions = {
     "red": ((3, -3), (3, -2), (3, -1), (3, 0)),
@@ -40,11 +41,15 @@ def shortest_exit_distance(piece, state, player):
     return distance
 
 
-def sum_shortest_exit_distance(state, player):
+def exit_distance(piece, state, player):
+    return State.heuristic_distance[piece]
+
+
+def sum_exit_distance(state, player):
     pieces = state.piece_to_pos[player]
     distances = {}
     for piece in pieces:
-        distances[piece] = shortest_exit_distance(piece, state, player)
+        distances[piece] = exit_distance(piece, state, player)
     return sum(distances.values())
 
 
@@ -157,14 +162,14 @@ class NaiveEvaluatorGenerator(EvaluatorGenerator):
 
     @staticmethod
     def reciprocal_distance(state, player):
-        value = sum_shortest_exit_distance(state, player)
+        value = sum_exit_distance(state, player)
         if value == 0:
             value = 0.5
         return 1/value
 
     @staticmethod
     def negative_distance(state, player):
-        return -sum_shortest_exit_distance(state, player)
+        return -sum_exit_distance(state, player)
 
     # weights in the format of [pieces, exited, distance]
     def __init__(self, weights,  *args, **kwargs):
@@ -190,7 +195,7 @@ class AdvanceEG(EvaluatorGenerator):
     @staticmethod
     def utilty_distance_piece(piece, state, player):
         MAX_DISTANCE = 6
-        distance = shortest_exit_distance(piece, state, player)
+        distance = exit_distance(piece, state, player)
         if distance > MAX_DISTANCE:
             return 0
         s = MAX_DISTANCE - distance
