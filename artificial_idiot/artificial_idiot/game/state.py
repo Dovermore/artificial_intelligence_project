@@ -34,6 +34,25 @@ class State:
         for fr, fr_code in CODE_MAP.items()
     }
 
+    generated_states = {}
+
+    # def __new__(cls, pos_to_piece, colour, completed=None):
+    #     """
+    #     Return the same instance if the positions indicated are completely the
+    #     same as some previously created instances
+    #
+    #     Use new to cache the instances for faster comparison,
+    #     and also used for a better find in queue
+    #     """
+    #     frozen_completed = frozenset()
+    #     if completed is not None:
+    #         frozen_completed = frozenset(completed.items())
+    #     key = frozenset(pos_to_piece.items()) | frozen_completed
+    #     if key in cls.generated_states:
+    #         return cls.generated_states[key]
+    #     else:
+    #         return super(State, cls).__new__(cls)
+
     # TODO make checking fo completed faster/ and more robust
     def __init__(self, pos_to_piece, colour, completed=None):
         """
@@ -47,6 +66,7 @@ class State:
         # Map from positions to pieces
         self._pos_to_piece = pos_to_piece
         self._piece_to_pos = None
+        self.remaining_colours = set(self._pos_to_piece.values())
 
         if completed is None:
             completed = {col: 0 for col in self.code_map}
@@ -84,14 +104,17 @@ class State:
     def colour(self):
         return self._colour
 
-    @classmethod
-    def next_colour(cls, color):
+    def next_colour(self, colour):
         """
         :return: The next active colour after current execution
         """
-        i = cls.code_map[color] + 1
+        i = (self.code_map[colour] + 1) % 3
         # went over, start again
-        return cls.rev_code_map[i % 3]
+        colour = self.rev_code_map[i]
+        while colour not in self.remaining_colours:
+            i = (i + 1) % 3
+            colour = self.rev_code_map[i]
+        return colour
 
     @classmethod
     def rotate_pos(cls, fr_color, to_color, pos):
@@ -168,9 +191,11 @@ class State:
         # last compare the content for a fast comparison
         # (This is based on experimental result of comparison speed)
         return (hash(self) == hash(other) and
+                isinstance(other, State) and
                 self.frozen == other.frozen and
                 self._colour == other._colour and
-                self._pos_to_piece == other._pos_to_piece
+                self._pos_to_piece == other._pos_to_piece and
+                self.completed == other.completed
                 )
 
     def __lt__(self, other):

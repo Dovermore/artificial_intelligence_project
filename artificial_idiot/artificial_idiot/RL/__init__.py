@@ -15,5 +15,5 @@ agent = ParametrisedRL.from_file(model, simple_grid_extractor)
 
 # Player = PlayerFactory.get_type_factory(MaxNPlayer)()
 Player = PlayerFactory.get_type_factory(RLPlayer)(
-    search_algorithm=OpeningGame("gather"), game_type=Game,
+    search_algorithm=OpenGameBook("gather"), game_type=Game,
     evaluator=player_evaluator)

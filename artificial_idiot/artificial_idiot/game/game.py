@@ -73,14 +73,14 @@ class Problem(abc.ABC):
 
 
 class BoardProblem(Problem, abc.ABC):
-    _exit_positions = {
+    exit_positions = {
         "red": ((3, -3), (3, -2), (3, -1), (3, 0)),
         "green": ((-3, 3), (-2, 3), (-1, 3), (0, 3)),
         "blue": ((0, -3), (-1, -2), (-2, -1), (-3, 0))
     }
 
     # possible moves.
-    _move = (
+    moves = (
         (+1, -1), (1, 0), (0, 1),
         (-1, +1), (-1, 0), (0, -1)
     )
@@ -120,7 +120,7 @@ class Game(BoardProblem):
         # for each piece try all possible moves
         # Not using deepcopy here because no need to
         move_actions = []
-        for move in cls._move:
+        for move in cls.moves:
             for q, r in state.piece_to_pos[state.colour]:
                 i, j = move
                 move_to = (q + i, r + j)
@@ -138,7 +138,7 @@ class Game(BoardProblem):
             for action in move_actions:
                 actions.append(action)
         for q, r in state.piece_to_pos[state.colour]:
-            exit_ready_pos = cls._exit_positions[state.colour]
+            exit_ready_pos = cls.exit_positions[state.colour]
             # exit
             if (q, r) in exit_ready_pos:
                 actions.append(((q, r), None, "EXIT"))
@@ -151,7 +151,7 @@ class Game(BoardProblem):
         self.actions(state).
         """
         # TODO next color is a rule that should belong in the Game class
-        next_colour = State.next_colour(state.colour)
+        next_colour = state.next_colour(state.colour)
         completed = state.completed.copy()
 
         fr, to, mv = action
@@ -199,7 +199,7 @@ class Game(BoardProblem):
         dists = 0
         for position in state.piece_to_pos[colour]:
             dists += (min([self.grid_dist(position, exit_position) for
-                           exit_position in self._exit_positions[colour]])
+                           exit_position in self.exit_positions[colour]])
                       + 1) // 2
         return dists
 
@@ -207,7 +207,7 @@ class Game(BoardProblem):
         dists = 0
         for position in state.piece_to_pos[colour]:
             dists += (min([self.grid_dist(position, exit_position) for
-                           exit_position in self._exit_positions[colour]])
+                           exit_position in self.exit_positions[colour]])
                       + 1) / 2
         return dists
 

@@ -2,7 +2,7 @@ from artificial_idiot.search.action_book.action_book import SimpleActionBook
 from artificial_idiot.search.search import Search
 
 
-class OpeningGame(Search):
+class OpenGameBook(Search):
     """
     This class defines the open game search strategy
     """

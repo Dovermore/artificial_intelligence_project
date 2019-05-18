@@ -9,7 +9,7 @@ Player = Player
 
 # Player = PlayerFactory.get_type_factory(MaxNPlayer)()
 Player = PlayerFactory.get_type_factory(Player)(
-    search_algorithm=OpeningGame("gather"), game_type=Game,
+    search_algorithm=OpenGameBook("gather"), game_type=Game,
     evaluator=player_evaluator)
 
 if __name__ == "__main__":
