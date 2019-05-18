@@ -11,23 +11,24 @@ class AlphaBetaSearch(Search):
         self.utility_generator = utility_generator
 
     def min_value(self, game, state, depth, a, p):
-        if -self.terminal_test(state, depth):
+        if self.terminal_test(state, depth):
             utility = self.utility_generator(state)
             return utility('red'), None
         depth += 1
         v = +inf
+        action = None
         # take two steps assuming opponents are in alliance
         for green_action in game.actions(state):
             state_1 = game.result(state, green_action)
             for blue_action in game.actions(state_1):
                 state_2 = game.result(state_1, blue_action)
-                v_, _ = self.max_value(game, state_2, depth, a, p)
+                v_, action = self.max_value(game, state_2, depth, a, p)
                 # print(f'{depth} {green_action} {blue_action} {float(v_):.2}')
                 v = min(v, v_)
                 if v <= a:
-                    return v, _
+                    return v, action
                 p = min(p, v)
-        return v, _
+        return v, action
 
     def max_value(self, game, state, depth, a, p):
         if self.terminal_test(state, depth):

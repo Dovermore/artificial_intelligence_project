@@ -2,6 +2,7 @@ from artificial_idiot.util.misc import is_in
 from artificial_idiot.game.state import State
 from artificial_idiot.game.node import Node
 import abc
+from artificial_idiot.search.a_star import AStar
 from functools import lru_cache
 
 
@@ -96,6 +97,10 @@ class Game(BoardProblem):
         super().__init__(state)
         # self.evaluator = evaluator
         self.colour = colour
+        # heuristic distance
+        a_star = AStar()
+        # add heuristic distance to state
+        State.heuristic_distance = a_star.build_heuristic_distance(self, state)
 
     @classmethod
     @lru_cache(10000)

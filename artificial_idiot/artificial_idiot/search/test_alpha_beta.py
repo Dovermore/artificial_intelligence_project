@@ -18,9 +18,8 @@ class TestParnoidPlayer(TestCase):
     # self.utility_pieces, num_exited_piece, self.utility_distance
     weights = [2, 100, 1]
     evaluator_generator = AdvanceEG(weights)
-    cutoff = DepthLimitCutoff(3)
+    cutoff = DepthLimitCutoff(4)
     search = AlphaBetaSearch(evaluator_generator, cutoff)
-
 
     def test_initial(self):
         search = self.search
@@ -76,6 +75,14 @@ class TestParnoidPlayer(TestCase):
     def test_weird(self):
         search = self.search
         state = parse_state("../../tests/weird.json")
+        print(state)
+        game = Game('red', state)
+        best_action = search.search(game, state)
+        print(best_action)
+
+    def test_busy(self):
+        search = self.search
+        state = parse_state("../../tests/busy.json")
         print(state)
         game = Game('red', state)
         best_action = search.search(game, state)

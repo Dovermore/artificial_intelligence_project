@@ -20,6 +20,7 @@ class State:
     code_map = CODE_MAP
     rev_code_map = REV_CODE_MAP
     print_map = {"red": "🔴", "green": "✅", "blue": "🔵"}
+    heuristic_distance = None
 
     # cycle the players:
     #    player:: red:   red -> red,   green -> green, blue -> blue
@@ -77,24 +78,24 @@ class State:
     def occupied(self, pos):
         return pos in self._pos_to_piece
 
-    # @property
-    # def piece_to_pos(self):
-    #     # Only compute this when needed
-    #     if self._piece_to_pos is None:
-    #         self._piece_to_pos = {col: [] for col in self._code_map}
-    #         for location, colour in self._pos_to_piece.items():
-    #             self._piece_to_pos[colour].append(location)
-    #     # Need to deepcopy this for there are mutable lists
-    #     return deepcopy(self._piece_to_pos)
-
     @property
     def piece_to_pos(self):
-        # One time computation, this one might be faster.
-        # As this is not used frequently
-        piece_to_pos = {col: [] for col in self.code_map}
-        for location, colour in self._pos_to_piece.items():
-            piece_to_pos[colour].append(location)
-        return piece_to_pos
+        # Only compute this when needed
+        if self._piece_to_pos is None:
+            self._piece_to_pos = {col: [] for col in self.code_map}
+            for location, colour in self._pos_to_piece.items():
+                self._piece_to_pos[colour].append(location)
+        # Need to deepcopy this for there are mutable lists
+        return self._piece_to_pos
+
+    # @property
+    # def piece_to_pos(self):
+    #     # One time computation, this one might be faster.
+    #     # As this is not used frequently
+    #     piece_to_pos = {col: [] for col in self.code_map}
+    #     for location, colour in self._pos_to_piece.items():
+    #         piece_to_pos[colour].append(location)
+    #     return piece_to_pos
 
     @property
     def pos_to_piece(self):
