@@ -9,35 +9,4 @@ from artificial_idiot.search import uct
 
 
 from artificial_idiot.search.search_cutoff import cutoff
-
-
-if __name__ == '__main__':
-    MaxN = max_n.MaxN
-    # FIXME what is this?
-    from artificial_idiot.evaluation.evaluator_generator import NaiveEvaluator
-    from artificial_idiot.search.search_cutoff.cutoff import DepthLimitCutoff
-    from artificial_idiot.game.game import Game
-    from artificial_idiot.game.state import State
-    from artificial_idiot.util.json_parser import JsonParser
-    import json
-
-    def test_exit():
-        f = open("../tests/simple.json")
-        pos_dict, colour, completed = JsonParser(json.load(f)).parse()
-        evaluator = NaiveEvaluator()
-        game = Game(colour, State(pos_dict, colour, completed), evaluator)
-        cutoff = DepthLimitCutoff(max_depth=3)
-        search = MaxN(evaluator, cutoff, n_player=3)
-        print(search.search(game, game.initial_state))
-
-    def test_only_one_possible_move():
-        f = open("../tests/only_one_move.json")
-        evaluator = NaiveEvaluator()
-        pos_dict, colour, completed = JsonParser(json.load(f)).parse()
-        game = Game(colour, State(pos_dict, colour, completed), evaluator)
-        cutoff = DepthLimitCutoff(max_depth=3)
-        search = MaxN(evaluator, cutoff, n_player=3)
-        print(search.search(game, game.initial_state))
-
-    # test_exit()
-    test_only_one_possible_move()
+from artificial_idiot.search.a_star import AStar

@@ -206,10 +206,10 @@ class RandomAgent(Player):
                          initial_state=initial_state)
 
 
-class ParanoidPlayer(Player):
-    def __init__(self, weights, evaluator_generator, cutoff, player):
+class ParanoidAgent(Player):
+    def __init__(self, color, evaluator_generator, cutoff):
         search_algorithm = AlphaBetaSearch(evaluator_generator, cutoff)
-        super().__init__(player, search_algorithm=search_algorithm)
+        super().__init__(color, search_algorithm=search_algorithm)
 
     def action(self):
         player_action = self\
@@ -239,20 +239,20 @@ class MaxNPlayer(MaxNAgent):
                          initial_state=None)
 
 
-class ParanoidPlayer_Advance(ParanoidPlayer):
-    def __init__(self, player):
-        weights = [2, 100, 1]
+class ParanoidPlayer_Advance(ParanoidAgent):
+    def __init__(self, color):
+        weights = [1, 100, 1]
         evaluator_generator = AdvanceEG(weights)
-        cutoff = DepthLimitCutoff(2)
-        super().__init__(weights, evaluator_generator, cutoff, player)
+        cutoff = DepthLimitCutoff(4)
+        super().__init__(color, evaluator_generator, cutoff)
 
 
-class ParanoidPlayer_Naive(ParanoidPlayer):
-    def __init__(self, player):
+class ParanoidPlayer_Naive(ParanoidAgent):
+    def __init__(self, color):
         weights = [90, 100, 1]
         evaluator_generator = NaiveEvaluatorGenerator(weights)
-        cutoff = DepthLimitCutoff(2)
-        super().__init__(weights, evaluator_generator, cutoff, player)
+        cutoff = DepthLimitCutoff(4)
+        super().__init__(color, evaluator_generator, cutoff)
 
 
 class BasicUCTPlayer(Player):

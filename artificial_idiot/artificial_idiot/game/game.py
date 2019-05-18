@@ -2,7 +2,7 @@ from artificial_idiot.util.misc import is_in
 from artificial_idiot.game.state import State
 from artificial_idiot.game.node import Node
 import abc
-from artificial_idiot.search.a_star import AStar
+from artificial_idiot.search import AStar
 from functools import lru_cache
 
 
