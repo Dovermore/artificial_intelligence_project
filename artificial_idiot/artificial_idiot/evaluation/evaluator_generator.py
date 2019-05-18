@@ -169,6 +169,7 @@ class NaiveEvaluatorGenerator(EvaluatorGenerator):
 
     @staticmethod
     def negative_distance(state, player):
+        print(state)
         return -sum_exit_distance(state, player)
 
     # weights in the format of [pieces, exited, distance]

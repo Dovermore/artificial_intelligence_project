@@ -104,8 +104,7 @@ class Game(BoardProblem):
         self.heuristic_distance = dd(float)
         self.build_heuristic_distance(deepcopy(state))
         State.heuristic_distance = self.heuristic_distance
-        print(print_board(self.heuristic_distance))
-        print(self.initial_state)
+        print_board(self.heuristic_distance)
 
     def build_heuristic_distance(self, state):
         """
@@ -311,8 +310,6 @@ class Game(BoardProblem):
         return str(self.initial_state)
 
 
-
-
 class NodeGame(Game):
     """
     A expansion to the base game. Also stores a root node for search with
@@ -342,44 +339,6 @@ class RewardedGame(Game):
     pass
 
 
-if __name__ == "__main__":
-    # UCT to convert player pieces
-    from artificial_idiot.util.json_parser import JsonParser
-    import json
-
-    def test_jump():
-        f = open("../tests/jump.json")
-        json_loader = json.load(f)
-        json_parser = JsonParser(json_loader)
-        pos_dict, player, completed = json_parser.parse()
-        game = Game(player, State(pos_dict, player, completed=completed))
-        f.close()
-
-        f = open("../tests/jump_ans.json")
-        json_loader = json.load(f)
-        json_parser = JsonParser(json_loader)
-        pos_dict_ans, player_ans, completed_ans = json_parser.parse()
-        f.close()
-
-        print(game)
-        state = game.initial_state
-        state = game.result(state, ((-3, 0), (-1, -2), "JUMP"))
-        assert(dict(state.pos_to_piece) == pos_dict_ans)
-        assert(game.colour == player_ans)
-        print(state.completed)
-        assert(state.completed == completed_ans)
-        print(game)
-
-    def test_exit():
-        f = open("../tests/simple.json")
-        pos_dict, colour, completed = JsonParser(json.load(f)).parse()
-        game = Game(colour, State(pos_dict, colour, completed))
-        print(game.initial_state)
-        assert([i for i in game.actions(game.initial_state)] == [((3, -3), None, 'EXIT'), ((3, -3), (3, -2), 'MOVE'), ((3, -3), (2, -2), 'MOVE'), ((3, -3), (2, -3), 'MOVE')])
-
-    test_jump()
-    print("="*10)
-    test_exit()
 
 
 

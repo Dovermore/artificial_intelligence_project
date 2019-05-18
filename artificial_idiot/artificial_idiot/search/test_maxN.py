@@ -47,8 +47,8 @@ def change_state_color(state, color):
 
 class TestMyMaxN(TestCase):
     # self.utility_pieces, num_exited_piece, self.utility_distance
-    weights = [1, 100, 1]
-    evaluator_generator = AdvanceEG(weights)
+    weights = [100, 101, 1]
+    evaluator_generator = NaiveEvaluatorGenerator(weights)
     cutoff = DepthLimitCutoff(3)
     search = MaxN(evaluator_generator, cutoff, 3)
 
@@ -67,6 +67,40 @@ class TestMyMaxN(TestCase):
         game = Game('red', state)
         best_action = search.search(game, state)
         self.assertEqual(best_action[-1], 'EXIT')
+
+    def test_eat_green(self):
+        search = self.search
+        state = parse_state("../../tests/eat_green.json")
+        print(state)
+        game = Game('red', state)
+        best_action = search.search(game, state)
+        self.assertTupleEqual(((0, 0), (2, -2), 'JUMP'), best_action)
+
+    def test_move(self):
+        search = self.search
+        state = parse_state("../../tests/move.json")
+        print(state)
+        game = Game('red', state)
+        best_action = search.search(game, state)
+        print(best_action)
+        self.assertEqual(((0, 0), (1, -1), 'MOVE'), best_action)
+
+    def test_jump(self):
+        search = self.search
+        state = parse_state("../../tests/jump.json")
+        print(state)
+        game = Game('red', state)
+        best_action = search.search(game, state)
+        self.assertEqual(((0, 0), (2, -2), 'JUMP'), best_action)
+
+    def test_inch_forward(self):
+        search = self.search
+        state = parse_state("../../tests/inch_forward.json")
+        print(state)
+        game = Game('red', state)
+        best_action = search.search(game, state)
+        print(best_action)
+        self.assertEqual(((0, 0), (2, -2), 'JUMP'), best_action)
 
     def test_avoid_eaten(self):
         search = self.search

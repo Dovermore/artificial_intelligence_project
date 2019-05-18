@@ -1,9 +1,9 @@
 from artificial_idiot.player import ParanoidPlayer_Naive, RandomAgent, MaxNPlayer, Player, Game
 
 print("======================")
-P0 = RandomAgent
-P1 = MaxNPlayer
-P2 = ParanoidPlayer_Naive
+red = MaxNPlayer
+green = MaxNPlayer
+blue = MaxNPlayer
 
 # Player = PlayerFactory.get_type_factory(MaxNPlayer)()
 # Player = PlayerFactory.get_type_factory(Player)(

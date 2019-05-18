@@ -87,9 +87,6 @@ class Player:
         """
         action = self.search_algorithm.search(self.game,
                                               self.game.initial_state)
-        print(action)
-        print(self.game.initial_state.colour)
-        print(self.game.initial_state)
         return self.convert_action(action, "referee")
 
     def update(self, colour, action):
@@ -237,10 +234,10 @@ class MaxNPlayer(MaxNAgent):
     """
     def __init__(self, player):
         # self.utility_pieces, num_exited_piece, self.utility_distance
-        weights = [90, 100, 1]
-        evaluator = NaiveEvaluatorGenerator(weights)
-        cutoff = DepthLimitCutoff(max_depth=3)
-        super().__init__(player, cutoff=cutoff, evaluator=evaluator,
+        weights = [100, 101, 1]
+        evaluator_generator = NaiveEvaluatorGenerator(weights)
+        cutoff = DepthLimitCutoff(3)
+        super().__init__(player, cutoff=cutoff, evaluator=evaluator_generator,
                          initial_state=None)
 
 
@@ -254,9 +251,9 @@ class ParanoidPlayer_Advance(ParanoidAgent):
 
 class ParanoidPlayer_Naive(ParanoidAgent):
     def __init__(self, color):
-        weights = [90, 100, 1]
+        weights = [100, 101, 1]
         evaluator_generator = NaiveEvaluatorGenerator(weights)
-        cutoff = DepthLimitCutoff(4)
+        cutoff = DepthLimitCutoff(2)
         super().__init__(color, evaluator_generator, cutoff)
 
 

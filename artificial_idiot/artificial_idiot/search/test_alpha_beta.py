@@ -6,6 +6,7 @@ from artificial_idiot.util.json_parser import JsonParser
 from artificial_idiot.search.mini_max import AlphaBetaSearch
 from artificial_idiot.search.search_cutoff.cutoff import DepthLimitCutoff
 import json
+from artificial_idiot.util.misc import print_board
 
 
 def parse_state(file_name):
@@ -16,8 +17,8 @@ def parse_state(file_name):
 
 class TestParnoidPlayer(TestCase):
     # self.utility_pieces, num_exited_piece, self.utility_distance
-    weights = [2, 100, 1]
-    evaluator_generator = AdvanceEG(weights)
+    weights = [100, 101, 1]
+    evaluator_generator = NaiveEvaluatorGenerator(weights)
     cutoff = DepthLimitCutoff(4)
     search = AlphaBetaSearch(evaluator_generator, cutoff)
 
@@ -28,6 +29,23 @@ class TestParnoidPlayer(TestCase):
         game = Game('red', state)
         best_action = search.search(game, state)
         print(best_action)
+
+    def test_move(self):
+        search = self.search
+        state = parse_state("../../tests/move.json")
+        print(state)
+        game = Game('red', state)
+        best_action = search.search(game, state)
+        print(best_action)
+        self.assertEqual(((0, 0), (1, -1), 'MOVE'), best_action)
+
+    def test_jump(self):
+        search = self.search
+        state = parse_state("../../tests/jump.json")
+        print(state)
+        game = Game('red', state)
+        best_action = search.search(game, state)
+        self.assertEqual(((0, 0), (2, -2), 'JUMP'), best_action)
 
     def test_must_exit(self):
         search = self.search
@@ -45,7 +63,7 @@ class TestParnoidPlayer(TestCase):
 
         game = Game('red', state)
         best_action = search.search(game, state)
-        self.assertTupleEqual(best_action, ((-2, -1), (-3, 0), 'MOVE'))
+        self.assertTupleEqual(((-2, -1), (-3, 0), 'MOVE'), best_action)
 
     def test_eat_blue(self):
         search = self.search
@@ -54,7 +72,16 @@ class TestParnoidPlayer(TestCase):
 
         game = Game('red', state)
         best_action = search.search(game, state)
-        self.assertTupleEqual(best_action, ((0, 0), (2, -2), 'JUMP'))
+        self.assertTupleEqual(((0, 0), (2, -2), 'JUMP'), best_action)
+
+    def test_eat_green(self):
+        search = self.search
+        state = parse_state("../../tests/eat_green.json")
+        print_board(state.pos_to_piece, debug=True)
+
+        game = Game('red', state)
+        best_action = search.search(game, state)
+        self.assertTupleEqual(((0, 0), (2, -2), 'JUMP'), best_action)
 
     def test_should_not_exit(self):
         search = self.search
@@ -62,7 +89,7 @@ class TestParnoidPlayer(TestCase):
         print(state)
         game = Game('red', state)
         best_action = search.search(game, state)
-        self.assertNotEqual(best_action[-1], 'EXIT')
+        self.assertNotEqual('EXIT', best_action[-1])
 
     def test_move_not_jump(self):
         search = self.search

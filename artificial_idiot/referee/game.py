@@ -165,6 +165,7 @@ class Chexers:
                 "not available. See specification and game rules for details, "
                 "or consider currently available actions:\n"
                 f"*   {available_actions_list}")
+
     def _available_actions(self, colour):
         """
         A list of currently-available actions for a particular player
@@ -186,6 +187,7 @@ class Chexers:
         if not available_actions:
             available_actions.append(("PASS", None))
         return available_actions
+
     def _turn_detect_draw(self):
         """
         Register that a turn has passed: Update turn counts and 
@@ -199,6 +201,7 @@ class Chexers:
         self.history[state] += 1
         if self.history[state] >= 4:
             self.drawmsg = "game state occurred 4 times."
+
     def _snap(self):
         """
         Capture the current board state in a hashable way
@@ -214,6 +217,7 @@ class Chexers:
     def over(self):
         """True iff the game over (draw or win detected)."""
         return (max(self.score.values()) >= 4) or (self.drawmsg != "")
+
     def end(self):
         """
         Conclude the game, extracting a string describing result (win or draw)
@@ -254,6 +258,7 @@ class Chexers:
         """Helper method to add a message to the logfile"""
         if self._logfile is not None:
             print(f"[{header:5s}] -", *messages, file=self._logfile, flush=True)
+
     def _log_action(self, colour, action):
         """Helper method to log an action to the logfile"""
         atype, aargs = action
@@ -263,10 +268,12 @@ class Chexers:
             self._log(colour, f"{atype} from {aargs}.")
         else: #atype == "PASS":
             self._log(colour, f"{atype}.")
+
     def _end_log(self):
         if self._logfile is not None:
             self._logfile.close()
             self._logfile = None
+
 
 class IllegalActionException(Exception):
     """If this action is illegal based on the current board state."""
