@@ -232,7 +232,8 @@ class MaxNPlayer(MaxNAgent):
     """
     def __init__(self, player):
         # self.utility_pieces, num_exited_piece, self.utility_distance
-        weights = [100, 101, 1]
+        # utility_pieces, num_exited_piece, total_number_pieces, utility_distance
+        weights = [10, 100, 20, 1]
         evaluator_generator = NaiveEvaluatorGenerator(weights)
         cutoff = DepthLimitCutoff(3)
         super().__init__(player, cutoff=cutoff, evaluator=evaluator_generator,
@@ -241,7 +242,8 @@ class MaxNPlayer(MaxNAgent):
 
 class ParanoidPlayer_Advance(ParanoidAgent):
     def __init__(self, color):
-        weights = [100, 101, 1]
+        # utility_pieces, num_exited_piece, total_number_pieces, utility_distance
+        weights = [10, 100, 20, 1]
         evaluator_generator = NaiveEvaluatorGenerator(weights)
         cutoff = DepthLimitCutoff(4)
         super().__init__(color, evaluator_generator, cutoff)
