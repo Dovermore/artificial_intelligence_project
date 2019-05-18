@@ -69,12 +69,6 @@ class AStar(Search):
                 print(f"Heuristic: {problem.h(node)}")
                 print(len(explored))
                 print(node.__repr__(**kwargs))
-            print("====================")
-            print(node.state)
-            print(node.path_cost)
-            print()
-            print(len(explored))
-            print("====================")
             if node.state == self.goal:
                 return node
             explored.add(node.state)

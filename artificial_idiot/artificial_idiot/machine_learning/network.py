@@ -65,6 +65,8 @@ class Network:
         for layer in reversed(self.layers):
             # DJ/Dz_i = DJ/Da_i * Da_i/Dz_i
             dz = layer.compute_dz(z, da)
+            # if d_yhat[0][0] != 0:
+            #     print(layer, dz, da)
             z = zs.popleft()
             # DJ/Dw_i = DJ/Dz_i * Dz_i/Dw_i
             gradient = layer.compute_dw(z, dz)

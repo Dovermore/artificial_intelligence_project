@@ -18,7 +18,7 @@ architectures = networks.architectures
 
 # extractor = simple_grid_extractor
 extractor = full_grid_extractor
-time_stamp = 20190516082441
+time_stamp = 20190518192015
 path = f"/Users/Dovermore/Documents/2019t1/COMP30024-AritificialIntelligence/ArtificialIdiotProject/artificial_idiot/artificial_idiot/machine_learning/{time_stamp}"
 checkpoint_path = f"{path}/checkpoints"
 checkpoint_files = glob.glob(f'{checkpoint_path}/*')
@@ -47,7 +47,7 @@ checkpoint_interval = 9999
 
 
 initial_state = State(Player.start_config, "red")
-game = Game("red", initial_state, DummyEvaluator())
+game = Game("red", initial_state)
 agent.td_train(game, initial_state, debug=debug,
                node_type=node_type, policy=policy,
                explore=explore, checkpoint_interval=checkpoint_interval)

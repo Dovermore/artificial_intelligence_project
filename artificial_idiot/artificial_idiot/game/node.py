@@ -255,7 +255,7 @@ class SimpleRLNode(RLNode):
 
 
 class SimpleRLNode2(RLNode):
-    winning_reward = 1
+    winning_reward = 10
     capture_reward = 0
     exit_reward = 0
     losing_reward = 0
