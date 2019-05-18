@@ -36,7 +36,7 @@ class AlphaBetaSearch(Search):
             return utility('red'), None
         depth += 1
         v = -inf
-        best_action = None
+        action = None
         for action in game.actions(state):
             # print(action)
             s_ = game.result(state, action)
@@ -44,13 +44,13 @@ class AlphaBetaSearch(Search):
             # print(f'{depth} {action} {float(v_):.2}')
             # print(a, p)
             if v_ > v:
-                best_action = action
+                action = action
                 v = v_
             # opponent won't allow you to chose a better move
             if v >= p:
                 return v, action
             a = max(a, v)
-        return v, best_action
+        return v, action
 
     def search(self, game, state, depth=0):
         best_v, best_action = self.max_value(game, state, depth, -inf, inf)
