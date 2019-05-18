@@ -1,0 +1,2632 @@
+==================================================================
+welcome to Chexers referee version 1.0 (released Apr 12 2019).
+Conducts a game of Chexers between three Player classes.
+run `python referee --help` for additional usage information.
+==================================================================
+* from this line, all messages printed by the referee begin with *
+* (any other lines of output must be from your Player classes).
+* 
+* importing red player's player class 'red' from package 'artificial_idiot'
+======================
+* importing green player's player class 'green' from package 'artificial_idiot'
+* importing blue player's player class 'blue' from package 'artificial_idiot'
+* NOTE: unable to measure memory usage on this platform (try dimefox)
+* == initialising players ==
+* initialising red player as a 'artificial_idiot.player.MaxNPlayer'
+*   time:  + 0.000s  (just elapsed)    0.000s  (game total)
+* initialising green player as a 'artificial_idiot.player.MaxNPlayer'
+*   time:  + 0.000s  (just elapsed)    0.000s  (game total)
+* initialising blue player as a 'artificial_idiot.player.ParanoidPlayer_Advance'
+*   time:  + 0.000s  (just elapsed)    0.000s  (game total)
+* == game start ==
+* displaying game board:
+*   scores: 🔴: 0, ✅: 0, 🔵: 0.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |  ✅ |  ✅ |  ✅ |  ✅ | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |     |     |     |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |     |     |     |     |     |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |  🔴 |     |     |     |     |     |  🔵 | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |  🔴 |     |     |     |     |  🔵 | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |  🔴 |     |     |     |  🔵 | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |  🔴 |     |     |  🔵 |
+*            '-._.-'-._.-'-._.-'-._.-'
+* == red player's turn ==
+* asking 🔴 red player for next action...
+*   red player returned action: ('MOVE', ((-3, 0), (-2, 0)))
+*   time:  + 0.003s  (just elapsed)    0.003s  (game total)
+* displaying game board:
+*   scores: 🔴: 0, ✅: 0, 🔵: 0.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |  ✅ |  ✅ |  ✅ |  ✅ | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |     |     |     |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |     |     |     |     |     |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔴 |     |     |     |     |  🔵 | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |  🔴 |     |     |     |     |  🔵 | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |  🔴 |     |     |     |  🔵 | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |  🔴 |     |     |  🔵 |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with red's action ('MOVE', ((-3, 0), (-2, 0)))...
+*   time:  + 0.000s  (just elapsed)    0.003s  (game total)
+* updating green player with red's action ('MOVE', ((-3, 0), (-2, 0)))...
+*   time:  + 0.000s  (just elapsed)    0.000s  (game total)
+* updating blue player with red's action ('MOVE', ((-3, 0), (-2, 0)))...
+*   time:  + 0.000s  (just elapsed)    0.000s  (game total)
+* == green player's turn ==
+* asking ✅ green player for next action...
+*   green player returned action: ('MOVE', ((3, -3), (2, -2)))
+*   time:  + 0.003s  (just elapsed)    0.003s  (game total)
+* displaying game board:
+*   scores: 🔴: 0, ✅: 0, 🔵: 0.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |  ✅ |  ✅ |  ✅ |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |     |     |  ✅ |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |     |     |     |     |     |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔴 |     |     |     |     |  🔵 | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |  🔴 |     |     |     |     |  🔵 | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |  🔴 |     |     |     |  🔵 | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |  🔴 |     |     |  🔵 |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with green's action ('MOVE', ((3, -3), (2, -2)))...
+*   time:  + 0.000s  (just elapsed)    0.003s  (game total)
+* updating green player with green's action ('MOVE', ((3, -3), (2, -2)))...
+*   time:  + 0.000s  (just elapsed)    0.003s  (game total)
+* updating blue player with green's action ('MOVE', ((3, -3), (2, -2)))...
+*   time:  + 0.000s  (just elapsed)    0.000s  (game total)
+* == blue player's turn ==
+* asking 🔵 blue player for next action...
+*   blue player returned action: ('MOVE', ((1, 2), (1, 1)))
+*   time:  + 3.834s  (just elapsed)    3.835s  (game total)
+* displaying game board:
+*   scores: 🔴: 0, ✅: 0, 🔵: 0.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |  ✅ |  ✅ |  ✅ |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |     |     |  ✅ |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |     |     |     |     |     |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔴 |     |     |     |     |  🔵 | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |  🔴 |     |     |     |  🔵 |  🔵 | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |  🔴 |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |  🔴 |     |     |  🔵 |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with blue's action ('MOVE', ((1, 2), (1, 1)))...
+*   time:  + 0.000s  (just elapsed)    0.003s  (game total)
+* updating green player with blue's action ('MOVE', ((1, 2), (1, 1)))...
+*   time:  + 0.000s  (just elapsed)    0.003s  (game total)
+* updating blue player with blue's action ('MOVE', ((1, 2), (1, 1)))...
+*   time:  + 0.000s  (just elapsed)    3.835s  (game total)
+* == red player's turn ==
+* asking 🔴 red player for next action...
+*   red player returned action: ('JUMP', ((-3, 1), (-1, -1)))
+*   time:  + 0.007s  (just elapsed)    0.011s  (game total)
+* displaying game board:
+*   scores: 🔴: 0, ✅: 0, 🔵: 0.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |  ✅ |  ✅ |  ✅ |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |     |     |  ✅ |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |     |  🔴 |     |     |     |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔴 |     |     |     |     |  🔵 | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |     |  🔵 |  🔵 | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |  🔴 |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |  🔴 |     |     |  🔵 |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with red's action ('JUMP', ((-3, 1), (-1, -1)))...
+*   time:  + 0.000s  (just elapsed)    0.011s  (game total)
+* updating green player with red's action ('JUMP', ((-3, 1), (-1, -1)))...
+*   time:  + 0.000s  (just elapsed)    0.003s  (game total)
+* updating blue player with red's action ('JUMP', ((-3, 1), (-1, -1)))...
+*   time:  + 0.000s  (just elapsed)    3.835s  (game total)
+* == green player's turn ==
+* asking ✅ green player for next action...
+*   green player returned action: ('JUMP', ((2, -3), (2, -1)))
+*   time:  + 0.008s  (just elapsed)    0.011s  (game total)
+* displaying game board:
+*   scores: 🔴: 0, ✅: 0, 🔵: 0.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |  ✅ |  ✅ |     |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |     |     |  ✅ |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |     |  🔴 |     |     |  ✅ |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔴 |     |     |     |     |  🔵 | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |     |  🔵 |  🔵 | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |  🔴 |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |  🔴 |     |     |  🔵 |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with green's action ('JUMP', ((2, -3), (2, -1)))...
+*   time:  + 0.000s  (just elapsed)    0.011s  (game total)
+* updating green player with green's action ('JUMP', ((2, -3), (2, -1)))...
+*   time:  + 0.000s  (just elapsed)    0.011s  (game total)
+* updating blue player with green's action ('JUMP', ((2, -3), (2, -1)))...
+*   time:  + 0.000s  (just elapsed)    3.835s  (game total)
+* == blue player's turn ==
+* asking 🔵 blue player for next action...
+*   blue player returned action: ('JUMP', ((2, 1), (0, 1)))
+*   time:  + 9.727s  (just elapsed)   13.562s  (game total)
+* displaying game board:
+*   scores: 🔴: 0, ✅: 0, 🔵: 0.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |  ✅ |  ✅ |     |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |     |     |  ✅ |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |     |  🔴 |     |     |  ✅ |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔴 |     |     |     |     |  🔵 | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |  🔵 |  🔵 |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |  🔴 |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |  🔴 |     |     |  🔵 |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with blue's action ('JUMP', ((2, 1), (0, 1)))...
+*   time:  + 0.000s  (just elapsed)    0.011s  (game total)
+* updating green player with blue's action ('JUMP', ((2, 1), (0, 1)))...
+*   time:  + 0.000s  (just elapsed)    0.011s  (game total)
+* updating blue player with blue's action ('JUMP', ((2, 1), (0, 1)))...
+*   time:  + 0.000s  (just elapsed)   13.562s  (game total)
+* == red player's turn ==
+* asking 🔴 red player for next action...
+*   red player returned action: ('MOVE', ((-3, 2), (-2, 2)))
+*   time:  + 0.017s  (just elapsed)    0.028s  (game total)
+* displaying game board:
+*   scores: 🔴: 0, ✅: 0, 🔵: 0.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |  ✅ |  ✅ |     |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |     |     |  ✅ |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |     |  🔴 |     |     |  ✅ |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔴 |     |     |     |     |  🔵 | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |  🔵 |  🔵 |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |  🔴 |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |  🔴 |     |     |  🔵 |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with red's action ('MOVE', ((-3, 2), (-2, 2)))...
+*   time:  + 0.000s  (just elapsed)    0.028s  (game total)
+* updating green player with red's action ('MOVE', ((-3, 2), (-2, 2)))...
+*   time:  + 0.000s  (just elapsed)    0.011s  (game total)
+* updating blue player with red's action ('MOVE', ((-3, 2), (-2, 2)))...
+*   time:  + 0.000s  (just elapsed)   13.562s  (game total)
+* == green player's turn ==
+* asking ✅ green player for next action...
+*   green player returned action: ('MOVE', ((1, -3), (0, -2)))
+*   time:  + 0.018s  (just elapsed)    0.029s  (game total)
+* displaying game board:
+*   scores: 🔴: 0, ✅: 0, 🔵: 0.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |  ✅ |     |     |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |  ✅ |     |  ✅ |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |     |  🔴 |     |     |  ✅ |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔴 |     |     |     |     |  🔵 | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |  🔵 |  🔵 |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |  🔴 |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |  🔴 |     |     |  🔵 |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with green's action ('MOVE', ((1, -3), (0, -2)))...
+*   time:  + 0.000s  (just elapsed)    0.029s  (game total)
+* updating green player with green's action ('MOVE', ((1, -3), (0, -2)))...
+*   time:  + 0.000s  (just elapsed)    0.029s  (game total)
+* updating blue player with green's action ('MOVE', ((1, -3), (0, -2)))...
+*   time:  + 0.000s  (just elapsed)   13.562s  (game total)
+* == blue player's turn ==
+* asking 🔵 blue player for next action...
+*   blue player returned action: ('MOVE', ((0, 3), (1, 2)))
+*   time:  +26.925s  (just elapsed)   40.487s  (game total)
+* displaying game board:
+*   scores: 🔴: 0, ✅: 0, 🔵: 0.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |  ✅ |     |     |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |  ✅ |     |  ✅ |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |     |  🔴 |     |     |  ✅ |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔴 |     |     |     |     |  🔵 | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |  🔵 |  🔵 |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |  🔴 |     |     |  🔵 | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |  🔴 |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with blue's action ('MOVE', ((0, 3), (1, 2)))...
+*   time:  + 0.000s  (just elapsed)    0.029s  (game total)
+* updating green player with blue's action ('MOVE', ((0, 3), (1, 2)))...
+*   time:  + 0.000s  (just elapsed)    0.029s  (game total)
+* updating blue player with blue's action ('MOVE', ((0, 3), (1, 2)))...
+*   time:  + 0.000s  (just elapsed)   40.487s  (game total)
+* == red player's turn ==
+* asking 🔴 red player for next action...
+*   red player returned action: ('JUMP', ((-3, 3), (-1, 1)))
+*   time:  + 0.020s  (just elapsed)    0.049s  (game total)
+* displaying game board:
+*   scores: 🔴: 0, ✅: 0, 🔵: 0.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |  ✅ |     |     |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |  ✅ |     |  ✅ |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |     |  🔴 |     |     |  ✅ |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔴 |     |     |     |     |  🔵 | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |  🔴 |  🔵 |  🔵 |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |  🔴 |     |     |  🔵 | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |     |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with red's action ('JUMP', ((-3, 3), (-1, 1)))...
+*   time:  + 0.000s  (just elapsed)    0.049s  (game total)
+* updating green player with red's action ('JUMP', ((-3, 3), (-1, 1)))...
+*   time:  + 0.000s  (just elapsed)    0.029s  (game total)
+* updating blue player with red's action ('JUMP', ((-3, 3), (-1, 1)))...
+*   time:  + 0.000s  (just elapsed)   40.487s  (game total)
+* == green player's turn ==
+* asking ✅ green player for next action...
+*   green player returned action: ('JUMP', ((0, -3), (0, -1)))
+*   time:  + 0.018s  (just elapsed)    0.047s  (game total)
+* displaying game board:
+*   scores: 🔴: 0, ✅: 0, 🔵: 0.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |     |     |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |  ✅ |     |  ✅ |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |     |  🔴 |  ✅ |     |  ✅ |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔴 |     |     |     |     |  🔵 | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |  🔴 |  🔵 |  🔵 |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |  🔴 |     |     |  🔵 | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |     |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with green's action ('JUMP', ((0, -3), (0, -1)))...
+*   time:  + 0.000s  (just elapsed)    0.049s  (game total)
+* updating green player with green's action ('JUMP', ((0, -3), (0, -1)))...
+*   time:  + 0.000s  (just elapsed)    0.047s  (game total)
+* updating blue player with green's action ('JUMP', ((0, -3), (0, -1)))...
+*   time:  + 0.000s  (just elapsed)   40.487s  (game total)
+* == blue player's turn ==
+* asking 🔵 blue player for next action...
+*   blue player returned action: ('MOVE', ((3, 0), (3, -1)))
+*   time:  +43.255s  (just elapsed)   83.742s  (game total)
+* displaying game board:
+*   scores: 🔴: 0, ✅: 0, 🔵: 0.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |     |     |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |  ✅ |     |  ✅ |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |     |  🔴 |  ✅ |     |  ✅ |  🔵 | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔴 |     |     |     |     |     | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |  🔴 |  🔵 |  🔵 |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |  🔴 |     |     |  🔵 | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |     |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with blue's action ('MOVE', ((3, 0), (3, -1)))...
+*   time:  + 0.000s  (just elapsed)    0.049s  (game total)
+* updating green player with blue's action ('MOVE', ((3, 0), (3, -1)))...
+*   time:  + 0.000s  (just elapsed)    0.047s  (game total)
+* updating blue player with blue's action ('MOVE', ((3, 0), (3, -1)))...
+*   time:  + 0.000s  (just elapsed)   83.742s  (game total)
+* == red player's turn ==
+* asking 🔴 red player for next action...
+*   red player returned action: ('JUMP', ((-1, -1), (1, -1)))
+*   time:  + 0.025s  (just elapsed)    0.074s  (game total)
+* displaying game board:
+*   scores: 🔴: 0, ✅: 0, 🔵: 0.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |     |     |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |  ✅ |     |  ✅ |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |     |     |  🔴 |  🔴 |  ✅ |  🔵 | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔴 |     |     |     |     |     | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |  🔴 |  🔵 |  🔵 |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |  🔴 |     |     |  🔵 | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |     |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with red's action ('JUMP', ((-1, -1), (1, -1)))...
+*   time:  + 0.000s  (just elapsed)    0.074s  (game total)
+* updating green player with red's action ('JUMP', ((-1, -1), (1, -1)))...
+*   time:  + 0.000s  (just elapsed)    0.047s  (game total)
+* updating blue player with red's action ('JUMP', ((-1, -1), (1, -1)))...
+*   time:  + 0.000s  (just elapsed)   83.742s  (game total)
+* == green player's turn ==
+* asking ✅ green player for next action...
+*   green player returned action: ('JUMP', ((2, -2), (0, 0)))
+*   time:  + 0.012s  (just elapsed)    0.059s  (game total)
+* displaying game board:
+*   scores: 🔴: 0, ✅: 0, 🔵: 0.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |     |     |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |  ✅ |     |     |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |     |     |  🔴 |  ✅ |  ✅ |  🔵 | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔴 |     |  ✅ |     |     |     | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |  🔴 |  🔵 |  🔵 |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |  🔴 |     |     |  🔵 | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |     |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with green's action ('JUMP', ((2, -2), (0, 0)))...
+*   time:  + 0.000s  (just elapsed)    0.074s  (game total)
+* updating green player with green's action ('JUMP', ((2, -2), (0, 0)))...
+*   time:  + 0.000s  (just elapsed)    0.059s  (game total)
+* updating blue player with green's action ('JUMP', ((2, -2), (0, 0)))...
+*   time:  + 0.000s  (just elapsed)   83.742s  (game total)
+* == blue player's turn ==
+* asking 🔵 blue player for next action...
+*   blue player returned action: ('JUMP', ((0, 1), (-2, 1)))
+*   time:  +29.960s  (just elapsed)  113.702s  (game total)
+* displaying game board:
+*   scores: 🔴: 0, ✅: 0, 🔵: 0.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |     |     |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |  ✅ |     |     |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |     |     |  🔴 |  ✅ |  ✅ |  🔵 | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔴 |     |  ✅ |     |     |     | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |  🔵 |  🔵 |     |  🔵 |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |  🔴 |     |     |  🔵 | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |     |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with blue's action ('JUMP', ((0, 1), (-2, 1)))...
+*   time:  + 0.000s  (just elapsed)    0.074s  (game total)
+* updating green player with blue's action ('JUMP', ((0, 1), (-2, 1)))...
+*   time:  + 0.000s  (just elapsed)    0.059s  (game total)
+* updating blue player with blue's action ('JUMP', ((0, 1), (-2, 1)))...
+*   time:  + 0.000s  (just elapsed)  113.702s  (game total)
+* == red player's turn ==
+* asking 🔴 red player for next action...
+*   red player returned action: ('JUMP', ((0, -1), (0, 1)))
+*   time:  + 0.017s  (just elapsed)    0.091s  (game total)
+* displaying game board:
+*   scores: 🔴: 0, ✅: 0, 🔵: 0.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |     |     |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |  ✅ |     |     |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |     |     |     |  ✅ |  ✅ |  🔵 | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔴 |     |  🔴 |     |     |     | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |  🔵 |  🔵 |  🔴 |  🔵 |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |  🔴 |     |     |  🔵 | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |     |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with red's action ('JUMP', ((0, -1), (0, 1)))...
+*   time:  + 0.000s  (just elapsed)    0.091s  (game total)
+* updating green player with red's action ('JUMP', ((0, -1), (0, 1)))...
+*   time:  + 0.000s  (just elapsed)    0.060s  (game total)
+* updating blue player with red's action ('JUMP', ((0, -1), (0, 1)))...
+*   time:  + 0.000s  (just elapsed)  113.702s  (game total)
+* == green player's turn ==
+* asking ✅ green player for next action...
+*   green player returned action: ('MOVE', ((2, -1), (1, 0)))
+*   time:  + 0.028s  (just elapsed)    0.087s  (game total)
+* displaying game board:
+*   scores: 🔴: 0, ✅: 0, 🔵: 0.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |     |     |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |  ✅ |     |     |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |     |     |     |  ✅ |     |  🔵 | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔴 |     |  🔴 |  ✅ |     |     | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |  🔵 |  🔵 |  🔴 |  🔵 |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |  🔴 |     |     |  🔵 | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |     |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with green's action ('MOVE', ((2, -1), (1, 0)))...
+*   time:  + 0.000s  (just elapsed)    0.092s  (game total)
+* updating green player with green's action ('MOVE', ((2, -1), (1, 0)))...
+*   time:  + 0.000s  (just elapsed)    0.088s  (game total)
+* updating blue player with green's action ('MOVE', ((2, -1), (1, 0)))...
+*   time:  + 0.000s  (just elapsed)  113.702s  (game total)
+* == blue player's turn ==
+* asking 🔵 blue player for next action...
+*   blue player returned action: ('JUMP', ((-2, 1), (-2, -1)))
+*   time:  +15.542s  (just elapsed)  129.244s  (game total)
+* displaying game board:
+*   scores: 🔴: 0, ✅: 0, 🔵: 0.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |     |     |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |  ✅ |     |     |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |  🔵 |     |     |  ✅ |     |  🔵 | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔵 |     |  🔴 |  ✅ |     |     | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |  🔵 |  🔴 |  🔵 |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |  🔴 |     |     |  🔵 | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |     |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with blue's action ('JUMP', ((-2, 1), (-2, -1)))...
+*   time:  + 0.000s  (just elapsed)    0.092s  (game total)
+* updating green player with blue's action ('JUMP', ((-2, 1), (-2, -1)))...
+*   time:  + 0.000s  (just elapsed)    0.088s  (game total)
+* updating blue player with blue's action ('JUMP', ((-2, 1), (-2, -1)))...
+*   time:  + 0.000s  (just elapsed)  129.244s  (game total)
+* == red player's turn ==
+* asking 🔴 red player for next action...
+*   red player returned action: ('JUMP', ((0, 0), (2, 0)))
+*   time:  + 0.014s  (just elapsed)    0.105s  (game total)
+* displaying game board:
+*   scores: 🔴: 0, ✅: 0, 🔵: 0.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |     |     |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |  ✅ |     |     |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |  🔵 |     |     |  ✅ |     |  🔵 | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔵 |     |     |  🔴 |  🔴 |     | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |  🔵 |  🔴 |  🔵 |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |  🔴 |     |     |  🔵 | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |     |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with red's action ('JUMP', ((0, 0), (2, 0)))...
+*   time:  + 0.000s  (just elapsed)    0.105s  (game total)
+* updating green player with red's action ('JUMP', ((0, 0), (2, 0)))...
+*   time:  + 0.000s  (just elapsed)    0.088s  (game total)
+* updating blue player with red's action ('JUMP', ((0, 0), (2, 0)))...
+*   time:  + 0.000s  (just elapsed)  129.244s  (game total)
+* == green player's turn ==
+* asking ✅ green player for next action...
+*   green player returned action: ('MOVE', ((1, -1), (0, 0)))
+*   time:  + 0.015s  (just elapsed)    0.103s  (game total)
+* displaying game board:
+*   scores: 🔴: 0, ✅: 0, 🔵: 0.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |     |     |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |  ✅ |     |     |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |  🔵 |     |     |     |     |  🔵 | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔵 |     |  ✅ |  🔴 |  🔴 |     | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |  🔵 |  🔴 |  🔵 |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |  🔴 |     |     |  🔵 | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |     |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with green's action ('MOVE', ((1, -1), (0, 0)))...
+*   time:  + 0.000s  (just elapsed)    0.106s  (game total)
+* updating green player with green's action ('MOVE', ((1, -1), (0, 0)))...
+*   time:  + 0.000s  (just elapsed)    0.103s  (game total)
+* updating blue player with green's action ('MOVE', ((1, -1), (0, 0)))...
+*   time:  + 0.000s  (just elapsed)  129.244s  (game total)
+* == blue player's turn ==
+* asking 🔵 blue player for next action...
+*   blue player returned action: ('JUMP', ((-1, 1), (-3, 3)))
+*   time:  +15.077s  (just elapsed)  144.321s  (game total)
+* displaying game board:
+*   scores: 🔴: 0, ✅: 0, 🔵: 0.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |     |     |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |  ✅ |     |     |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |  🔵 |     |     |     |     |  🔵 | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔵 |     |  ✅ |  🔴 |  🔴 |     | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |  🔴 |  🔵 |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |  🔵 |     |     |  🔵 | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |  🔵 |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with blue's action ('JUMP', ((-1, 1), (-3, 3)))...
+*   time:  + 0.000s  (just elapsed)    0.106s  (game total)
+* updating green player with blue's action ('JUMP', ((-1, 1), (-3, 3)))...
+*   time:  + 0.000s  (just elapsed)    0.103s  (game total)
+* updating blue player with blue's action ('JUMP', ((-1, 1), (-3, 3)))...
+*   time:  + 0.000s  (just elapsed)  144.321s  (game total)
+* == red player's turn ==
+* asking 🔴 red player for next action...
+*   red player returned action: ('JUMP', ((0, 1), (2, 1)))
+*   time:  + 0.010s  (just elapsed)    0.115s  (game total)
+* displaying game board:
+*   scores: 🔴: 0, ✅: 0, 🔵: 0.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |     |     |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |  ✅ |     |     |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |  🔵 |     |     |     |     |  🔵 | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔵 |     |  ✅ |  🔴 |  🔴 |     | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |     |  🔴 |  🔴 | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |  🔵 |     |     |  🔵 | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |  🔵 |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with red's action ('JUMP', ((0, 1), (2, 1)))...
+*   time:  + 0.000s  (just elapsed)    0.115s  (game total)
+* updating green player with red's action ('JUMP', ((0, 1), (2, 1)))...
+*   time:  + 0.000s  (just elapsed)    0.103s  (game total)
+* updating blue player with red's action ('JUMP', ((0, 1), (2, 1)))...
+*   time:  + 0.000s  (just elapsed)  144.321s  (game total)
+* == green player's turn ==
+* asking ✅ green player for next action...
+*   green player returned action: ('MOVE', ((0, -2), (0, -1)))
+*   time:  + 0.016s  (just elapsed)    0.119s  (game total)
+* displaying game board:
+*   scores: 🔴: 0, ✅: 0, 🔵: 0.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |     |     |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |     |     |     |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |  🔵 |     |  ✅ |     |     |  🔵 | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔵 |     |  ✅ |  🔴 |  🔴 |     | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |     |  🔴 |  🔴 | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |  🔵 |     |     |  🔵 | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |  🔵 |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with green's action ('MOVE', ((0, -2), (0, -1)))...
+*   time:  + 0.000s  (just elapsed)    0.115s  (game total)
+* updating green player with green's action ('MOVE', ((0, -2), (0, -1)))...
+*   time:  + 0.000s  (just elapsed)    0.119s  (game total)
+* updating blue player with green's action ('MOVE', ((0, -2), (0, -1)))...
+*   time:  + 0.000s  (just elapsed)  144.321s  (game total)
+* == blue player's turn ==
+* asking 🔵 blue player for next action...
+*   blue player returned action: ('JUMP', ((1, 2), (3, 0)))
+*   time:  +24.222s  (just elapsed)  168.544s  (game total)
+* displaying game board:
+*   scores: 🔴: 0, ✅: 0, 🔵: 0.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |     |     |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |     |     |     |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |  🔵 |     |  ✅ |     |     |  🔵 | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔵 |     |  ✅ |  🔴 |  🔴 |  🔵 | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |     |  🔴 |  🔵 | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |  🔵 |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |  🔵 |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with blue's action ('JUMP', ((1, 2), (3, 0)))...
+*   time:  + 0.000s  (just elapsed)    0.116s  (game total)
+* updating green player with blue's action ('JUMP', ((1, 2), (3, 0)))...
+*   time:  + 0.000s  (just elapsed)    0.119s  (game total)
+* updating blue player with blue's action ('JUMP', ((1, 2), (3, 0)))...
+*   time:  + 0.000s  (just elapsed)  168.544s  (game total)
+* == red player's turn ==
+* asking 🔴 red player for next action...
+*   red player returned action: ('MOVE', ((1, 0), (2, -1)))
+*   time:  + 0.006s  (just elapsed)    0.121s  (game total)
+* displaying game board:
+*   scores: 🔴: 0, ✅: 0, 🔵: 0.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |     |     |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |     |     |     |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |  🔵 |     |  ✅ |     |  🔴 |  🔵 | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔵 |     |  ✅ |     |  🔴 |  🔵 | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |     |  🔴 |  🔵 | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |  🔵 |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |  🔵 |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with red's action ('MOVE', ((1, 0), (2, -1)))...
+*   time:  + 0.000s  (just elapsed)    0.121s  (game total)
+* updating green player with red's action ('MOVE', ((1, 0), (2, -1)))...
+*   time:  + 0.000s  (just elapsed)    0.119s  (game total)
+* updating blue player with red's action ('MOVE', ((1, 0), (2, -1)))...
+*   time:  + 0.000s  (just elapsed)  168.544s  (game total)
+* == green player's turn ==
+* asking ✅ green player for next action...
+*   green player returned action: ('JUMP', ((0, -1), (0, 1)))
+*   time:  + 0.012s  (just elapsed)    0.131s  (game total)
+* displaying game board:
+*   scores: 🔴: 0, ✅: 0, 🔵: 0.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |     |     |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |     |     |     |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |  🔵 |     |     |     |  🔴 |  🔵 | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔵 |     |  ✅ |     |  🔴 |  🔵 | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |  ✅ |  🔴 |  🔵 | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |  🔵 |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |  🔵 |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with green's action ('JUMP', ((0, -1), (0, 1)))...
+*   time:  + 0.000s  (just elapsed)    0.121s  (game total)
+* updating green player with green's action ('JUMP', ((0, -1), (0, 1)))...
+*   time:  + 0.000s  (just elapsed)    0.131s  (game total)
+* updating blue player with green's action ('JUMP', ((0, -1), (0, 1)))...
+*   time:  + 0.000s  (just elapsed)  168.544s  (game total)
+* == blue player's turn ==
+* asking 🔵 blue player for next action...
+*   blue player returned action: ('EXIT', (-2, -1))
+*   time:  + 1.738s  (just elapsed)  170.282s  (game total)
+* displaying game board:
+*   scores: 🔴: 0, ✅: 0, 🔵: 1.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |     |     |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |     |     |     |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |     |     |     |     |  🔴 |  🔵 | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔵 |     |  ✅ |     |  🔴 |  🔵 | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |  ✅ |  🔴 |  🔵 | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |  🔵 |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |  🔵 |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with blue's action ('EXIT', (-2, -1))...
+*   time:  + 0.000s  (just elapsed)    0.122s  (game total)
+* updating green player with blue's action ('EXIT', (-2, -1))...
+*   time:  + 0.000s  (just elapsed)    0.131s  (game total)
+* updating blue player with blue's action ('EXIT', (-2, -1))...
+*   time:  + 0.000s  (just elapsed)  170.283s  (game total)
+* == red player's turn ==
+* asking 🔴 red player for next action...
+*   red player returned action: ('MOVE', ((2, -1), (3, -2)))
+*   time:  + 0.005s  (just elapsed)    0.127s  (game total)
+* displaying game board:
+*   scores: 🔴: 0, ✅: 0, 🔵: 1.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |     |     |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |     |     |     |  🔴 | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |     |     |     |     |     |  🔵 | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔵 |     |  ✅ |     |  🔴 |  🔵 | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |  ✅ |  🔴 |  🔵 | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |  🔵 |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |  🔵 |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with red's action ('MOVE', ((2, -1), (3, -2)))...
+*   time:  + 0.000s  (just elapsed)    0.127s  (game total)
+* updating green player with red's action ('MOVE', ((2, -1), (3, -2)))...
+*   time:  + 0.000s  (just elapsed)    0.131s  (game total)
+* updating blue player with red's action ('MOVE', ((2, -1), (3, -2)))...
+*   time:  + 0.000s  (just elapsed)  170.283s  (game total)
+* == green player's turn ==
+* asking ✅ green player for next action...
+*   green player returned action: ('JUMP', ((0, 0), (0, 2)))
+*   time:  + 0.009s  (just elapsed)    0.140s  (game total)
+* displaying game board:
+*   scores: 🔴: 0, ✅: 0, 🔵: 1.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |     |     |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |     |     |     |  🔴 | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |     |     |     |     |     |  🔵 | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔵 |     |     |     |  🔴 |  🔵 | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |  ✅ |  🔴 |  🔵 | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |  🔵 |     |  ✅ |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |  🔵 |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with green's action ('JUMP', ((0, 0), (0, 2)))...
+*   time:  + 0.000s  (just elapsed)    0.127s  (game total)
+* updating green player with green's action ('JUMP', ((0, 0), (0, 2)))...
+*   time:  + 0.000s  (just elapsed)    0.140s  (game total)
+* updating blue player with green's action ('JUMP', ((0, 0), (0, 2)))...
+*   time:  + 0.000s  (just elapsed)  170.283s  (game total)
+* == blue player's turn ==
+* asking 🔵 blue player for next action...
+*   blue player returned action: ('JUMP', ((3, -1), (3, -3)))
+*   time:  + 1.453s  (just elapsed)  171.735s  (game total)
+* displaying game board:
+*   scores: 🔴: 0, ✅: 0, 🔵: 1.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |     |     |  🔵 | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |     |     |     |  🔵 | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |     |     |     |     |     |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔵 |     |     |     |  🔴 |  🔵 | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |  ✅ |  🔴 |  🔵 | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |  🔵 |     |  ✅ |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |  🔵 |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with blue's action ('JUMP', ((3, -1), (3, -3)))...
+*   time:  + 0.000s  (just elapsed)    0.127s  (game total)
+* updating green player with blue's action ('JUMP', ((3, -1), (3, -3)))...
+*   time:  + 0.000s  (just elapsed)    0.140s  (game total)
+* updating blue player with blue's action ('JUMP', ((3, -1), (3, -3)))...
+*   time:  + 0.000s  (just elapsed)  171.735s  (game total)
+* == red player's turn ==
+* asking 🔴 red player for next action...
+*   red player returned action: ('JUMP', ((1, 1), (3, -1)))
+*   time:  + 0.003s  (just elapsed)    0.130s  (game total)
+* displaying game board:
+*   scores: 🔴: 0, ✅: 0, 🔵: 1.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |     |     |  🔵 | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |     |     |     |  🔵 | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |     |     |     |     |     |  🔴 | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔵 |     |     |     |  🔴 |  🔵 | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |  ✅ |     |  🔵 | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |  🔵 |     |  ✅ |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |  🔵 |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with red's action ('JUMP', ((1, 1), (3, -1)))...
+*   time:  + 0.000s  (just elapsed)    0.130s  (game total)
+* updating green player with red's action ('JUMP', ((1, 1), (3, -1)))...
+*   time:  + 0.000s  (just elapsed)    0.140s  (game total)
+* updating blue player with red's action ('JUMP', ((1, 1), (3, -1)))...
+*   time:  + 0.000s  (just elapsed)  171.736s  (game total)
+* == green player's turn ==
+* asking ✅ green player for next action...
+*   green player returned action: ('JUMP', ((0, 1), (0, 3)))
+*   time:  + 0.011s  (just elapsed)    0.151s  (game total)
+* displaying game board:
+*   scores: 🔴: 0, ✅: 0, 🔵: 1.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |     |     |  🔵 | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |     |     |     |  🔵 | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |     |     |     |     |     |  🔴 | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔵 |     |     |     |  🔴 |  🔵 | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |     |     |  🔵 | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |  🔵 |     |  ✅ |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |  🔵 |     |     |  ✅ |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with green's action ('JUMP', ((0, 1), (0, 3)))...
+*   time:  + 0.000s  (just elapsed)    0.130s  (game total)
+* updating green player with green's action ('JUMP', ((0, 1), (0, 3)))...
+*   time:  + 0.000s  (just elapsed)    0.151s  (game total)
+* updating blue player with green's action ('JUMP', ((0, 1), (0, 3)))...
+*   time:  + 0.000s  (just elapsed)  171.736s  (game total)
+* == blue player's turn ==
+* asking 🔵 blue player for next action...
+*   blue player returned action: ('MOVE', ((-2, 2), (-2, 1)))
+*   time:  + 0.629s  (just elapsed)  172.364s  (game total)
+* displaying game board:
+*   scores: 🔴: 0, ✅: 0, 🔵: 1.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |     |     |  🔵 | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |     |     |     |  🔵 | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |     |     |     |     |     |  🔴 | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔵 |     |     |     |  🔴 |  🔵 | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |  🔵 |     |     |     |  🔵 | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |     |     |  ✅ |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |  🔵 |     |     |  ✅ |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with blue's action ('MOVE', ((-2, 2), (-2, 1)))...
+*   time:  + 0.000s  (just elapsed)    0.131s  (game total)
+* updating green player with blue's action ('MOVE', ((-2, 2), (-2, 1)))...
+*   time:  + 0.000s  (just elapsed)    0.151s  (game total)
+* updating blue player with blue's action ('MOVE', ((-2, 2), (-2, 1)))...
+*   time:  + 0.000s  (just elapsed)  172.364s  (game total)
+* == red player's turn ==
+* asking 🔴 red player for next action...
+*   red player returned action: ('EXIT', (3, -1))
+*   time:  + 0.003s  (just elapsed)    0.134s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 0, 🔵: 1.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |     |     |  🔵 | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |     |     |     |  🔵 | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |     |     |     |     |     |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔵 |     |     |     |  🔴 |  🔵 | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |  🔵 |     |     |     |  🔵 | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |     |     |  ✅ |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |  🔵 |     |     |  ✅ |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with red's action ('EXIT', (3, -1))...
+*   time:  + 0.000s  (just elapsed)    0.134s  (game total)
+* updating green player with red's action ('EXIT', (3, -1))...
+*   time:  + 0.000s  (just elapsed)    0.151s  (game total)
+* updating blue player with red's action ('EXIT', (3, -1))...
+*   time:  + 0.000s  (just elapsed)  172.365s  (game total)
+* == green player's turn ==
+* asking ✅ green player for next action...
+*   green player returned action: ('EXIT', (0, 3))
+*   time:  + 0.014s  (just elapsed)    0.166s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 1, 🔵: 1.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |     |     |  🔵 | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |     |     |     |  🔵 | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |     |     |     |     |     |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔵 |     |     |     |  🔴 |  🔵 | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |  🔵 |     |     |     |  🔵 | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |     |     |  ✅ |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |  🔵 |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with green's action ('EXIT', (0, 3))...
+*   time:  + 0.000s  (just elapsed)    0.134s  (game total)
+* updating green player with green's action ('EXIT', (0, 3))...
+*   time:  + 0.000s  (just elapsed)    0.166s  (game total)
+* updating blue player with green's action ('EXIT', (0, 3))...
+*   time:  + 0.000s  (just elapsed)  172.365s  (game total)
+* == blue player's turn ==
+* asking 🔵 blue player for next action...
+*   blue player returned action: ('JUMP', ((2, 1), (2, -1)))
+*   time:  + 0.254s  (just elapsed)  172.619s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 1, 🔵: 1.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |     |     |  🔵 | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |     |     |     |  🔵 | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |     |     |     |     |  🔵 |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔵 |     |     |     |  🔵 |  🔵 | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |  🔵 |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |     |     |  ✅ |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |  🔵 |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with blue's action ('JUMP', ((2, 1), (2, -1)))...
+*   time:  + 0.000s  (just elapsed)    0.134s  (game total)
+* updating green player with blue's action ('JUMP', ((2, 1), (2, -1)))...
+*   time:  + 0.000s  (just elapsed)    0.166s  (game total)
+* updating blue player with blue's action ('JUMP', ((2, 1), (2, -1)))...
+*   time:  + 0.000s  (just elapsed)  172.619s  (game total)
+* == red player's turn ==
+* asking 🔴 red player for next action...
+*   red player returned action: ('PASS', None)
+*   time:  + 0.000s  (just elapsed)    0.134s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 1, 🔵: 1.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |     |     |  🔵 | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |     |     |     |  🔵 | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |     |     |     |     |  🔵 |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔵 |     |     |     |  🔵 |  🔵 | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |  🔵 |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |     |     |  ✅ |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |  🔵 |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with red's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.135s  (game total)
+* updating green player with red's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.166s  (game total)
+* updating blue player with red's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)  172.619s  (game total)
+* == green player's turn ==
+* asking ✅ green player for next action...
+*   green player returned action: ('MOVE', ((0, 2), (-1, 3)))
+*   time:  + 0.012s  (just elapsed)    0.178s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 1, 🔵: 1.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |     |     |  🔵 | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |     |     |     |  🔵 | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |     |     |     |     |  🔵 |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔵 |     |     |     |  🔵 |  🔵 | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |  🔵 |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |  🔵 |     |  ✅ |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with green's action ('MOVE', ((0, 2), (-1, 3)))...
+*   time:  + 0.000s  (just elapsed)    0.135s  (game total)
+* updating green player with green's action ('MOVE', ((0, 2), (-1, 3)))...
+*   time:  + 0.000s  (just elapsed)    0.178s  (game total)
+* updating blue player with green's action ('MOVE', ((0, 2), (-1, 3)))...
+*   time:  + 0.000s  (just elapsed)  172.619s  (game total)
+* == blue player's turn ==
+* asking 🔵 blue player for next action...
+*   blue player returned action: ('JUMP', ((2, 0), (2, -2)))
+*   time:  + 0.195s  (just elapsed)  172.815s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 1, 🔵: 1.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |     |     |  🔵 | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |     |     |  🔵 |  🔵 | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |     |     |     |     |  🔵 |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔵 |     |     |     |     |  🔵 | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |  🔵 |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |  🔵 |     |  ✅ |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with blue's action ('JUMP', ((2, 0), (2, -2)))...
+*   time:  + 0.000s  (just elapsed)    0.135s  (game total)
+* updating green player with blue's action ('JUMP', ((2, 0), (2, -2)))...
+*   time:  + 0.000s  (just elapsed)    0.179s  (game total)
+* updating blue player with blue's action ('JUMP', ((2, 0), (2, -2)))...
+*   time:  + 0.000s  (just elapsed)  172.815s  (game total)
+* == red player's turn ==
+* asking 🔴 red player for next action...
+*   red player returned action: ('PASS', None)
+*   time:  + 0.000s  (just elapsed)    0.135s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 1, 🔵: 1.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |     |     |  🔵 | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |     |     |  🔵 |  🔵 | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |     |     |     |     |  🔵 |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔵 |     |     |     |     |  🔵 | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |  🔵 |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |  🔵 |     |  ✅ |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with red's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.135s  (game total)
+* updating green player with red's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.179s  (game total)
+* updating blue player with red's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)  172.815s  (game total)
+* == green player's turn ==
+* asking ✅ green player for next action...
+*   green player returned action: ('EXIT', (-1, 3))
+*   time:  + 0.010s  (just elapsed)    0.189s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 2, 🔵: 1.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |     |     |  🔵 | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |     |     |  🔵 |  🔵 | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |     |     |     |     |  🔵 |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔵 |     |     |     |     |  🔵 | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |  🔵 |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |  🔵 |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with green's action ('EXIT', (-1, 3))...
+*   time:  + 0.000s  (just elapsed)    0.135s  (game total)
+* updating green player with green's action ('EXIT', (-1, 3))...
+*   time:  + 0.000s  (just elapsed)    0.189s  (game total)
+* updating blue player with green's action ('EXIT', (-1, 3))...
+*   time:  + 0.000s  (just elapsed)  172.815s  (game total)
+* == blue player's turn ==
+* asking 🔵 blue player for next action...
+*   blue player returned action: ('JUMP', ((-2, 1), (-2, -1)))
+*   time:  + 0.158s  (just elapsed)  172.974s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 2, 🔵: 1.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |     |     |  🔵 | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |     |     |  🔵 |  🔵 | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |  🔵 |     |     |     |  🔵 |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔵 |     |     |     |     |  🔵 | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |  🔵 |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with blue's action ('JUMP', ((-2, 1), (-2, -1)))...
+*   time:  + 0.000s  (just elapsed)    0.135s  (game total)
+* updating green player with blue's action ('JUMP', ((-2, 1), (-2, -1)))...
+*   time:  + 0.000s  (just elapsed)    0.189s  (game total)
+* updating blue player with blue's action ('JUMP', ((-2, 1), (-2, -1)))...
+*   time:  + 0.000s  (just elapsed)  172.974s  (game total)
+* == red player's turn ==
+* asking 🔴 red player for next action...
+*   red player returned action: ('PASS', None)
+*   time:  + 0.000s  (just elapsed)    0.136s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 2, 🔵: 1.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |     |     |  🔵 | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |     |     |  🔵 |  🔵 | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |  🔵 |     |     |     |  🔵 |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔵 |     |     |     |     |  🔵 | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |  🔵 |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with red's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.136s  (game total)
+* updating green player with red's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.189s  (game total)
+* updating blue player with red's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)  172.974s  (game total)
+* == green player's turn ==
+* asking ✅ green player for next action...
+*   green player returned action: ('PASS', None)
+*   time:  + 0.000s  (just elapsed)    0.189s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 2, 🔵: 1.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |     |     |  🔵 | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |     |     |  🔵 |  🔵 | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |  🔵 |     |     |     |  🔵 |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔵 |     |     |     |     |  🔵 | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |  🔵 |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with green's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.136s  (game total)
+* updating green player with green's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.189s  (game total)
+* updating blue player with green's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)  172.974s  (game total)
+* == blue player's turn ==
+* asking 🔵 blue player for next action...
+*   blue player returned action: ('JUMP', ((2, -1), (2, -3)))
+*   time:  + 0.156s  (just elapsed)  173.130s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 2, 🔵: 1.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |     |  🔵 |  🔵 | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |     |     |  🔵 |  🔵 | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |  🔵 |     |     |     |     |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔵 |     |     |     |     |  🔵 | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |  🔵 |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with blue's action ('JUMP', ((2, -1), (2, -3)))...
+*   time:  + 0.000s  (just elapsed)    0.136s  (game total)
+* updating green player with blue's action ('JUMP', ((2, -1), (2, -3)))...
+*   time:  + 0.000s  (just elapsed)    0.190s  (game total)
+* updating blue player with blue's action ('JUMP', ((2, -1), (2, -3)))...
+*   time:  + 0.000s  (just elapsed)  173.130s  (game total)
+* == red player's turn ==
+* asking 🔴 red player for next action...
+*   red player returned action: ('PASS', None)
+*   time:  + 0.000s  (just elapsed)    0.136s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 2, 🔵: 1.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |     |  🔵 |  🔵 | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |     |     |  🔵 |  🔵 | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |  🔵 |     |     |     |     |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔵 |     |     |     |     |  🔵 | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |  🔵 |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with red's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.136s  (game total)
+* updating green player with red's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.190s  (game total)
+* updating blue player with red's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)  173.130s  (game total)
+* == green player's turn ==
+* asking ✅ green player for next action...
+*   green player returned action: ('PASS', None)
+*   time:  + 0.000s  (just elapsed)    0.190s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 2, 🔵: 1.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |     |  🔵 |  🔵 | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |     |     |  🔵 |  🔵 | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |  🔵 |     |     |     |     |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔵 |     |     |     |     |  🔵 | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |  🔵 |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with green's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.136s  (game total)
+* updating green player with green's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.190s  (game total)
+* updating blue player with green's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)  173.130s  (game total)
+* == blue player's turn ==
+* asking 🔵 blue player for next action...
+*   blue player returned action: ('JUMP', ((3, -2), (1, -2)))
+*   time:  + 0.114s  (just elapsed)  173.244s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 2, 🔵: 1.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |     |  🔵 |  🔵 | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |     |  🔵 |  🔵 |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |  🔵 |     |     |     |     |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔵 |     |     |     |     |  🔵 | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |  🔵 |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with blue's action ('JUMP', ((3, -2), (1, -2)))...
+*   time:  + 0.000s  (just elapsed)    0.136s  (game total)
+* updating green player with blue's action ('JUMP', ((3, -2), (1, -2)))...
+*   time:  + 0.000s  (just elapsed)    0.190s  (game total)
+* updating blue player with blue's action ('JUMP', ((3, -2), (1, -2)))...
+*   time:  + 0.000s  (just elapsed)  173.244s  (game total)
+* == red player's turn ==
+* asking 🔴 red player for next action...
+*   red player returned action: ('PASS', None)
+*   time:  + 0.000s  (just elapsed)    0.137s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 2, 🔵: 1.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |     |  🔵 |  🔵 | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |     |  🔵 |  🔵 |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |  🔵 |     |     |     |     |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔵 |     |     |     |     |  🔵 | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |  🔵 |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with red's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.137s  (game total)
+* updating green player with red's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.190s  (game total)
+* updating blue player with red's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)  173.244s  (game total)
+* == green player's turn ==
+* asking ✅ green player for next action...
+*   green player returned action: ('PASS', None)
+*   time:  + 0.000s  (just elapsed)    0.190s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 2, 🔵: 1.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |     |  🔵 |  🔵 | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |     |  🔵 |  🔵 |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |  🔵 |     |     |     |     |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔵 |     |     |     |     |  🔵 | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |  🔵 |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with green's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.137s  (game total)
+* updating green player with green's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.190s  (game total)
+* updating blue player with green's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)  173.244s  (game total)
+* == blue player's turn ==
+* asking 🔵 blue player for next action...
+*   blue player returned action: ('JUMP', ((3, -3), (1, -3)))
+*   time:  + 0.136s  (just elapsed)  173.380s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 2, 🔵: 1.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |  🔵 |  🔵 |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |     |  🔵 |  🔵 |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |  🔵 |     |     |     |     |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔵 |     |     |     |     |  🔵 | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |  🔵 |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with blue's action ('JUMP', ((3, -3), (1, -3)))...
+*   time:  + 0.000s  (just elapsed)    0.137s  (game total)
+* updating green player with blue's action ('JUMP', ((3, -3), (1, -3)))...
+*   time:  + 0.000s  (just elapsed)    0.191s  (game total)
+* updating blue player with blue's action ('JUMP', ((3, -3), (1, -3)))...
+*   time:  + 0.000s  (just elapsed)  173.380s  (game total)
+* == red player's turn ==
+* asking 🔴 red player for next action...
+*   red player returned action: ('PASS', None)
+*   time:  + 0.000s  (just elapsed)    0.137s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 2, 🔵: 1.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |  🔵 |  🔵 |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |     |  🔵 |  🔵 |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |  🔵 |     |     |     |     |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔵 |     |     |     |     |  🔵 | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |  🔵 |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with red's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.137s  (game total)
+* updating green player with red's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.191s  (game total)
+* updating blue player with red's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)  173.380s  (game total)
+* == green player's turn ==
+* asking ✅ green player for next action...
+*   green player returned action: ('PASS', None)
+*   time:  + 0.000s  (just elapsed)    0.191s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 2, 🔵: 1.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |  🔵 |  🔵 |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |     |  🔵 |  🔵 |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |  🔵 |     |     |     |     |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔵 |     |     |     |     |  🔵 | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |  🔵 |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with green's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.137s  (game total)
+* updating green player with green's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.191s  (game total)
+* updating blue player with green's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)  173.380s  (game total)
+* == blue player's turn ==
+* asking 🔵 blue player for next action...
+*   blue player returned action: ('JUMP', ((2, -2), (0, -2)))
+*   time:  + 0.144s  (just elapsed)  173.524s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 2, 🔵: 1.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |  🔵 |  🔵 |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |  🔵 |  🔵 |     |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |  🔵 |     |     |     |     |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔵 |     |     |     |     |  🔵 | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |  🔵 |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with blue's action ('JUMP', ((2, -2), (0, -2)))...
+*   time:  + 0.000s  (just elapsed)    0.137s  (game total)
+* updating green player with blue's action ('JUMP', ((2, -2), (0, -2)))...
+*   time:  + 0.000s  (just elapsed)    0.191s  (game total)
+* updating blue player with blue's action ('JUMP', ((2, -2), (0, -2)))...
+*   time:  + 0.000s  (just elapsed)  173.524s  (game total)
+* == red player's turn ==
+* asking 🔴 red player for next action...
+*   red player returned action: ('PASS', None)
+*   time:  + 0.000s  (just elapsed)    0.137s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 2, 🔵: 1.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |  🔵 |  🔵 |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |  🔵 |  🔵 |     |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |  🔵 |     |     |     |     |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔵 |     |     |     |     |  🔵 | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |  🔵 |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with red's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.138s  (game total)
+* updating green player with red's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.191s  (game total)
+* updating blue player with red's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)  173.525s  (game total)
+* == green player's turn ==
+* asking ✅ green player for next action...
+*   green player returned action: ('PASS', None)
+*   time:  + 0.000s  (just elapsed)    0.191s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 2, 🔵: 1.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |  🔵 |  🔵 |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |  🔵 |  🔵 |     |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |  🔵 |     |     |     |     |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔵 |     |     |     |     |  🔵 | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |  🔵 |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with green's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.138s  (game total)
+* updating green player with green's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.191s  (game total)
+* updating blue player with green's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)  173.525s  (game total)
+* == blue player's turn ==
+* asking 🔵 blue player for next action...
+*   blue player returned action: ('JUMP', ((2, -3), (0, -3)))
+*   time:  + 0.153s  (just elapsed)  173.677s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 2, 🔵: 1.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |  🔵 |  🔵 |     |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |  🔵 |  🔵 |     |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |  🔵 |     |     |     |     |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔵 |     |     |     |     |  🔵 | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |  🔵 |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with blue's action ('JUMP', ((2, -3), (0, -3)))...
+*   time:  + 0.000s  (just elapsed)    0.138s  (game total)
+* updating green player with blue's action ('JUMP', ((2, -3), (0, -3)))...
+*   time:  + 0.000s  (just elapsed)    0.192s  (game total)
+* updating blue player with blue's action ('JUMP', ((2, -3), (0, -3)))...
+*   time:  + 0.000s  (just elapsed)  173.677s  (game total)
+* == red player's turn ==
+* asking 🔴 red player for next action...
+*   red player returned action: ('PASS', None)
+*   time:  + 0.000s  (just elapsed)    0.138s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 2, 🔵: 1.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |  🔵 |  🔵 |     |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |  🔵 |  🔵 |     |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |  🔵 |     |     |     |     |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔵 |     |     |     |     |  🔵 | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |  🔵 |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with red's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.138s  (game total)
+* updating green player with red's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.192s  (game total)
+* updating blue player with red's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)  173.677s  (game total)
+* == green player's turn ==
+* asking ✅ green player for next action...
+*   green player returned action: ('PASS', None)
+*   time:  + 0.000s  (just elapsed)    0.192s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 2, 🔵: 1.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |  🔵 |  🔵 |     |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |  🔵 |  🔵 |     |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |  🔵 |     |     |     |     |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔵 |     |     |     |     |  🔵 | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |  🔵 |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with green's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.138s  (game total)
+* updating green player with green's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.192s  (game total)
+* updating blue player with green's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)  173.678s  (game total)
+* == blue player's turn ==
+* asking 🔵 blue player for next action...
+*   blue player returned action: ('EXIT', (-2, -1))
+*   time:  + 0.125s  (just elapsed)  173.802s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 2, 🔵: 2.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |  🔵 |  🔵 |     |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |  🔵 |  🔵 |     |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |     |     |     |     |     |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔵 |     |     |     |     |  🔵 | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |  🔵 |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with blue's action ('EXIT', (-2, -1))...
+*   time:  + 0.000s  (just elapsed)    0.138s  (game total)
+* updating green player with blue's action ('EXIT', (-2, -1))...
+*   time:  + 0.000s  (just elapsed)    0.192s  (game total)
+* updating blue player with blue's action ('EXIT', (-2, -1))...
+*   time:  + 0.000s  (just elapsed)  173.803s  (game total)
+* == red player's turn ==
+* asking 🔴 red player for next action...
+*   red player returned action: ('PASS', None)
+*   time:  + 0.000s  (just elapsed)    0.138s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 2, 🔵: 2.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |  🔵 |  🔵 |     |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |  🔵 |  🔵 |     |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |     |     |     |     |     |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔵 |     |     |     |     |  🔵 | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |  🔵 |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with red's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.139s  (game total)
+* updating green player with red's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.192s  (game total)
+* updating blue player with red's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)  173.803s  (game total)
+* == green player's turn ==
+* asking ✅ green player for next action...
+*   green player returned action: ('PASS', None)
+*   time:  + 0.000s  (just elapsed)    0.192s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 2, 🔵: 2.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |  🔵 |  🔵 |     |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |  🔵 |  🔵 |     |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |     |     |     |     |     |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔵 |     |     |     |     |  🔵 | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |  🔵 |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with green's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.139s  (game total)
+* updating green player with green's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.193s  (game total)
+* updating blue player with green's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)  173.803s  (game total)
+* == blue player's turn ==
+* asking 🔵 blue player for next action...
+*   blue player returned action: ('EXIT', (0, -3))
+*   time:  + 0.088s  (just elapsed)  173.891s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 2, 🔵: 3.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |  🔵 |     |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |  🔵 |  🔵 |     |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |     |     |     |     |     |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔵 |     |     |     |     |  🔵 | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |  🔵 |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with blue's action ('EXIT', (0, -3))...
+*   time:  + 0.000s  (just elapsed)    0.139s  (game total)
+* updating green player with blue's action ('EXIT', (0, -3))...
+*   time:  + 0.000s  (just elapsed)    0.193s  (game total)
+* updating blue player with blue's action ('EXIT', (0, -3))...
+*   time:  + 0.000s  (just elapsed)  173.891s  (game total)
+* == red player's turn ==
+* asking 🔴 red player for next action...
+*   red player returned action: ('PASS', None)
+*   time:  + 0.000s  (just elapsed)    0.139s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 2, 🔵: 3.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |  🔵 |     |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |  🔵 |  🔵 |     |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |     |     |     |     |     |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔵 |     |     |     |     |  🔵 | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |  🔵 |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with red's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.139s  (game total)
+* updating green player with red's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.193s  (game total)
+* updating blue player with red's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)  173.891s  (game total)
+* == green player's turn ==
+* asking ✅ green player for next action...
+*   green player returned action: ('PASS', None)
+*   time:  + 0.000s  (just elapsed)    0.193s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 2, 🔵: 3.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |  🔵 |     |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |  🔵 |  🔵 |     |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |     |     |     |     |     |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |  🔵 |     |     |     |     |  🔵 | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |  🔵 |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with green's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.139s  (game total)
+* updating green player with green's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.193s  (game total)
+* updating blue player with green's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)  173.891s  (game total)
+* == blue player's turn ==
+* asking 🔵 blue player for next action...
+*   blue player returned action: ('MOVE', ((-2, 0), (-2, -1)))
+*   time:  + 0.071s  (just elapsed)  173.962s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 2, 🔵: 3.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |  🔵 |     |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |  🔵 |  🔵 |     |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |  🔵 |     |     |     |     |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |     |     |     |     |     |  🔵 | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |  🔵 |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with blue's action ('MOVE', ((-2, 0), (-2, -1)))...
+*   time:  + 0.000s  (just elapsed)    0.139s  (game total)
+* updating green player with blue's action ('MOVE', ((-2, 0), (-2, -1)))...
+*   time:  + 0.000s  (just elapsed)    0.193s  (game total)
+* updating blue player with blue's action ('MOVE', ((-2, 0), (-2, -1)))...
+*   time:  + 0.000s  (just elapsed)  173.962s  (game total)
+* == red player's turn ==
+* asking 🔴 red player for next action...
+*   red player returned action: ('PASS', None)
+*   time:  + 0.000s  (just elapsed)    0.139s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 2, 🔵: 3.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |  🔵 |     |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |  🔵 |  🔵 |     |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |  🔵 |     |     |     |     |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |     |     |     |     |     |  🔵 | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |  🔵 |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with red's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.139s  (game total)
+* updating green player with red's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.193s  (game total)
+* updating blue player with red's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)  173.962s  (game total)
+* == green player's turn ==
+* asking ✅ green player for next action...
+*   green player returned action: ('PASS', None)
+*   time:  + 0.000s  (just elapsed)    0.193s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 2, 🔵: 3.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |  🔵 |     |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |  🔵 |  🔵 |     |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |  🔵 |     |     |     |     |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |     |     |     |     |     |  🔵 | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |  🔵 |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with green's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.139s  (game total)
+* updating green player with green's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.193s  (game total)
+* updating blue player with green's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)  173.962s  (game total)
+* == blue player's turn ==
+* asking 🔵 blue player for next action...
+*   blue player returned action: ('MOVE', ((-3, 3), (-3, 2)))
+*   time:  + 0.067s  (just elapsed)  174.029s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 2, 🔵: 3.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |  🔵 |     |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |  🔵 |  🔵 |     |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |  🔵 |     |     |     |     |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |     |     |     |     |     |  🔵 | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |  🔵 |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |     |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with blue's action ('MOVE', ((-3, 3), (-3, 2)))...
+*   time:  + 0.000s  (just elapsed)    0.139s  (game total)
+* updating green player with blue's action ('MOVE', ((-3, 3), (-3, 2)))...
+*   time:  + 0.000s  (just elapsed)    0.193s  (game total)
+* updating blue player with blue's action ('MOVE', ((-3, 3), (-3, 2)))...
+*   time:  + 0.000s  (just elapsed)  174.029s  (game total)
+* == red player's turn ==
+* asking 🔴 red player for next action...
+*   red player returned action: ('PASS', None)
+*   time:  + 0.000s  (just elapsed)    0.140s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 2, 🔵: 3.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |  🔵 |     |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |  🔵 |  🔵 |     |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |  🔵 |     |     |     |     |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |     |     |     |     |     |  🔵 | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |  🔵 |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |     |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with red's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.140s  (game total)
+* updating green player with red's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.193s  (game total)
+* updating blue player with red's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)  174.029s  (game total)
+* == green player's turn ==
+* asking ✅ green player for next action...
+*   green player returned action: ('PASS', None)
+*   time:  + 0.000s  (just elapsed)    0.194s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 2, 🔵: 3.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |  🔵 |     |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |  🔵 |  🔵 |     |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |  🔵 |     |     |     |     |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |     |     |     |     |     |  🔵 | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |  🔵 |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |     |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with green's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.140s  (game total)
+* updating green player with green's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.194s  (game total)
+* updating blue player with green's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)  174.029s  (game total)
+* == blue player's turn ==
+* asking 🔵 blue player for next action...
+*   blue player returned action: ('MOVE', ((3, 0), (3, -1)))
+*   time:  + 0.068s  (just elapsed)  174.097s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 2, 🔵: 3.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |  🔵 |     |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |  🔵 |  🔵 |     |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |  🔵 |     |     |     |     |  🔵 | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |     |     |     |     |     |     | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |  🔵 |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |     |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with blue's action ('MOVE', ((3, 0), (3, -1)))...
+*   time:  + 0.000s  (just elapsed)    0.140s  (game total)
+* updating green player with blue's action ('MOVE', ((3, 0), (3, -1)))...
+*   time:  + 0.000s  (just elapsed)    0.194s  (game total)
+* updating blue player with blue's action ('MOVE', ((3, 0), (3, -1)))...
+*   time:  + 0.000s  (just elapsed)  174.097s  (game total)
+* == red player's turn ==
+* asking 🔴 red player for next action...
+*   red player returned action: ('PASS', None)
+*   time:  + 0.000s  (just elapsed)    0.140s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 2, 🔵: 3.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |  🔵 |     |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |  🔵 |  🔵 |     |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |  🔵 |     |     |     |     |  🔵 | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |     |     |     |     |     |     | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |  🔵 |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |     |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with red's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.140s  (game total)
+* updating green player with red's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.194s  (game total)
+* updating blue player with red's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)  174.097s  (game total)
+* == green player's turn ==
+* asking ✅ green player for next action...
+*   green player returned action: ('PASS', None)
+*   time:  + 0.000s  (just elapsed)    0.194s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 2, 🔵: 3.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |  🔵 |     |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |  🔵 |  🔵 |     |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |  🔵 |     |     |     |     |  🔵 | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |     |     |     |     |     |     | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |  🔵 |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |     |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with green's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.140s  (game total)
+* updating green player with green's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.194s  (game total)
+* updating blue player with green's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)  174.097s  (game total)
+* == blue player's turn ==
+* asking 🔵 blue player for next action...
+*   blue player returned action: ('MOVE', ((-3, 2), (-3, 1)))
+*   time:  + 0.069s  (just elapsed)  174.166s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 2, 🔵: 3.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |  🔵 |     |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |  🔵 |  🔵 |     |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |  🔵 |     |     |     |     |  🔵 | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |     |     |     |     |     |     | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |  🔵 |     |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |     |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with blue's action ('MOVE', ((-3, 2), (-3, 1)))...
+*   time:  + 0.000s  (just elapsed)    0.140s  (game total)
+* updating green player with blue's action ('MOVE', ((-3, 2), (-3, 1)))...
+*   time:  + 0.000s  (just elapsed)    0.194s  (game total)
+* updating blue player with blue's action ('MOVE', ((-3, 2), (-3, 1)))...
+*   time:  + 0.000s  (just elapsed)  174.166s  (game total)
+* == red player's turn ==
+* asking 🔴 red player for next action...
+*   red player returned action: ('PASS', None)
+*   time:  + 0.000s  (just elapsed)    0.140s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 2, 🔵: 3.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |  🔵 |     |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |  🔵 |  🔵 |     |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |  🔵 |     |     |     |     |  🔵 | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |     |     |     |     |     |     | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |  🔵 |     |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |     |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with red's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.140s  (game total)
+* updating green player with red's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.194s  (game total)
+* updating blue player with red's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)  174.166s  (game total)
+* == green player's turn ==
+* asking ✅ green player for next action...
+*   green player returned action: ('PASS', None)
+*   time:  + 0.000s  (just elapsed)    0.194s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 2, 🔵: 3.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |  🔵 |     |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |  🔵 |  🔵 |     |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |  🔵 |     |     |     |     |  🔵 | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |     |     |     |     |     |     | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |  🔵 |     |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |     |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with green's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.140s  (game total)
+* updating green player with green's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.194s  (game total)
+* updating blue player with green's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)  174.167s  (game total)
+* == blue player's turn ==
+* asking 🔵 blue player for next action...
+*   blue player returned action: ('MOVE', ((3, -1), (3, -2)))
+*   time:  + 0.072s  (just elapsed)  174.238s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 2, 🔵: 3.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |  🔵 |     |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |  🔵 |  🔵 |     |  🔵 | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |  🔵 |     |     |     |     |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |     |     |     |     |     |     | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |  🔵 |     |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |     |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with blue's action ('MOVE', ((3, -1), (3, -2)))...
+*   time:  + 0.000s  (just elapsed)    0.141s  (game total)
+* updating green player with blue's action ('MOVE', ((3, -1), (3, -2)))...
+*   time:  + 0.000s  (just elapsed)    0.194s  (game total)
+* updating blue player with blue's action ('MOVE', ((3, -1), (3, -2)))...
+*   time:  + 0.000s  (just elapsed)  174.238s  (game total)
+* == red player's turn ==
+* asking 🔴 red player for next action...
+*   red player returned action: ('PASS', None)
+*   time:  + 0.000s  (just elapsed)    0.141s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 2, 🔵: 3.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |  🔵 |     |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |  🔵 |  🔵 |     |  🔵 | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |  🔵 |     |     |     |     |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |     |     |     |     |     |     | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |  🔵 |     |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |     |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with red's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.141s  (game total)
+* updating green player with red's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.194s  (game total)
+* updating blue player with red's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)  174.238s  (game total)
+* == green player's turn ==
+* asking ✅ green player for next action...
+*   green player returned action: ('PASS', None)
+*   time:  + 0.000s  (just elapsed)    0.195s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 2, 🔵: 3.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |  🔵 |     |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |  🔵 |  🔵 |     |  🔵 | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |  🔵 |     |     |     |     |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |     |     |     |     |     |     |     | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |  🔵 |     |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |     |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with green's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.141s  (game total)
+* updating green player with green's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.195s  (game total)
+* updating blue player with green's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)  174.238s  (game total)
+* == blue player's turn ==
+* asking 🔵 blue player for next action...
+*   blue player returned action: ('MOVE', ((-3, 1), (-3, 0)))
+*   time:  + 0.081s  (just elapsed)  174.320s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 2, 🔵: 3.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |  🔵 |     |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |  🔵 |  🔵 |     |  🔵 | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |  🔵 |     |     |     |     |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |  🔵 |     |     |     |     |     |     | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |     |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with blue's action ('MOVE', ((-3, 1), (-3, 0)))...
+*   time:  + 0.000s  (just elapsed)    0.141s  (game total)
+* updating green player with blue's action ('MOVE', ((-3, 1), (-3, 0)))...
+*   time:  + 0.000s  (just elapsed)    0.195s  (game total)
+* updating blue player with blue's action ('MOVE', ((-3, 1), (-3, 0)))...
+*   time:  + 0.000s  (just elapsed)  174.320s  (game total)
+* == red player's turn ==
+* asking 🔴 red player for next action...
+*   red player returned action: ('PASS', None)
+*   time:  + 0.000s  (just elapsed)    0.141s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 2, 🔵: 3.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |  🔵 |     |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |  🔵 |  🔵 |     |  🔵 | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |  🔵 |     |     |     |     |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |  🔵 |     |     |     |     |     |     | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |     |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with red's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.141s  (game total)
+* updating green player with red's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.195s  (game total)
+* updating blue player with red's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)  174.320s  (game total)
+* == green player's turn ==
+* asking ✅ green player for next action...
+*   green player returned action: ('PASS', None)
+*   time:  + 0.000s  (just elapsed)    0.195s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 2, 🔵: 3.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |  🔵 |     |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |  🔵 |  🔵 |     |  🔵 | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |  🔵 |     |     |     |     |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |  🔵 |     |     |     |     |     |     | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |     |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with green's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.141s  (game total)
+* updating green player with green's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.195s  (game total)
+* updating blue player with green's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)  174.320s  (game total)
+* == blue player's turn ==
+* asking 🔵 blue player for next action...
+*   blue player returned action: ('MOVE', ((3, -2), (3, -3)))
+*   time:  + 0.062s  (just elapsed)  174.382s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 2, 🔵: 3.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |  🔵 |     |  🔵 | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |  🔵 |  🔵 |     |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |  🔵 |     |     |     |     |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |  🔵 |     |     |     |     |     |     | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |     |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with blue's action ('MOVE', ((3, -2), (3, -3)))...
+*   time:  + 0.000s  (just elapsed)    0.141s  (game total)
+* updating green player with blue's action ('MOVE', ((3, -2), (3, -3)))...
+*   time:  + 0.000s  (just elapsed)    0.195s  (game total)
+* updating blue player with blue's action ('MOVE', ((3, -2), (3, -3)))...
+*   time:  + 0.000s  (just elapsed)  174.382s  (game total)
+* == red player's turn ==
+* asking 🔴 red player for next action...
+*   red player returned action: ('PASS', None)
+*   time:  + 0.000s  (just elapsed)    0.141s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 2, 🔵: 3.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |  🔵 |     |  🔵 | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |  🔵 |  🔵 |     |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |  🔵 |     |     |     |     |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |  🔵 |     |     |     |     |     |     | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |     |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with red's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.141s  (game total)
+* updating green player with red's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.195s  (game total)
+* updating blue player with red's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)  174.382s  (game total)
+* == green player's turn ==
+* asking ✅ green player for next action...
+*   green player returned action: ('PASS', None)
+*   time:  + 0.000s  (just elapsed)    0.195s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 2, 🔵: 3.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |  🔵 |     |  🔵 | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |     |  🔵 |  🔵 |     |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |  🔵 |     |     |     |     |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |  🔵 |     |     |     |     |     |     | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |     |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with green's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.142s  (game total)
+* updating green player with green's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.195s  (game total)
+* updating blue player with green's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)  174.383s  (game total)
+* == blue player's turn ==
+* asking 🔵 blue player for next action...
+*   blue player returned action: ('JUMP', ((1, -2), (-1, -2)))
+*   time:  + 0.071s  (just elapsed)  174.454s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 2, 🔵: 3.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |  🔵 |     |  🔵 | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |  🔵 |  🔵 |     |     |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |  🔵 |     |     |     |     |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |  🔵 |     |     |     |     |     |     | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |     |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with blue's action ('JUMP', ((1, -2), (-1, -2)))...
+*   time:  + 0.000s  (just elapsed)    0.142s  (game total)
+* updating green player with blue's action ('JUMP', ((1, -2), (-1, -2)))...
+*   time:  + 0.000s  (just elapsed)    0.196s  (game total)
+* updating blue player with blue's action ('JUMP', ((1, -2), (-1, -2)))...
+*   time:  + 0.000s  (just elapsed)  174.454s  (game total)
+* == red player's turn ==
+* asking 🔴 red player for next action...
+*   red player returned action: ('PASS', None)
+*   time:  + 0.000s  (just elapsed)    0.142s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 2, 🔵: 3.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |  🔵 |     |  🔵 | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |  🔵 |  🔵 |     |     |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |  🔵 |     |     |     |     |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |  🔵 |     |     |     |     |     |     | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |     |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with red's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.142s  (game total)
+* updating green player with red's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.196s  (game total)
+* updating blue player with red's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)  174.454s  (game total)
+* == green player's turn ==
+* asking ✅ green player for next action...
+*   green player returned action: ('PASS', None)
+*   time:  + 0.000s  (just elapsed)    0.196s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 2, 🔵: 3.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |  🔵 |     |  🔵 | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |  🔵 |  🔵 |     |     |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |  🔵 |     |     |     |     |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |  🔵 |     |     |     |     |     |     | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |     |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with green's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.142s  (game total)
+* updating green player with green's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.196s  (game total)
+* updating blue player with green's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)  174.454s  (game total)
+* == blue player's turn ==
+* asking 🔵 blue player for next action...
+*   blue player returned action: ('MOVE', ((3, -3), (2, -3)))
+*   time:  + 0.054s  (just elapsed)  174.508s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 2, 🔵: 3.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |  🔵 |  🔵 |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |  🔵 |  🔵 |     |     |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |  🔵 |     |     |     |     |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |  🔵 |     |     |     |     |     |     | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |     |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with blue's action ('MOVE', ((3, -3), (2, -3)))...
+*   time:  + 0.000s  (just elapsed)    0.142s  (game total)
+* updating green player with blue's action ('MOVE', ((3, -3), (2, -3)))...
+*   time:  + 0.000s  (just elapsed)    0.196s  (game total)
+* updating blue player with blue's action ('MOVE', ((3, -3), (2, -3)))...
+*   time:  + 0.000s  (just elapsed)  174.508s  (game total)
+* == red player's turn ==
+* asking 🔴 red player for next action...
+*   red player returned action: ('PASS', None)
+*   time:  + 0.000s  (just elapsed)    0.143s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 2, 🔵: 3.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |  🔵 |  🔵 |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |  🔵 |  🔵 |     |     |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |  🔵 |     |     |     |     |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |  🔵 |     |     |     |     |     |     | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |     |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with red's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.143s  (game total)
+* updating green player with red's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.196s  (game total)
+* updating blue player with red's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)  174.508s  (game total)
+* == green player's turn ==
+* asking ✅ green player for next action...
+*   green player returned action: ('PASS', None)
+*   time:  + 0.000s  (just elapsed)    0.196s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 2, 🔵: 3.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |     |  🔵 |  🔵 |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |  🔵 |  🔵 |     |     |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |  🔵 |     |     |     |     |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |  🔵 |     |     |     |     |     |     | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |     |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with green's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.143s  (game total)
+* updating green player with green's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.196s  (game total)
+* updating blue player with green's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)  174.508s  (game total)
+* == blue player's turn ==
+* asking 🔵 blue player for next action...
+*   blue player returned action: ('JUMP', ((2, -3), (0, -3)))
+*   time:  + 0.058s  (just elapsed)  174.567s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 2, 🔵: 3.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |  🔵 |  🔵 |     |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |  🔵 |  🔵 |     |     |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |  🔵 |     |     |     |     |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |  🔵 |     |     |     |     |     |     | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |     |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with blue's action ('JUMP', ((2, -3), (0, -3)))...
+*   time:  + 0.000s  (just elapsed)    0.143s  (game total)
+* updating green player with blue's action ('JUMP', ((2, -3), (0, -3)))...
+*   time:  + 0.000s  (just elapsed)    0.196s  (game total)
+* updating blue player with blue's action ('JUMP', ((2, -3), (0, -3)))...
+*   time:  + 0.000s  (just elapsed)  174.567s  (game total)
+* == red player's turn ==
+* asking 🔴 red player for next action...
+*   red player returned action: ('PASS', None)
+*   time:  + 0.000s  (just elapsed)    0.143s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 2, 🔵: 3.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |  🔵 |  🔵 |     |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |  🔵 |  🔵 |     |     |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |  🔵 |     |     |     |     |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |  🔵 |     |     |     |     |     |     | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |     |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with red's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.143s  (game total)
+* updating green player with red's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.197s  (game total)
+* updating blue player with red's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)  174.567s  (game total)
+* == green player's turn ==
+* asking ✅ green player for next action...
+*   green player returned action: ('PASS', None)
+*   time:  + 0.000s  (just elapsed)    0.197s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 2, 🔵: 3.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |  🔵 |  🔵 |     |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |  🔵 |  🔵 |     |     |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |  🔵 |     |     |     |     |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |  🔵 |     |     |     |     |     |     | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |     |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with green's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.143s  (game total)
+* updating green player with green's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)    0.197s  (game total)
+* updating blue player with green's action ('PASS', None)...
+*   time:  + 0.000s  (just elapsed)  174.567s  (game total)
+* == blue player's turn ==
+* asking 🔵 blue player for next action...
+*   blue player returned action: ('EXIT', (-2, -1))
+*   time:  + 0.041s  (just elapsed)  174.608s  (game total)
+* displaying game board:
+*   scores: 🔴: 1, ✅: 2, 🔵: 4.
+*   board:    .-'-._.-'-._.-'-._.-'-.
+*            |  🔵 |  🔵 |     |     | 
+*          .-'-._.-'-._.-'-._.-'-._.-'-.
+*         |  🔵 |  🔵 |     |     |     | 
+*       .-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*      |     |     |     |     |     |     | 
+*    .-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-.
+*   |  🔵 |     |     |     |     |     |     | 
+*   '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*      |     |     |     |     |     |     | 
+*      '-._.-'-._.-'-._.-'-._.-'-._.-'-._.-'
+*         |     |     |     |     |     | 
+*         '-._.-'-._.-'-._.-'-._.-'-._.-'
+*            |     |     |     |     |
+*            '-._.-'-._.-'-._.-'-._.-'
+* updating red player with blue's action ('EXIT', (-2, -1))...
+*   time:  + 0.000s  (just elapsed)    0.143s  (game total)
+* updating green player with blue's action ('EXIT', (-2, -1))...
+*   time:  + 0.000s  (just elapsed)    0.197s  (game total)
+* updating blue player with blue's action ('EXIT', (-2, -1))...
+*   time:  + 0.000s  (just elapsed)  174.608s  (game total)
+* == game over! ==
+* winner: Blue
