@@ -198,8 +198,8 @@ class ArtificialIdiot(Player):
         pass
 
 
-class RandomAgent(Player):
-    def __init__(self, colour, initial_state=None, seed=0.32245438232083545):
+class RandomPlayer(Player):
+    def __init__(self, colour, initial_state=None, seed=None):
         if seed is None:
             seed = random.random()
         print("* seed is:", seed)
@@ -224,20 +224,20 @@ class MaxNAgent(Player):
         super().__init__(colour, search_algorithm=search_algorithm,
                          initial_state=initial_state)
 
-
 class MaxNPlayer(MaxNAgent):
     """
     A wrapper class for referee that uses interface given by referee
     Here we use best hyperparameter
     """
-    def __init__(self, player):
+    def __init__(self, color):
         # self.utility_pieces, num_exited_piece, self.utility_distance
         # utility_pieces, num_exited_piece, total_number_pieces, utility_distance
         weights = [10, 100, 1]
         evaluator_generator = NaiveEvaluatorGenerator(weights)
         cutoff = DepthLimitCutoff(3)
-        super().__init__(player, cutoff=cutoff, evaluator=evaluator_generator,
+        super().__init__(color, cutoff=cutoff, evaluator=evaluator_generator,
                          initial_state=None)
+
 
 
 class ParanoidPlayer_Advance(ParanoidAgent):
@@ -255,6 +255,20 @@ class ParanoidPlayer_Naive(ParanoidAgent):
         weights = [10, 100, 1]
         evaluator_generator = NaiveEvaluatorGenerator(weights)
         cutoff = DepthLimitCutoff(2)
+        super().__init__(color, evaluator_generator, cutoff)
+
+
+class GreedyPlayer(ParanoidAgent):
+    """
+    A wrapper class for referee that uses interface given by referee
+    Here we use best hyperparameter
+    """
+    def __init__(self, color):
+        # self.utility_pieces, num_exited_piece, self.utility_distance
+        # utility_pieces, num_exited_piece, total_number_pieces, utility_distance
+        weights = [10, 100, 1]
+        evaluator_generator = NaiveEvaluatorGenerator(weights)
+        cutoff = DepthLimitCutoff(1)
         super().__init__(color, evaluator_generator, cutoff)
 
 
