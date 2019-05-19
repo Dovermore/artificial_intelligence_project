@@ -199,7 +199,7 @@ class ArtificialIdiot(Player):
 
 
 class RandomAgent(Player):
-    def __init__(self, colour, initial_state=None, seed=None):
+    def __init__(self, colour, initial_state=None, seed=0.32245438232083545):
         if seed is None:
             seed = random.random()
         print("* seed is:", seed)
@@ -233,7 +233,7 @@ class MaxNPlayer(MaxNAgent):
     def __init__(self, player):
         # self.utility_pieces, num_exited_piece, self.utility_distance
         # utility_pieces, num_exited_piece, total_number_pieces, utility_distance
-        weights = [10, 100, 20, 1]
+        weights = [10, 100, 1]
         evaluator_generator = NaiveEvaluatorGenerator(weights)
         cutoff = DepthLimitCutoff(3)
         super().__init__(player, cutoff=cutoff, evaluator=evaluator_generator,
@@ -243,7 +243,7 @@ class MaxNPlayer(MaxNAgent):
 class ParanoidPlayer_Advance(ParanoidAgent):
     def __init__(self, color):
         # utility_pieces, num_exited_piece, total_number_pieces, utility_distance
-        weights = [10, 100, 20, 1]
+        weights = [10, 100, 1]
         evaluator_generator = NaiveEvaluatorGenerator(weights)
         cutoff = DepthLimitCutoff(4)
         super().__init__(color, evaluator_generator, cutoff)
@@ -251,7 +251,8 @@ class ParanoidPlayer_Advance(ParanoidAgent):
 
 class ParanoidPlayer_Naive(ParanoidAgent):
     def __init__(self, color):
-        weights = [100, 101, 1]
+        # utility_pieces, num_exited_piece, total_number_pieces, utility_distance
+        weights = [10, 100, 1]
         evaluator_generator = NaiveEvaluatorGenerator(weights)
         cutoff = DepthLimitCutoff(2)
         super().__init__(color, evaluator_generator, cutoff)

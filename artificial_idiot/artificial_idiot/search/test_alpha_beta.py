@@ -16,10 +16,10 @@ def parse_state(file_name):
 
 
 class TestParnoidPlayer(TestCase):
-    # utility_pieces, num_exited_piece, total_number_pieces, utility_distance
-    weights = [10, 100, 20, 1]
+    # num_exited_piece, total_number_pieces, utility_distance
+    weights = [10, 100, 1]
     evaluator_generator = NaiveEvaluatorGenerator(weights)
-    cutoff = DepthLimitCutoff(4)
+    cutoff = DepthLimitCutoff(2)
     search = AlphaBetaSearch(evaluator_generator, cutoff)
 
     def test_initial(self):

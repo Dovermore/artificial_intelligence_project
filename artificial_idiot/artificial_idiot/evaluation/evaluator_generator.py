@@ -68,6 +68,8 @@ def num_board_piece(state, player):
     n_pieces = len(piece_to_pos[player])
     return n_pieces
 
+def total_number_pieces(state, player):
+        return num_board_piece(state, player) + num_exited_piece(state, player)
 
 class EvaluatorGenerator(abc.ABC):
     """
@@ -176,14 +178,17 @@ class NaiveEvaluatorGenerator(EvaluatorGenerator):
         return -sum_exit_distance(state, player)
 
     @staticmethod
-    def total_number_pieces(state, player):
-        return num_board_piece(state, player) + num_exited_piece(state, player)
+    def utility_exit_pieces(state, player):
+        exited = num_exited_piece(state, player)
+        if total_number_pieces(state, player) < 4:
+            return -exited
+        return exited
 
     # weights in the format of [pieces, exited, distance]
     def __init__(self, weights,  *args, **kwargs):
         self._weights = weights
 
-        func = [num_board_piece, num_exited_piece, self.total_number_pieces, self.negative_distance]
+        func = [self.utility_exit_pieces, total_number_pieces, self.negative_distance]
         self._eval = FunctionalEvaluatorGenerator(self._weights, func)
         super().__init__(*args, **kwargs)
 
