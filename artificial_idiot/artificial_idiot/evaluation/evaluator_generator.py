@@ -2,11 +2,13 @@ import abc
 import numpy as np
 from math import log
 
+
 _exit_positions = {
     "red": ((3, -3), (3, -2), (3, -1), (3, 0)),
     "green": ((-3, 3), (-2, 3), (-1, 3), (0, 3)),
     "blue": ((0, -3), (-1, -2), (-2, -1), (-3, 0))
 }
+NEEDED = 4
 
 
 def grid_dist(pos1, pos2):
@@ -73,6 +75,77 @@ def num_board_piece(state, player):
 def sum_number_pieces(state, player):
     return num_board_piece(state, player) + num_exited_piece(state, player)
 
+
+def sum_completed_piece(state, player):
+    exited = num_exited_piece(state, player)
+    if exited < NEEDED:
+        return exited
+    else:
+        return 99999
+
+def other_player_piece_worth(state, player):
+    numbers = []
+    for other_player in state.code_map:
+        if other_player == player:
+            continue
+        numbers.append(sum_number_pieces(state, other_player))
+    difference = max(numbers) - min(numbers)
+    return sum(numbers) + difference
+
+
+def leading_opponent_and_distance(state, player):
+    numbers = {}
+    for other_player in state.code_map:
+        if other_player == player:
+            continue
+        numbers[player] = \
+            modified_negative_sum_distance(state, other_player)
+    return min(numbers.items(), key=lambda x: x[1])
+
+
+def leading_opponent_negative_distance(state, player):
+    return -leading_opponent_and_distance(state, player)[1]
+
+
+def modified_negative_sum_distance(state, player):
+    pieces = state.piece_to_pos[player]
+    n_completed = state.completed[player]
+    distances = {}
+    for piece in pieces:
+        distances[piece] = exit_distance(piece, state, player)
+    if not len(distances) >= NEEDED - n_completed:
+        # 28 is the max distance for 4 piece, when less than 4 should
+        # try to compete for more pieces
+        return -NEEDED * 7
+    sorted_distance = sorted(distances.values())
+    # Only consider the top 4 when have more
+    return -sum(sorted_distance[:NEEDED - n_completed])
+
+
+def excess_piece_negative_sum_distance(state, player):
+    pieces = state.piece_to_pos[player]
+    n_completed = state.completed[player]
+    # No spare pieces
+    if NEEDED > len(pieces) + n_completed:
+        return 0
+    opponent = leading_opponent_and_distance(state, player)[0]
+    distances = {}
+    for piece in pieces:
+        distances[piece] = exit_distance(piece, state, player)
+    sorted_distance = sorted(distances.items(), key=lambda x: x[1])
+    excess_pieces = sorted_distance[NEEDED:]
+    distances = {}
+    for piece, _ in excess_pieces:
+        distances[piece] = exit_distance(piece, state, opponent)
+    # Only consider the top 4 when have more
+    return -sum(distances.values())
+
+
+
+
+def sum_number_needed_pieces(state, player):
+    return min(num_board_piece(state, player) +
+               num_exited_piece(state, player), 4)
 
 def excess_pieces(state, player):
     return sum_number_pieces(state, player) - 4
@@ -145,7 +218,6 @@ class FunctionalEvaluator:
         X = X.T
         value = np.dot(X, self._weights)
         self._value[player] = value
-        # print(value, end="    ")
         return value
 
 
@@ -256,46 +328,29 @@ class MinimaxEvaluator(EvaluatorGenerator):
     """
     * weights are defined beforehand
     An evaluator that considers
-    1. number of player piece
-    2. number of excess piece
-    3.
+    1. (max) number of player piece
+    2. (max neg) leading player's distance from winning
+    3. (max) distance of excess piece to opponent exit,
+        try to block leading player from exiting
+    4. (max neg) networth of other players' pieces
+    5. (max) negative sum distance to goal
+    6. (max) number of completed piece
+    7. (max) number of excess piece
     """
     def __init__(self, weights,  *args, **kwargs):
-        func = [sum_number_pieces, excess_pieces, self.sum_completed_piece,
-                sum_exit_distance, self.other_player_piece_worth,
-                self.other_player_distance]
+        func = [
+            sum_number_needed_pieces,
+            leading_opponent_negative_distance,
+            excess_piece_negative_sum_distance,
+            other_player_piece_worth,
+            modified_negative_sum_distance,
+            sum_completed_piece,
+            excess_pieces,
+        ]
         assert len(weights) != func
         self._weights = weights
         self._eval = FunctionalEvaluatorGenerator(self._weights, func)
         super().__init__(*args, **kwargs)
-
-    @staticmethod
-    def sum_completed_piece(state, player):
-        NEEDED = 4
-        exited = num_exited_piece(state, player)
-        if exited < NEEDED:
-            return exited
-        else:
-            return 99999
-
-    @staticmethod
-    def other_player_piece_worth(state, player):
-        numbers = []
-        for other_player in state.code_map:
-            if other_player == player:
-                continue
-            numbers.append(sum_number_pieces(state, other_player))
-        difference = max(numbers) - min(numbers)
-        return 0.5 * (sum(numbers) + difference)
-
-    @staticmethod
-    def other_player_distance(state, player):
-        numbers = []
-        for other_player in state.code_map:
-            if other_player == player:
-                continue
-            numbers.append(sum_exit_distance(state, other_player))
-        return min(numbers)
 
     # returns an evaluator for that state
     def __call__(self, state, *args, **kwargs):
