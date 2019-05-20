@@ -158,7 +158,8 @@ class Game(BoardProblem):
         pos_to_piece = state.pos_to_piece
 
         if mv == "PASS":
-            return State(state.pos_to_piece, next_colour, state.completed)
+            return state.__class__(state.pos_to_piece,
+                                   next_colour, state.completed)
 
         # update dictionary
         colour = pos_to_piece.pop(fr)
@@ -176,7 +177,7 @@ class Game(BoardProblem):
             pos_to_piece[leap_frog] = colour
 
         # Construct the new state
-        return State(pos_to_piece, next_colour, completed)
+        return state.__class__(pos_to_piece, next_colour, completed)
 
     def update(self, colour, action):
         """

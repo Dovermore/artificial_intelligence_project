@@ -26,6 +26,9 @@ class AStar(Search):
 
         self.final_node = None
 
+    def recompile(self):
+        self.solution = None
+
     def search(self, game, state, **kwargs):
         if self.solution is None:
             # Remove other players (this static search don't care
@@ -34,10 +37,16 @@ class AStar(Search):
             colours_to_remove = set(state.code_map.keys())
             colours_to_remove.remove(self.colour)
             # Remove other colours
-            self.initial_state = self.remove_colours(state, colours_to_remove)
+            # self.initial_state = self.remove_colours(state, colours_to_remove)
+            self.initial_state = AStarState.from_state(state, colours_to_remove)
             # Now remove the player colour
             # TODO improve this to only consider necessary pieces?
-            self.goal = self.generate_goal(self.initial_state, self.colour)
+            # self.goal = self.generate_goal(self.initial_state, self.colour)
+            self.goal = self.initial_state.generate_goal(self.initial_state,
+                                                         self.colour)
+            print("--------------------")
+            print(self.initial_state)
+            print(self.goal)
 
             # Start search
             self._build_heuristic_distance(game)
@@ -46,7 +55,6 @@ class AStar(Search):
                 .astar_search(game, self.h)
             # Get solution
             self.solution = self.final_node.solution
-        # TODO check state and recompute path
         return self.solution.pop(0)
 
     def best_first_graph_search(self, problem, f, show=False, **kwargs):
@@ -119,7 +127,6 @@ class AStar(Search):
                         continue
                     # Get value in dictionary
                     h_val = self.heuristic_distance.get(next_pos, None)
-
                     # Not yet navigated to or can be updated
                     if h_val is None or h_val > cost + 1:
                         # Update dictionary entry
@@ -127,14 +134,38 @@ class AStar(Search):
                         # Update the value in queue
                         frontier.append(next_pos)
 
-    @staticmethod
-    def remove_colours(state, colours):
+    def h(self, node):
+        state = node.state
+        return sum((self.heuristic_distance[pos] for pos in
+                    node.state.piece_to_pos[state.colour]))
+
+
+class AStarState(State):
+
+    @classmethod
+    def from_state(cls, state, colours_to_remove):
+        return cls.remove_colours(state, colours_to_remove)
+
+    def next_colour(self, colour):
+        """
+        :return: The next active colour after current execution
+        """
+        i = (self.code_map[colour] + 1) % 3
+        # went over, start again
+        colour = self.rev_code_map[i]
+        while colour not in self.remaining_colours:
+            i = (i + 1) % 3
+            colour = self.rev_code_map[i]
+        return colour
+
+    @classmethod
+    def remove_colours(cls, state, colours):
         pos_to_piece = state.pos_to_piece
         state_colour = state.colour
         # remove goal colour
         pos_to_piece = {k: v for k, v in pos_to_piece.items()
                         if v not in colours}
-        return State(pos_to_piece, state_colour)
+        return cls(pos_to_piece, state_colour)
 
     def generate_goal(self, state, colour):
         piece_remaining = len(state.piece_to_pos[colour])
@@ -144,7 +175,3 @@ class AStar(Search):
         state.completed = completed
         return state
 
-    def h(self, node):
-        state = node.state
-        return sum((self.heuristic_distance[pos] for pos in
-                    node.state.piece_to_pos[state.colour]))
