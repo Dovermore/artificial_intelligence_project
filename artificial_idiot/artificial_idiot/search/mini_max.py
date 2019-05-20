@@ -1,5 +1,6 @@
 from math import inf
 from artificial_idiot.search.search import Search
+from random import random
 
 
 # Alpha - Beta search
@@ -11,9 +12,9 @@ class AlphaBetaSearch(Search):
         self.utility_generator = utility_generator
         self.debug = False
 
-    def state_value(self, state, colour):
+    def state_value(self, state):
         utility_generator = self.utility_generator(state)
-        return utility_generator(colour), None
+        return utility_generator("red")
 
     def min_value(self, game, state, depth, a, b):
         if self.terminal_test(state, depth):
@@ -23,20 +24,20 @@ class AlphaBetaSearch(Search):
 
         actions = game.actions(state)
         states = map(lambda x: game.result(state, x), actions)
-        states = sorted(states,
-                        key=lambda x: self.utility_generator(x)("red"),
-                        reverse=True)
+        actions_states = map(lambda x:
+                             (self.state_value(x[1]),
+                              random(), x[0], x[1]), zip(actions, states))
+        actions_states = sorted(actions_states, reverse=True)
 
-        for green_action, state_1 in zip(actions, states):
-            state_1 = game.result(state, green_action)
-
+        for _, _, green_action, state_1 in actions_states:
             actions = game.actions(state_1)
-            states = map(lambda x: game.result(state, x), actions)
-            states = sorted(states,
-                            key=lambda x: self.utility_generator(x)("red"),
-                            reverse=True)
+            states = map(lambda x: game.result(state_1, x), actions)
+            actions_states = map(lambda x:
+                                 (self.state_value(x[1]),
+                                  random(), x[0], x[1]), zip(actions, states))
+            actions_states = sorted(actions_states, reverse=True)
 
-            for blue_action, state_2 in zip(actions, states):
+            for _, _, blue_action, state_2 in actions_states:
                 new_value, opponent_action = self.max_value(game, state_2,
                                                             depth, a, b)
                 if self.debug:
@@ -57,14 +58,16 @@ class AlphaBetaSearch(Search):
 
         actions = game.actions(state)
         states = map(lambda x: game.result(state, x), actions)
-        states = sorted(states,
-                        key=lambda x: self.utility_generator(x)("red"))
+        actions_states = map(lambda x:
+                             (self.state_value(x[1]),
+                              random(), x[0], x[1]), zip(actions, states))
+        actions_states = sorted(actions_states, reverse=True)
 
-        for action, state in zip(actions, states):
-            if self.debug:
-                print(action)
+        for _, _, action, state in actions_states:
+            # if self.debug:
+            #     print(action)
             new_value, opponent_action = self.min_value(game, state,
-                                                          depth, a, b)
+                                                        depth, a, b)
             if self.debug:
                 print(f'{depth} {action} {float(new_value):.3}')
             if new_value > value:

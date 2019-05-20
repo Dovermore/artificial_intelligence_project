@@ -11,7 +11,7 @@ blue = MaxNPlayer
 #     search_algorithm=OpenGameBook("gather"), game_type=Game,
 #     evaluator=player_evaluator)
 
-weights = [10, -2, 4, -0.5, -1, -1]
+weights = [10, -2, 4, -0.5, 2, 0.5]
 evaluator_generator = MinimaxEvaluator(weights)
 cutoff = DepthLimitCutoff(2)
 open_book = OpenGameBook("gather")

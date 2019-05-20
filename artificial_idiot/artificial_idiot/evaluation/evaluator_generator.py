@@ -145,6 +145,7 @@ class FunctionalEvaluator:
         X = X.T
         value = np.dot(X, self._weights)
         self._value[player] = value
+        # print(value, end="    ")
         return value
 
 
