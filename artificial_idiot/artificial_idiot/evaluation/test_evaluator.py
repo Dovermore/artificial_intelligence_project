@@ -30,55 +30,22 @@ class TestFunctionalEvaluator(TestCase):
 
 
 class TestNaiveEvaluator(TestCase):
-    weights = [5, 2, 0.7]
+    weights = [10, 100, 1]
     evaluator_generator = NaiveEvaluatorGenerator(weights)
 
-    def test_no_exit_and_exited(self):
-        # blue have exited so it should have the highest value
-        # red can't exit because green is blocking it
-        # weights in the format of [pieces, exited, distance]
-        evaluator_generator = self.evaluator_generator
-        state = parse_state("../../tests/evaluator_test.json")
+    def test_eat_green(self):
+        evaluator = self.evaluator_generator
+        state = parse_state("../../tests/eat_green_better_move.json")
         print(state)
-        evaluator = evaluator_generator(state)
-        self.assertAlmostEqual(evaluator('red'), 11, places=1)
-        self.assertAlmostEqual(evaluator('green'), 20.039, places=3)
-        self.assertEqual(evaluator('blue'), 8.7)
+        value1 = evaluator(state)('red')
+        print(value1)
 
-    def test_varied_distance(self):
-        evaluator_generator = self.evaluator_generator
-        state = parse_state("../../tests/varied_distance.json")
+        state = parse_state("../../tests/eat_green_wost_move.json")
         print(state)
-        evaluator = evaluator_generator(state)
-        self.assertAlmostEqual(evaluator('red'), 11.7, places=1)
-        self.assertEqual(evaluator('green'), 11.7)
-        self.assertEqual(evaluator('blue'), 11.35)
+        value2 = evaluator(state)('red')
+        print(value2)
 
+        self.assertGreater(value1, value2)
 
-class TestSumShortestExitDistance(TestCase):
-
-    def test_no_block(self):
-        state = parse_state("../../tests/empty_board_for_red.json")
-        print(state)
-        self.assertEqual(sum_shortest_exit_distance(state, 'red'), 12)
-
-    def test_one_exit_position(self):
-        state = parse_state("../../tests/only_one_exit_pos_for_red.json")
-        print(state)
-        self.assertEqual(sum_shortest_exit_distance(state, 'red'), 15)
-
-    def test_no_exit(self):
-        state = parse_state("../../tests/no_exit.json")
-        print(state)
-        self.assertEqual(sum_shortest_exit_distance(state, 'red'), 4000000)
-
-    def test_move_one_by_one(self):
-        utility = AdvanceEG.utility_distance
-        state1 = parse_state("../../tests/move1.json")
-        state2 = parse_state("../../tests/move2.json")
-        player = 'red'
-        print(state1)
-        print(state2)
-        self.assertGreater(utility(state1, player), utility(state2, player))
 
 

@@ -6,7 +6,6 @@ from artificial_idiot.util.json_parser import JsonParser
 from artificial_idiot.search.mini_max import AlphaBetaSearch
 from artificial_idiot.search.search_cutoff.cutoff import DepthLimitCutoff
 import json
-from artificial_idiot.util.misc import print_board
 
 
 def parse_state(file_name):

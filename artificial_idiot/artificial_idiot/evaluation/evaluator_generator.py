@@ -173,13 +173,6 @@ class NaiveEvaluatorGenerator(EvaluatorGenerator):
     3. Reciprocal of the sum of grid distance of each nodes to nearest exit
     """
     @staticmethod
-    def reciprocal_distance(state, player):
-        value = sum_exit_distance(state, player)
-        if value == 0:
-            value = 0.5
-        return 1/value
-
-    @staticmethod
     def negative_distance(state, player):
         return -sum_exit_distance(state, player)
 
