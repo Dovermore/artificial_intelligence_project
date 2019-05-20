@@ -34,23 +34,14 @@ class AStar(Search):
             # Remove other players (this static search don't care
             # about other players)
             self.colour = state.colour
-            colours_to_remove = set(state.code_map.keys())
-            colours_to_remove.remove(self.colour)
             # Remove other colours
-            # self.initial_state = self.remove_colours(state, colours_to_remove)
-            self.initial_state = AStarState.from_state(state, colours_to_remove)
+            self.initial_state = AStarState.from_state(state, self.colour)
             # Now remove the player colour
             # TODO improve this to only consider necessary pieces?
-            # self.goal = self.generate_goal(self.initial_state, self.colour)
             self.goal = self.initial_state.generate_goal(self.initial_state,
                                                          self.colour)
-            print("--------------------")
-            print(self.initial_state)
-            print(self.goal)
-
             # Start search
             self._build_heuristic_distance(game)
-            print(self.heuristic_distance)
             self.final_node = self\
                 .astar_search(game, self.h)
             # Get solution
@@ -143,7 +134,9 @@ class AStar(Search):
 class AStarState(State):
 
     @classmethod
-    def from_state(cls, state, colours_to_remove):
+    def from_state(cls, state, colour):
+        colours_to_remove = set(state.code_map.keys())
+        colours_to_remove.remove(colour)
         return cls.remove_colours(state, colours_to_remove)
 
     def next_colour(self, colour):
