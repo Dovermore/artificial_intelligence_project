@@ -78,10 +78,7 @@ def sum_number_pieces(state, player):
 
 def sum_completed_piece(state, player):
     exited = num_exited_piece(state, player)
-    if exited < NEEDED:
-        return -exited
-    else:
-        return exited
+    return exited
 
 
 def other_player_piece_worth(state, player):
@@ -149,6 +146,17 @@ def sum_number_needed_pieces(state, player):
 
 def excess_pieces(state, player):
     return sum_number_pieces(state, player) - 4
+
+
+def utility_completed_piece(state, player):
+    # if there not enough pieces to exit to win
+    # then player is punished if choose to exit
+    exited = num_exited_piece(state, player)
+    n = exited + num_board_piece(state, player)
+    if n < NEEDED:
+        return -exited
+    else:
+        return exited
 
 
 class EvaluatorGenerator(abc.ABC):
@@ -332,11 +340,12 @@ class MinimaxEvaluator(EvaluatorGenerator):
     2. (max neg) leading player's distance from winning
     3. (max) distance of excess piece to opponent exit,
         try to block leading player from exiting
-    4. (max neg) networth of other players' pieces
+    4. (max neg) net worth of other players' pieces
     5. (max) negative sum distance to goal
     6. (max) number of completed piece
     7. (max) number of excess piece
     """
+
     def __init__(self, weights,  *args, **kwargs):
         func = [
             sum_number_pieces,
@@ -346,6 +355,7 @@ class MinimaxEvaluator(EvaluatorGenerator):
             modified_negative_sum_distance,
             sum_completed_piece,
         ]
+        print('the weights are:', weights)
         assert len(weights) != func
         self._weights = weights
         self._eval = FunctionalEvaluatorGenerator(self._weights, func)
