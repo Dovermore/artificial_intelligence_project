@@ -27,7 +27,7 @@ class AlphaBetaSearch(Search):
         actions_states = map(lambda x:
                              (self.state_value(x[1]),
                               random(), x[0], x[1]), zip(actions, states))
-        actions_states = sorted(actions_states, reverse=True)
+        actions_states = sorted(actions_states)
 
         for _, _, green_action, state_1 in actions_states:
             actions = game.actions(state_1)
@@ -35,7 +35,7 @@ class AlphaBetaSearch(Search):
             actions_states = map(lambda x:
                                  (self.state_value(x[1]),
                                   random(), x[0], x[1]), zip(actions, states))
-            actions_states = sorted(actions_states, reverse=True)
+            actions_states = sorted(actions_states)
 
             for _, _, blue_action, state_2 in actions_states:
                 new_value, opponent_action = self.max_value(game, state_2,
