@@ -1,7 +1,6 @@
 import abc
 import numpy as np
 from math import log
-from artificial_idiot.game.state import State
 
 _exit_positions = {
     "red": ((3, -3), (3, -2), (3, -1), (3, 0)),
@@ -42,7 +41,12 @@ def shortest_exit_distance(piece, state, player):
 
 
 def exit_distance(piece, state, player):
-    return State.heuristic_distance[piece]
+    if player == 'red':
+        return 3 - piece[0]
+    if player == 'green':
+        return 3 - piece[1]
+    if player == 'blue':
+        return 3 + piece[0]
 
 
 def sum_exit_distance(state, player):
@@ -64,6 +68,8 @@ def num_board_piece(state, player):
     n_pieces = len(piece_to_pos[player])
     return n_pieces
 
+def total_number_pieces(state, player):
+        return num_board_piece(state, player) + num_exited_piece(state, player)
 
 class EvaluatorGenerator(abc.ABC):
     """
@@ -171,11 +177,18 @@ class NaiveEvaluatorGenerator(EvaluatorGenerator):
     def negative_distance(state, player):
         return -sum_exit_distance(state, player)
 
+    @staticmethod
+    def utility_exit_pieces(state, player):
+        exited = num_exited_piece(state, player)
+        if total_number_pieces(state, player) < 4:
+            return -exited
+        return exited
+
     # weights in the format of [pieces, exited, distance]
     def __init__(self, weights,  *args, **kwargs):
         self._weights = weights
 
-        func = [num_board_piece, num_exited_piece, self.negative_distance]
+        func = [self.utility_exit_pieces, total_number_pieces, self.negative_distance]
         self._eval = FunctionalEvaluatorGenerator(self._weights, func)
         super().__init__(*args, **kwargs)
 

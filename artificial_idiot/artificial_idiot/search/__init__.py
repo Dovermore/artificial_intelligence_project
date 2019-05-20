@@ -1,4 +1,3 @@
-from artificial_idiot.search import a_star
 from artificial_idiot.search import composition
 from artificial_idiot.search import search
 from artificial_idiot.search import max_n

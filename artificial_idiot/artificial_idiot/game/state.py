@@ -20,7 +20,6 @@ class State:
     code_map = CODE_MAP
     rev_code_map = REV_CODE_MAP
     print_map = {"red": "🔴", "green": "✅", "blue": "🔵"}
-    heuristic_distance = None
 
     # cycle the players:
     #    player:: red:   red -> red,   green -> green, blue -> blue
@@ -78,6 +77,12 @@ class State:
     def occupied(self, pos):
         return pos in self._pos_to_piece
 
+    def piece_at_pos(self, pos):
+        if pos in self._pos_to_piece:
+            return self.pos_to_piece[pos]
+        else:
+            return None
+
     @property
     def piece_to_pos(self):
         # Only compute this when needed
@@ -105,16 +110,27 @@ class State:
     def colour(self):
         return self._colour
 
-    def next_colour(self, colour):
+    # def next_colour(self, colour):
+    #     """
+    #     :return: The next active colour after current execution
+    #     """
+    #     i = (self.code_map[colour] + 1) % 3
+    #     # went over, start again
+    #     colour = self.rev_code_map[i]
+    #     while colour not in self.remaining_colours:
+    #         i = (i + 1) % 3
+    #         colour = self.rev_code_map[i]
+    #     return colour
+
+    @classmethod
+    def next_colour(cls, colour):
         """
         :return: The next active colour after current execution
         """
-        i = (self.code_map[colour] + 1) % 3
+        i = (cls.code_map[colour] + 1) % 3
         # went over, start again
-        colour = self.rev_code_map[i]
-        while colour not in self.remaining_colours:
-            i = (i + 1) % 3
-            colour = self.rev_code_map[i]
+        colour = cls.rev_code_map[i]
+        # print(f'i : {i}, color {colour}')
         return colour
 
     @classmethod

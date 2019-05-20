@@ -69,6 +69,7 @@ class Player:
         # The initial player is red, convert it to the rotate perspective
         state = State(self.start_config, colour=self
                       .referee_to_player_mapping["red"])
+
         # Colour of the game is different from the color of the state
         self.game = game_type("red", state)
 
@@ -197,7 +198,7 @@ class ArtificialIdiot(Player):
         pass
 
 
-class RandomAgent(Player):
+class RandomPlayer(Player):
     def __init__(self, colour, initial_state=None, seed=None):
         if seed is None:
             seed = random.random()
@@ -214,7 +215,6 @@ class ParanoidAgent(Player):
     def action(self):
         player_action = self\
             .search_algorithm.search(self.game, self.game.initial_state)
-        print(player_action)
         return self.convert_action(player_action, 'referee')
 
 
@@ -224,34 +224,51 @@ class MaxNAgent(Player):
         super().__init__(colour, search_algorithm=search_algorithm,
                          initial_state=initial_state)
 
-
 class MaxNPlayer(MaxNAgent):
     """
     A wrapper class for referee that uses interface given by referee
     Here we use best hyperparameter
     """
-    def __init__(self, player):
+    def __init__(self, color):
         # self.utility_pieces, num_exited_piece, self.utility_distance
-        weights = [90, 100, 1]
-        evaluator = NaiveEvaluatorGenerator(weights)
-        cutoff = DepthLimitCutoff(max_depth=3)
-        super().__init__(player, cutoff=cutoff, evaluator=evaluator,
+        # utility_pieces, num_exited_piece, total_number_pieces, utility_distance
+        weights = [10, 100, 1]
+        evaluator_generator = NaiveEvaluatorGenerator(weights)
+        cutoff = DepthLimitCutoff(3)
+        super().__init__(color, cutoff=cutoff, evaluator=evaluator_generator,
                          initial_state=None)
+
 
 
 class ParanoidPlayer_Advance(ParanoidAgent):
     def __init__(self, color):
-        weights = [1, 100, 1]
-        evaluator_generator = AdvanceEG(weights)
+        # utility_pieces, num_exited_piece, total_number_pieces, utility_distance
+        weights = [10, 100, 1]
+        evaluator_generator = NaiveEvaluatorGenerator(weights)
         cutoff = DepthLimitCutoff(4)
         super().__init__(color, evaluator_generator, cutoff)
 
 
 class ParanoidPlayer_Naive(ParanoidAgent):
     def __init__(self, color):
-        weights = [90, 100, 1]
+        # utility_pieces, num_exited_piece, total_number_pieces, utility_distance
+        weights = [10, 100, 1]
         evaluator_generator = NaiveEvaluatorGenerator(weights)
-        cutoff = DepthLimitCutoff(4)
+        cutoff = DepthLimitCutoff(2)
+        super().__init__(color, evaluator_generator, cutoff)
+
+
+class GreedyPlayer(ParanoidAgent):
+    """
+    A wrapper class for referee that uses interface given by referee
+    Here we use best hyperparameter
+    """
+    def __init__(self, color):
+        # self.utility_pieces, num_exited_piece, self.utility_distance
+        # utility_pieces, num_exited_piece, total_number_pieces, utility_distance
+        weights = [10, 100, 1]
+        evaluator_generator = NaiveEvaluatorGenerator(weights)
+        cutoff = DepthLimitCutoff(1)
         super().__init__(color, evaluator_generator, cutoff)
 
 

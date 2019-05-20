@@ -28,8 +28,19 @@ class AStar(Search):
 
     def search(self, game, state, **kwargs):
         if self.solution is None:
-            # build heuristic distance
-            self.build_heuristic_distance(game, state)
+            # Remove other players (this static search don't care
+            # about other players)
+            self.colour = state.colour
+            colours_to_remove = set(state.code_map.keys())
+            colours_to_remove.remove(self.colour)
+            # Remove other colours
+            self.initial_state = self.remove_colours(state, colours_to_remove)
+            # Now remove the player colour
+            # TODO improve this to only consider necessary pieces?
+            self.goal = self.generate_goal(self.initial_state, self.colour)
+
+            # Start search
+            self._build_heuristic_distance(game)
             print(self.heuristic_distance)
             self.final_node = self\
                 .astar_search(game, self.h)
@@ -79,21 +90,10 @@ class AStar(Search):
         return self.best_first_graph_search\
             (problem, lambda n: n.path_cost + h(n), *args, **kwargs)
 
-    def build_heuristic_distance(self, problem, state):
+    def _build_heuristic_distance(self, problem):
         """
         Build the heuristic map used for searching by Dijkstra's Algorithm
         """
-        # Remove other players (this static search don't care
-        # about other players)
-        self.colour = state.colour
-        colours_to_remove = set(state.code_map.keys())
-        colours_to_remove.remove(self.colour)
-        # Remove other colours
-        self.initial_state = self.remove_colours(state, colours_to_remove)
-        # Now remove the player colour
-        # TODO improve this to only consider necessary pieces?
-        self.goal = self.generate_goal(self.initial_state, self.colour)
-
         goal = self.goal
         frontier = PriorityQueueImproved('min',
                                          f=self.heuristic_distance.__getitem__)
@@ -126,8 +126,6 @@ class AStar(Search):
                         self.heuristic_distance[next_pos] = cost + 1
                         # Update the value in queue
                         frontier.append(next_pos)
-
-        return self.heuristic_distance
 
     @staticmethod
     def remove_colours(state, colours):

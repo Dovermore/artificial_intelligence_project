@@ -2,7 +2,6 @@ from artificial_idiot.util.misc import is_in
 from artificial_idiot.game.state import State
 from artificial_idiot.game.node import Node
 import abc
-from artificial_idiot.search import AStar
 from functools import lru_cache
 
 
@@ -22,6 +21,7 @@ class Problem(abc.ABC):
         """
         self.initial_state = state
         self.goal = goal
+        self.colour = None
 
     @abc.abstractmethod
     def actions(self, state):
@@ -57,7 +57,7 @@ class Problem(abc.ABC):
     def path_cost(self, c, state1, action, state2):
         """
         Return the cost of a solution path that arrives at state2 from
-        state1 via action, assuming cost c to get up to state1. If the problem
+        state1 via action, assuming cost c to get up to state1. If the game
         is such that the path doesn't matter, this function will only look at
         state2.  If the path does matter, it will consider c and maybe state1
         and action. The default method costs 1 for every step in the path.
@@ -80,10 +80,11 @@ class BoardProblem(Problem, abc.ABC):
         "blue": ((0, -3), (-1, -2), (-2, -1), (-3, 0))
     }
 
-    # possible moves.
+    # order of forwardness
     moves = (
-        (+1, -1), (1, 0), (0, 1),
-        (-1, +1), (-1, 0), (0, -1)
+        (1, 0), (+1, -1),
+        (0, 1), (0, -1),
+        (-1, 1), (-1, 0)
     )
 
 
@@ -97,10 +98,6 @@ class Game(BoardProblem):
         super().__init__(state)
         # self.evaluator = evaluator
         self.colour = colour
-        # heuristic distance
-        a_star = AStar()
-        # add heuristic distance to state
-        State.heuristic_distance = a_star.build_heuristic_distance(self, state)
 
     @classmethod
     @lru_cache(10000)
@@ -119,12 +116,19 @@ class Game(BoardProblem):
             action (tuple) -- encoded as ((from position), (to position))
         """
         actions = []
+
         if cls.terminal_state(state):
             return actions
-        # Jump -> move -> exit
+
+        # exit has the highest value
+        exit_ready_pos = cls.exit_positions[state.colour]
+        for q, r in state.piece_to_pos[state.colour]:
+            if (q, r) in exit_ready_pos:
+                actions.append(((q, r), None, "EXIT"))
+
+        # Sort by moving direction then Jump and Move
         # for each piece try all possible moves
         # Not using deepcopy here because no need to
-        move_actions = []
         for move in cls.moves:
             for q, r in state.piece_to_pos[state.colour]:
                 i, j = move
@@ -132,21 +136,12 @@ class Game(BoardProblem):
                 jump_to = (q + i * 2, r + j * 2)
                 # If that direction is possible to move
                 if state.inboard(move_to):
-                    if not state.occupied(move_to):
-                        move_actions.append(((q, r), move_to, "MOVE"))
-                    # Jump (still need to check inboard)
-                    elif state.inboard(jump_to) and \
-                            not state.occupied(jump_to):
-                        actions.append(((q, r), jump_to, "JUMP"))
-        # no move possible return None
-        if move_actions:
-            for action in move_actions:
-                actions.append(action)
-        for q, r in state.piece_to_pos[state.colour]:
-            exit_ready_pos = cls.exit_positions[state.colour]
-            # exit
-            if (q, r) in exit_ready_pos:
-                actions.append(((q, r), None, "EXIT"))
+                    if state.occupied(move_to):
+                        if state.inboard(jump_to) and not state.occupied(jump_to):
+                            actions.append(((q, r), jump_to, "JUMP"))
+                    else:
+                        actions.append(((q, r), move_to, "MOVE"))
+
         return actions if len(actions) > 0 else [(None, None, "PASS")]
 
     def result(self, state, action):
@@ -270,44 +265,6 @@ class RewardedGame(Game):
     pass
 
 
-if __name__ == "__main__":
-    # UCT to convert player pieces
-    from artificial_idiot.util.json_parser import JsonParser
-    import json
-
-    def test_jump():
-        f = open("../tests/jump.json")
-        json_loader = json.load(f)
-        json_parser = JsonParser(json_loader)
-        pos_dict, player, completed = json_parser.parse()
-        game = Game(player, State(pos_dict, player, completed=completed))
-        f.close()
-
-        f = open("../tests/jump_ans.json")
-        json_loader = json.load(f)
-        json_parser = JsonParser(json_loader)
-        pos_dict_ans, player_ans, completed_ans = json_parser.parse()
-        f.close()
-
-        print(game)
-        state = game.initial_state
-        state = game.result(state, ((-3, 0), (-1, -2), "JUMP"))
-        assert(dict(state.pos_to_piece) == pos_dict_ans)
-        assert(game.colour == player_ans)
-        print(state.completed)
-        assert(state.completed == completed_ans)
-        print(game)
-
-    def test_exit():
-        f = open("../tests/simple.json")
-        pos_dict, colour, completed = JsonParser(json.load(f)).parse()
-        game = Game(colour, State(pos_dict, colour, completed))
-        print(game.initial_state)
-        assert([i for i in game.actions(game.initial_state)] == [((3, -3), None, 'EXIT'), ((3, -3), (3, -2), 'MOVE'), ((3, -3), (2, -2), 'MOVE'), ((3, -3), (2, -3), 'MOVE')])
-
-    test_jump()
-    print("="*10)
-    test_exit()
 
 
 

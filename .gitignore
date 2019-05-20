@@ -55,7 +55,6 @@ coverage.xml
 *.pot
 
 # Django stuff:
-*.log
 local_settings.py
 db.sqlite3
 
@@ -206,3 +205,13 @@ fabric.properties
 .DS_Store
 
 /artificial_idiot/artificial_idiot/machine_learning/2019*
+**/[0-9]+
+
+MaxN_MaxN_Random.log
+MAXN_RAND_PPN.log
+MaxN_Random_Random.log
+MaxN_VOne_Random.log
+MaxN_VOne_VOne_depth.log
+P2_P4_Simple.log
+Paranoid_Advance-Paranoid_Naive-MiniMax_Naive.log
+Paranoid_VOne_Random.log
