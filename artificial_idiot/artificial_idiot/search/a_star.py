@@ -105,12 +105,28 @@ class AStar(Search):
 
 
 class AStarState(State):
+    code_map = {"red": 0, "green": 1, "blue": 2, "block": 3}
+
+    rev_code_map = {
+        value: key for key, value in code_map.items()
+    }
 
     @classmethod
     def from_state(cls, state, colour):
+        n_completed = state.completed[colour]
         colours_to_remove = set(state.code_map.keys())
         colours_to_remove.remove(colour)
-        return cls.remove_colours(state, colours_to_remove)
+        excess_colours_removed = cls.remove_colours(state, colours_to_remove)
+        distances = {}
+        for piece in excess_colours_removed.piece_to_pos[colour]:
+            distances[piece] = \
+                cls.exit_distance(piece, excess_colours_removed, colour)
+        piece_to_convert = sorted(distances,
+                                  key=distances.__getitem__)[4-n_completed:]
+        pos_to_piece = excess_colours_removed.pos_to_piece
+        for piece in piece_to_convert:
+            pos_to_piece[piece] = "block"
+        return cls(pos_to_piece, colour)
 
     def next_colour(self, colour):
         """
@@ -135,3 +151,11 @@ class AStarState(State):
         state.completed = completed
         return state
 
+    @staticmethod
+    def exit_distance(piece, state, player):
+        if player == 'red':
+            return 3 - piece[0]
+        if player == 'green':
+            return 3 - piece[1]
+        if player == 'blue':
+            return 3 + piece[0]

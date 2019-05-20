@@ -23,7 +23,6 @@ cutoff = DepthLimitCutoff(2)
 open_book = OpenGameBook("edge")
 # open_book = None
 search = AlphaBetaSearch(evaluator_generator, cutoff)
-
 three_player = MultiPlayerSearch(book=open_book, search_algorithm=search)
 two_player = MultiPlayerSearch(search_algorithm=search)
 one_player = AStar()
@@ -35,4 +34,4 @@ mix = PlayerFactory.get_type_factory(Player)(
     game_type=Game
 )
 
-red, green, blue = mix, RandomPlayer, RandomPlayer,
+red, green, blue = mix, RandomPlayer, RandomPlayer
