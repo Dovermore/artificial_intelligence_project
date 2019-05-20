@@ -20,7 +20,7 @@ def simple_linear_network():
 
     layers = [
         layer.FullyConnected(n_in, n_out, activation=activation.Linear(),
-                             weight_init=misc.normalised_initialiser(0.1))
+                             weight_init=misc.normalised_initialiser(1))
     ]
     return network.Network(layers, theta, loss=activation.MSE())
 
@@ -32,9 +32,9 @@ def two_layer_sigmoid_network():
     theta = 0.05
     layers = [
         layer.FullyConnected(n_in, n_out1, activation=activation.Sigmoid(),
-                             weight_init=misc.normalised_initialiser(0.1)),
+                             weight_init=misc.normalised_initialiser(1)),
         layer.FullyConnected(n_out1, n_out2, activation=activation.Linear(),
-                             weight_init=misc.normalised_initialiser(0.1)),
+                             weight_init=misc.normalised_initialiser(1)),
     ]
     return network.Network(layers, theta, loss=activation.MSE())
 
@@ -48,13 +48,13 @@ def four_layer_leaky_relu_network():
     theta = 0.05
     layers = [
         layer.FullyConnected(n_in, n_out1, activation=activation.LeakyRelu(),
-                             weight_init=misc.normalised_initialiser(0.1)),
+                             weight_init=misc.normalised_initialiser(1)),
         layer.FullyConnected(n_out1, n_out2, activation=activation.LeakyRelu(),
-                             weight_init=misc.normalised_initialiser(0.1)),
+                             weight_init=misc.normalised_initialiser(1)),
         layer.FullyConnected(n_out2, n_out3, activation=activation.LeakyRelu(),
-                             weight_init=misc.normalised_initialiser(0.1)),
+                             weight_init=misc.normalised_initialiser(1)),
         layer.FullyConnected(n_out3, n_out4, activation=activation.LeakyRelu(),
-                             weight_init=misc.normalised_initialiser(0.1)),
+                             weight_init=misc.normalised_initialiser(1)),
     ]
     return network.Network(layers, theta, loss=activation.MSE())
 
@@ -68,13 +68,13 @@ def full4Llkrl():
     theta = 0.05
     layers = [
         layer.FullyConnected(n_in, n_out1, activation=activation.LeakyRelu(),
-                             weight_init=misc.normalised_initialiser(0.1)),
+                             weight_init=misc.normalised_initialiser(1)),
         layer.FullyConnected(n_out1, n_out2, activation=activation.LeakyRelu(),
-                             weight_init=misc.normalised_initialiser(0.1)),
+                             weight_init=misc.normalised_initialiser(1)),
         layer.FullyConnected(n_out2, n_out3, activation=activation.LeakyRelu(),
-                             weight_init=misc.normalised_initialiser(0.1)),
+                             weight_init=misc.normalised_initialiser(1)),
         layer.FullyConnected(n_out3, n_out4, activation=activation.LeakyRelu(),
-                             weight_init=misc.normalised_initialiser(0.1)),
+                             weight_init=misc.normalised_initialiser(1)),
     ]
     return network.Network(layers, theta, loss=activation.MSE())
 
@@ -88,13 +88,13 @@ def full4Sigmoid():
     theta = 0.05
     layers = [
         layer.FullyConnected(n_in, n_out1, activation=activation.Sigmoid(),
-                             weight_init=misc.normalised_initialiser(0.1)),
+                             weight_init=misc.normalised_initialiser(1)),
         layer.FullyConnected(n_out1, n_out2, activation=activation.Sigmoid(),
-                             weight_init=misc.normalised_initialiser(0.1)),
+                             weight_init=misc.normalised_initialiser(1)),
         layer.FullyConnected(n_out2, n_out3, activation=activation.Sigmoid(),
-                             weight_init=misc.normalised_initialiser(0.1)),
+                             weight_init=misc.normalised_initialiser(1)),
         layer.FullyConnected(n_out3, n_out4, activation=activation.Linear(),
-                             weight_init=misc.normalised_initialiser(0.1)),
+                             weight_init=misc.normalised_initialiser(1)),
     ]
     return network.Network(layers, theta, loss=activation.MSE())
 
@@ -109,15 +109,15 @@ def full5Relu():
     theta = 0.05
     layers = [
         layer.FullyConnected(n_in, n_out1, activation=activation.LeakyRelu(),
-                             weight_init=misc.normalised_initialiser(0.1)),
+                             weight_init=misc.normalised_initialiser(1)),
         layer.FullyConnected(n_out1, n_out2, activation=activation.LeakyRelu(),
-                             weight_init=misc.normalised_initialiser(0.1)),
+                             weight_init=misc.normalised_initialiser(1)),
         layer.FullyConnected(n_out2, n_out3, activation=activation.LeakyRelu(),
-                             weight_init=misc.normalised_initialiser(0.1)),
+                             weight_init=misc.normalised_initialiser(1)),
         layer.FullyConnected(n_out3, n_out4, activation=activation.LeakyRelu(),
-                             weight_init=misc.normalised_initialiser(0.1)),
+                             weight_init=misc.normalised_initialiser(1)),
         layer.FullyConnected(n_out4, n_out5, activation=activation.Linear(),
-                             weight_init=misc.normalised_initialiser(0.1)),
+                             weight_init=misc.normalised_initialiser(1)),
     ]
     return network.Network(layers, theta, loss=activation.MSE())
 
@@ -129,9 +129,9 @@ def full_two_layer_sigmoid_network():
     theta = 0.05
     layers = [
         layer.FullyConnected(n_in, n_out1, activation=activation.Sigmoid(),
-                             weight_init=misc.normalised_initialiser(0.1)),
+                             weight_init=misc.normalised_initialiser(1)),
         layer.FullyConnected(n_out1, n_out2, activation=activation.Linear(),
-                             weight_init=misc.normalised_initialiser(0.1)),
+                             weight_init=misc.normalised_initialiser(1)),
     ]
     return network.Network(layers, theta, loss=activation.MSE())
 
@@ -144,11 +144,11 @@ def full_three_layer_sigmoid_network():
     theta = 0.05
     layers = [
         layer.FullyConnected(n_in, n_out1, activation=activation.Sigmoid(),
-                             weight_init=misc.normalised_initialiser(0.1)),
+                             weight_init=misc.normalised_initialiser(1)),
         layer.FullyConnected(n_out1, n_out2, activation=activation.Sigmoid(),
-                             weight_init=misc.normalised_initialiser(0.1)),
+                             weight_init=misc.normalised_initialiser(1)),
         layer.FullyConnected(n_out2, n_out3, activation=activation.Linear(),
-                             weight_init=misc.normalised_initialiser(0.1)),
+                             weight_init=misc.normalised_initialiser(1)),
     ]
     return network.Network(layers, theta, loss=activation.MSE())
 
@@ -160,11 +160,24 @@ def full_two_layer_sigmoid_network_sigoutput():
     theta = 0.05
     layers = [
         layer.FullyConnected(n_in, n_out1, activation=activation.Sigmoid(),
-                             weight_init=misc.zero_initialiser(0.1)),
+                             weight_init=misc.zero_initialiser(1)),
         layer.FullyConnected(n_out1, n_out2, activation=activation.Sigmoid(),
-                             weight_init=misc.zero_initialiser(0.1)),
+                             weight_init=misc.zero_initialiser(1)),
     ]
     return network.Network(layers, theta, loss=activation.XEntropy())
+
+
+def full_linear_network():
+    # Simple Linear unit
+    n_in = N_full_grid_extractor
+    n_out = 1
+    theta = 0.05
+
+    layers = [
+        layer.FullyConnected(n_in, n_out, activation=activation.Linear(),
+                             weight_init=misc.normalised_initialiser(1))
+    ]
+    return network.Network(layers, theta, loss=activation.MSE())
 
 
 architectures = {
@@ -179,4 +192,5 @@ architectures = {
                           full_grid_extractor),
     "full_three_layer_sigmoid_network":
         (full_three_layer_sigmoid_network(), full_grid_extractor),
+    "full_linear": (full_linear_network(), full_grid_extractor),
 }

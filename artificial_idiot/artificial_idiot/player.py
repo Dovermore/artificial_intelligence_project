@@ -2,18 +2,23 @@ from artificial_idiot.search.random import Random
 from artificial_idiot.search.uct import UCTSearch
 from artificial_idiot.search.max_n import MaxN
 from artificial_idiot.search.open_game_book import OpenGameBook
+from artificial_idiot.search.a_star import AStar
 from artificial_idiot.search.RL import ParametrisedRL
+from artificial_idiot.search.mini_max import AlphaBetaSearch
+from artificial_idiot.search.player_count_composition import CompositionSearch
+from artificial_idiot.search.multi_player_search import MultiPlayerSearch
 from artificial_idiot.search.search_cutoff.cutoff import DepthLimitCutoff
 from artificial_idiot.evaluation.evaluator_generator import (
-    DummyEvaluator, WinLossEvaluator, NaiveEvaluatorGenerator, AdvanceEG
+    DummyEvaluator, WinLossEvaluator, NaiveEvaluatorGenerator, AdvanceEG,
+    MinimaxEvaluator
 )
 from artificial_idiot.search.mini_max import AlphaBetaSearch
 from artificial_idiot.game.node import Node, BasicUCTNode
 from artificial_idiot.game.state import State
 from artificial_idiot.game.game import Game, NodeGame
 import random
-import json
 from copy import deepcopy
+
 
 
 player_evaluator = DummyEvaluator()
@@ -304,5 +309,3 @@ class PlayerFactory:
                 return type(player, *deepcopy(args), **deepcopy(kwargs))
             return get_player
         return get_player_factory
-
-

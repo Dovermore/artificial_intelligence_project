@@ -32,7 +32,8 @@ def grid_dist(pos1, pos2):
 
 def shortest_exit_distance(piece, state, player):
     pieces = state.piece_to_pos[player]
-    exit_positions = [pos for pos in _exit_positions[player] if ((not state.occupied(pos)) or (pos in pieces))]
+    exit_positions = [pos for pos in _exit_positions[player]
+                      if ((not state.occupied(pos)) or (pos in pieces))]
     # return 1000000 all exit position is blocked
     distance = 1000000
     for exit_pos in exit_positions:
@@ -68,8 +69,14 @@ def num_board_piece(state, player):
     n_pieces = len(piece_to_pos[player])
     return n_pieces
 
-def total_number_pieces(state, player):
-        return num_board_piece(state, player) + num_exited_piece(state, player)
+
+def sum_number_pieces(state, player):
+    return num_board_piece(state, player) + num_exited_piece(state, player)
+
+
+def excess_pieces(state, player):
+    return sum_number_pieces(state, player) - 4
+
 
 class EvaluatorGenerator(abc.ABC):
     """
@@ -165,7 +172,6 @@ class NaiveEvaluatorGenerator(EvaluatorGenerator):
     2. Number of your exited pieces
     3. Reciprocal of the sum of grid distance of each nodes to nearest exit
     """
-
     @staticmethod
     def reciprocal_distance(state, player):
         value = sum_exit_distance(state, player)
@@ -180,7 +186,7 @@ class NaiveEvaluatorGenerator(EvaluatorGenerator):
     @staticmethod
     def utility_exit_pieces(state, player):
         exited = num_exited_piece(state, player)
-        if total_number_pieces(state, player) < 4:
+        if sum_number_pieces(state, player) < 4:
             return -exited
         return exited
 
@@ -188,7 +194,8 @@ class NaiveEvaluatorGenerator(EvaluatorGenerator):
     def __init__(self, weights,  *args, **kwargs):
         self._weights = weights
 
-        func = [self.utility_exit_pieces, total_number_pieces, self.negative_distance]
+        func = [self.utility_exit_pieces, sum_number_pieces,
+                self.negative_distance]
         self._eval = FunctionalEvaluatorGenerator(self._weights, func)
         super().__init__(*args, **kwargs)
 
@@ -245,6 +252,56 @@ class AdvanceEG(EvaluatorGenerator):
         func = [self.utility_pieces, self.utility_completed_piece, self.utility_distance]
         self._eval = FunctionalEvaluatorGenerator(self._weights, func)
         super().__init__(*args, **kwargs)
+
+    # returns an evaluator for that state
+    def __call__(self, state, *args, **kwargs):
+        return self._eval(state)
+
+
+class MinimaxEvaluator(EvaluatorGenerator):
+    """
+    * weights are defined beforehand
+    An evaluator that considers
+    1. number of player piece
+    2. number of excess piece
+    3.
+    """
+    def __init__(self, weights,  *args, **kwargs):
+        func = [sum_number_pieces, excess_pieces, self.sum_completed_piece,
+                sum_exit_distance, self.other_player_piece_worth,
+                self.other_player_distance]
+        assert len(weights) != func
+        self._weights = weights
+        self._eval = FunctionalEvaluatorGenerator(self._weights, func)
+        super().__init__(*args, **kwargs)
+
+    @staticmethod
+    def sum_completed_piece(state, player):
+        NEEDED = 4
+        exited = num_exited_piece(state, player)
+        if exited < NEEDED:
+            return exited
+        else:
+            return 99999
+
+    @staticmethod
+    def other_player_piece_worth(state, player):
+        numbers = []
+        for other_player in state.code_map:
+            if other_player == player:
+                continue
+            numbers.append(sum_number_pieces(state, other_player))
+        difference = max(numbers) - min(numbers)
+        return 0.5 * (sum(numbers) + difference)
+
+    @staticmethod
+    def other_player_distance(state, player):
+        numbers = []
+        for other_player in state.code_map:
+            if other_player == player:
+                continue
+            numbers.append(sum_exit_distance(state, other_player))
+        return min(numbers)
 
     # returns an evaluator for that state
     def __call__(self, state, *args, **kwargs):

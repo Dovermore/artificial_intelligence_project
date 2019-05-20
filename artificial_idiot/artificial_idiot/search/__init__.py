@@ -1,4 +1,4 @@
-from artificial_idiot.search import composition
+from artificial_idiot.search import player_count_composition
 from artificial_idiot.search import search
 from artificial_idiot.search import max_n
 from artificial_idiot.search import open_game_book

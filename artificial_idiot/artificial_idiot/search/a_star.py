@@ -12,10 +12,10 @@ class AStar(Search):
     when the player is not near enemy and have enough piece to exit to win.
     (Note this includes case where only one player is left.)
     """
-    def __init__(self):
+    def __init__(self, type=0):
         super().__init__()
+        self.type = type
         self.solution = None
-
         self.initial_state = None
         # remove all agent's pieces
         self.goal = None
@@ -23,7 +23,6 @@ class AStar(Search):
         # A mapping for heuristic distances
         self.colour = None
         self.heuristic_distance = dd(float)
-
         self.final_node = None
 
     def recompile(self):
@@ -41,12 +40,21 @@ class AStar(Search):
             self.goal = self.initial_state.generate_goal(self.initial_state,
                                                          self.colour)
             # Start search
-            self._build_heuristic_distance(game)
+            self.heuristic_distance = game.heuristic_distance
             self.final_node = self\
                 .astar_search(game, self.h)
             # Get solution
             self.solution = self.final_node.solution
         return self.solution.pop(0)
+
+    def goal_test(self, state, type=0):
+        """
+        A very simple goal test, that's **not** admissible
+        """
+        if type == 0:
+            return state.completed[self.colour] >= 4
+        elif type == 1:
+            return state.goal == self.goal
 
     def best_first_graph_search(self, problem, f, show=False, **kwargs):
         """Search the nodes with the lowest f scores first.
@@ -62,6 +70,7 @@ class AStar(Search):
         frontier.append(node)
         explored = set()
         while frontier:
+
             node = frontier.pop()
             if show:
                 print(f"Depth: {node.depth}")
@@ -89,42 +98,6 @@ class AStar(Search):
         return self.best_first_graph_search\
             (problem, lambda n: n.path_cost + h(n), *args, **kwargs)
 
-    def _build_heuristic_distance(self, problem):
-        """
-        Build the heuristic map used for searching by Dijkstra's Algorithm
-        """
-        goal = self.goal
-        frontier = PriorityQueueImproved('min',
-                                         f=self.heuristic_distance.__getitem__)
-        # For all exit positions (We don't care about other players)
-        for pos in problem.exit_positions[self.colour]:
-            # Set initial heuristic to 1, and add to start
-            self.heuristic_distance[pos] = 1
-            frontier.append(pos)
-
-        # While search is not ended
-        while frontier:
-            pos = frontier.pop()
-            q, r = pos
-            # Explore all space near current place
-            cost = self.heuristic_distance[pos]
-            for dq, dr in problem.moves:
-                for move in range(1, 3):
-                    next_pos = (q + dq * move, r + dr * move)
-                    # If the moved position is valid, update it with cost + 1,
-                    # Else simply continue next loop
-                    if (not State.inboard(next_pos) or
-                            next_pos in goal.pos_to_piece):
-                        continue
-                    # Get value in dictionary
-                    h_val = self.heuristic_distance.get(next_pos, None)
-                    # Not yet navigated to or can be updated
-                    if h_val is None or h_val > cost + 1:
-                        # Update dictionary entry
-                        self.heuristic_distance[next_pos] = cost + 1
-                        # Update the value in queue
-                        frontier.append(next_pos)
-
     def h(self, node):
         state = node.state
         return sum((self.heuristic_distance[pos] for pos in
@@ -143,12 +116,6 @@ class AStarState(State):
         """
         :return: The next active colour after current execution
         """
-        i = (self.code_map[colour] + 1) % 3
-        # went over, start again
-        colour = self.rev_code_map[i]
-        while colour not in self.remaining_colours:
-            i = (i + 1) % 3
-            colour = self.rev_code_map[i]
         return colour
 
     @classmethod
