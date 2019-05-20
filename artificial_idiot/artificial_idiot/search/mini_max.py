@@ -23,7 +23,7 @@ class AlphaBetaSearch(Search):
             for blue_action in game.actions(state_1):
                 state_2 = game.result(state_1, blue_action)
                 v_, opponent_action = self.max_value(game, state_2, depth, a, p)
-                if (self.debug):
+                if self.debug:
                     print(f'{depth} {green_action} {blue_action} {float(v_):.3}')
                 utility = min(utility, v_)
                 if utility <= a:

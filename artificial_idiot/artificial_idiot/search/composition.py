@@ -3,13 +3,13 @@ from artificial_idiot.search.search import Search
 
 class CompositionSearch(Search):
     # TODO Combine different strategies:
-    #  3 player -> beginning: book + A star + search
+    #  3 player -> beginning: book + search
     #  2 player -> search
     #  1 player -> part A heuristic
-    def __init__(self, three=None, two=None, one=None):
-        self.three = three
-        self.two = two
-        self.one = one
+    def __init__(self, three_strat=None, two_start=None, one_start=None):
+        self.three = three_strat
+        self.two = two_start
+        self.one = one_start
 
     def search(self, game, state, **kwargs):
         if len(state.remaining_colours) == 3:
@@ -18,5 +18,3 @@ class CompositionSearch(Search):
             return self.two(game, state)
         else:
             return self.one(game, state)
-
-
