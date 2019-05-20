@@ -161,9 +161,8 @@ class Game(BoardProblem):
         pos_to_piece = state.pos_to_piece
 
         if mv == "PASS":
-            return state.__class__(state.pos_to_piece,
+            return state.__class__(pos_to_piece,
                                    next_colour, state.completed)
-
         # update dictionary
         colour = pos_to_piece.pop(fr)
         if to is not None:

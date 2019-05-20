@@ -28,6 +28,7 @@ class AlphaBetaSearch(Search):
                              (self.state_value(x[1]),
                               random(), x[0], x[1]), zip(actions, states))
         actions_states = sorted(actions_states)
+        # actions_states = sorted(actions_states, reverse=True)
 
         for _, _, green_action, state_1 in actions_states:
             actions = game.actions(state_1)
@@ -36,6 +37,7 @@ class AlphaBetaSearch(Search):
                                  (self.state_value(x[1]),
                                   random(), x[0], x[1]), zip(actions, states))
             actions_states = sorted(actions_states)
+            # actions_states = sorted(actions_states, reverse=True)
 
             for _, _, blue_action, state_2 in actions_states:
                 new_value, opponent_action = self.max_value(game, state_2,
@@ -61,12 +63,14 @@ class AlphaBetaSearch(Search):
         actions_states = map(lambda x:
                              (self.state_value(x[1]),
                               random(), x[0], x[1]), zip(actions, states))
-        actions_states = sorted(actions_states, reverse=True)
 
-        for _, _, action, state in actions_states:
+        actions_states = sorted(actions_states, reverse=True)
+        # actions_states = sorted(actions_states)
+
+        for _, _, action, child in actions_states:
             # if self.debug:
             #     print(action)
-            new_value, opponent_action = self.min_value(game, state,
+            new_value, opponent_action = self.min_value(game, child,
                                                         depth, a, b)
             if self.debug:
                 print(f'{depth} {action} {float(new_value):.3}')
