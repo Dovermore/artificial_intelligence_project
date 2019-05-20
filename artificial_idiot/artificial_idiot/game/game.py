@@ -1,8 +1,10 @@
 from artificial_idiot.util.misc import is_in
 from artificial_idiot.game.state import State
 from artificial_idiot.game.node import Node
+from artificial_idiot.util.queue import PriorityQueueImproved
 import abc
 from functools import lru_cache
+from collections import defaultdict
 
 
 class Problem(abc.ABC):
@@ -21,7 +23,7 @@ class Problem(abc.ABC):
         """
         self.initial_state = state
         self.goal = goal
-        self.colour = None
+        self.heuristic_distance = defaultdict(int)
 
     @abc.abstractmethod
     def actions(self, state):
@@ -95,9 +97,10 @@ class Game(BoardProblem):
     """
 
     def __init__(self, colour, state):
-        super().__init__(state)
+        super().__init__(state, State({}, "red"))
         # self.evaluator = evaluator
         self.colour = colour
+        self._build_heuristic_distance()
 
     @classmethod
     @lru_cache(10000)
@@ -235,6 +238,41 @@ class Game(BoardProblem):
 
     def __str__(self):
         return str(self.initial_state)
+
+    def _build_heuristic_distance(self):
+        """
+        Build the heuristic map used for searching by Dijkstra's Algorithm
+        """
+        goal = self.goal
+        frontier = PriorityQueueImproved('min',
+                                         f=self.heuristic_distance.__getitem__)
+        # For all exit positions (We don't care about other players)
+        for pos in self.exit_positions[self.colour]:
+            # Set initial heuristic to 1, and add to start
+            self.heuristic_distance[pos] = 1
+            frontier.append(pos)
+        # While search is not ended
+        while frontier:
+            pos = frontier.pop()
+            q, r = pos
+            # Explore all space near current place
+            cost = self.heuristic_distance[pos]
+            for dq, dr in self.moves:
+                for move in range(1, 3):
+                    next_pos = (q + dq * move, r + dr * move)
+                    # If the moved position is valid, update it with cost + 1,
+                    # Else simply continue next loop
+                    if (not State.inboard(next_pos) or
+                            next_pos in goal.pos_to_piece):
+                        continue
+                    # Get value in dictionary
+                    h_val = self.heuristic_distance.get(next_pos, None)
+                    # Not yet navigated to or can be updated
+                    if h_val is None or h_val > cost + 1:
+                        # Update dictionary entry
+                        self.heuristic_distance[next_pos] = cost + 1
+                        # Update the value in queue
+                        frontier.append(next_pos)
 
 
 class NodeGame(Game):

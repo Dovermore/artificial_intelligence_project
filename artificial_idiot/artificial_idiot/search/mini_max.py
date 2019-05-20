@@ -17,8 +17,11 @@ class AlphaBetaSearch(Search):
             return utility_generator('red'), None
         depth += 1
         utility = +inf
+
+        actions = game.actions(state)
+        # TODO
         # take two steps assuming opponents are in alliance
-        for green_action in game.actions(state):
+        for green_action in actions:
             state_1 = game.result(state, green_action)
             for blue_action in game.actions(state_1):
                 state_2 = game.result(state_1, blue_action)
