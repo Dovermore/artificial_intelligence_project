@@ -17,9 +17,9 @@ An evaluator that considers
 7. (max) number of excess piece
 """
 
-weights = [100, -10, 6, -20, 5, 20, 80]
+weights = [100, -20, 15, -50, 15, 14, 80]
 evaluator_generator = MinimaxEvaluator(weights)
-cutoff = DepthLimitCutoff(3)
+cutoff = DepthLimitCutoff(4)
 # open_book = OpenGameBook("gather")
 open_book = None
 search = AlphaBetaSearch(evaluator_generator, cutoff)
@@ -36,4 +36,4 @@ mix = PlayerFactory.get_type_factory(Player)(
 )
 
 
-red, green, blue = pp, mn, mix
+red, green, blue = mix, pp, mn
