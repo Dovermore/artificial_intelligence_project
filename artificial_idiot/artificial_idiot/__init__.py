@@ -15,7 +15,7 @@ An evaluator that considers
 5. (max) negative sum distance to goal
 6. (max) number of completed piece
 """
-weights = [100, -20, 15, -50, 15, 14, 80]
+# weights = [100, -20, 15, -50, 15, 14, 80]
 weights = [100, -10, 6, -60, 5, 1000]
 evaluator_generator = MinimaxEvaluator(weights)
 cutoff = DepthLimitCutoff(2)
