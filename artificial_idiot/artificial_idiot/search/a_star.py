@@ -5,8 +5,6 @@ from artificial_idiot.game.state import State
 from collections import defaultdict as dd
 from copy import deepcopy
 
-from artificial_idiot.util.misc import print_board
-
 
 class AStar(Search):
     """
@@ -14,10 +12,10 @@ class AStar(Search):
     when the player is not near enemy and have enough piece to exit to win.
     (Note this includes case where only one player is left.)
     """
-    def __init__(self):
+    def __init__(self, type=0):
         super().__init__()
+        self.type = type
         self.solution = None
-
         self.initial_state = None
         # remove all agent's pieces
         self.goal = None
@@ -25,7 +23,6 @@ class AStar(Search):
         # A mapping for heuristic distances
         self.colour = None
         self.heuristic_distance = dd(float)
-
         self.final_node = None
 
     def recompile(self):
@@ -49,6 +46,12 @@ class AStar(Search):
             # Get solution
             self.solution = self.final_node.solution
         return self.solution.pop(0)
+
+    def goal_test(self, state, type=0):
+        if type == 0:
+            return state.completed[self.colour] >= 4
+        elif type == 1:
+            return state.goal == self.goal
 
     def best_first_graph_search(self, problem, f, show=False, **kwargs):
         """Search the nodes with the lowest f scores first.

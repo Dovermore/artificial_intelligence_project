@@ -11,48 +11,68 @@ class AlphaBetaSearch(Search):
         self.utility_generator = utility_generator
         self.debug = False
 
-    def min_value(self, game, state, depth, a, p):
+    def state_value(self, state, colour):
+        utility_generator = self.utility_generator(state)
+        return utility_generator(colour), None
+
+    def min_value(self, game, state, depth, a, b):
         if self.terminal_test(state, depth):
-            utility_generator = self.utility_generator(state)
-            return utility_generator('red'), None
+            return self.utility_generator(state)("red"), None
         depth += 1
         utility = +inf
 
         actions = game.actions(state)
-        # TODO
-        # take two steps assuming opponents are in alliance
-        for green_action in actions:
+        states = map(lambda x: game.result(state, x), actions)
+        states = sorted(states,
+                        key=lambda x: self.utility_generator(x)("red"),
+                        reverse=True)
+
+        for green_action, state_1 in zip(actions, states):
             state_1 = game.result(state, green_action)
-            for blue_action in game.actions(state_1):
-                state_2 = game.result(state_1, blue_action)
-                v_, opponent_action = self.max_value(game, state_2, depth, a, p)
+
+            actions = game.actions(state_1)
+            states = map(lambda x: game.result(state, x), actions)
+            states = sorted(states,
+                            key=lambda x: self.utility_generator(x)("red"),
+                            reverse=True)
+
+            for blue_action, state_2 in zip(actions, states):
+                v_, opponent_action = self.max_value(game, state_2,
+                                                     depth, a, b)
                 if self.debug:
-                    print(f'{depth} {green_action} {blue_action} {float(v_):.3}')
+                    print(f'{depth} {green_action} {blue_action} '
+                          f'{float(v_):.3}')
                 utility = min(utility, v_)
                 if utility <= a:
                     return utility, None
-                p = min(p, utility)
+                b = min(b, utility)
         return utility, None
 
-    def max_value(self, game, state, depth, a, p):
+    def max_value(self, game, state, depth, a, b):
         if self.terminal_test(state, depth):
-            utility_generator = self.utility_generator(state)
-            return utility_generator('red'), None
+            return self.utility_generator(state)("red"), None
         depth += 1
         utility = -inf
         best_action = None
-        for action in game.actions(state):
-            if (self.debug):
+
+        actions = game.actions(state)
+        states = map(lambda x: game.result(state, x), actions)
+        states = sorted(states,
+                        key=lambda x: self.utility_generator(x)("red"),
+                        reverse=True)
+
+        for action, state in zip(actions, states):
+            if self.debug:
                 print(action)
-            s_ = game.result(state, action)
-            new_utility, opponent_action = self.min_value(game, s_, depth, a, p)
-            if (self.debug):
+            new_utility, opponent_action = self.min_value(game, state,
+                                                          depth, a, b)
+            if self.debug:
                 print(f'{depth} {action} {float(new_utility):.3}')
             if new_utility > utility:
                 best_action = action
                 utility = new_utility
             # opponent won't allow you to chose a better move
-            if utility >= p:
+            if utility >= b:
                 return utility, best_action
             a = max(a, utility)
         return utility, best_action
