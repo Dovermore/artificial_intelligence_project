@@ -15,6 +15,8 @@ class CompositionSearch(Search):
         self.one = one_strat
 
     def search(self, game, state, **kwargs):
+        if not state.piece_to_pos[state.colour]:
+            return None, None, "PASS"
         if len(state.remaining_colours) == 3:
             return self.three.search(game, state, **kwargs)
         elif len(state.remaining_colours) == 2:

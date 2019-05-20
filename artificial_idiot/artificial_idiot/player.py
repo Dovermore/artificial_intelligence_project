@@ -9,7 +9,8 @@ from artificial_idiot.search.player_count_composition import CompositionSearch
 from artificial_idiot.search.multi_player_search import MultiPlayerSearch
 from artificial_idiot.search.search_cutoff.cutoff import DepthLimitCutoff
 from artificial_idiot.evaluation.evaluator_generator import (
-    DummyEvaluator, WinLossEvaluator, NaiveEvaluatorGenerator, AdvanceEG
+    DummyEvaluator, WinLossEvaluator, NaiveEvaluatorGenerator, AdvanceEG,
+    MinimaxEvaluator
 )
 from artificial_idiot.search.mini_max import AlphaBetaSearch
 from artificial_idiot.game.node import Node, BasicUCTNode

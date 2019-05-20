@@ -48,6 +48,9 @@ class AStar(Search):
         return self.solution.pop(0)
 
     def goal_test(self, state, type=0):
+        """
+        A very simple goal test, that's **not** admissible
+        """
         if type == 0:
             return state.completed[self.colour] >= 4
         elif type == 1:
