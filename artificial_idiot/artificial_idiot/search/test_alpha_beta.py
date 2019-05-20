@@ -23,7 +23,7 @@ class TestParnoidPlayer(TestCase):
     2. (max neg) leading player's distance from winning
     3. (max) distance of excess piece to opponent exit,
         try to block leading player from exiting
-    4. (max neg) networth of other players' pieces
+    4. (max neg) net worth of other players' pieces
     5. (max) negative sum distance to goal
     6. (max) number of completed piece
     """
@@ -123,6 +123,7 @@ class TestParnoidPlayer(TestCase):
         game = Game('red', state)
         best_action = search.search(game, state)
         print(best_action)
+        self.assertEqual('EXIT', best_action[-1])
 
     def test_pass(self):
         search = self.search
