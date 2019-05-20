@@ -22,4 +22,5 @@ class CompositionSearch(Search):
         elif len(state.remaining_colours) == 2:
             return self.two.search(game, state, **kwargs)
         else:
+            print('One Search')
             return self.one.search(game, state, **kwargs)

@@ -14,11 +14,9 @@ An evaluator that considers
 4. (max neg) networth of other players' pieces
 5. (max) negative sum distance to goal
 6. (max) number of completed piece
-7. (max) number of excess piece
 """
-
-
 weights = [100, -20, 15, -50, 15, 14, 80]
+weights = [100, -10, 6, -60, 5, 1000]
 evaluator_generator = MinimaxEvaluator(weights)
 cutoff = DepthLimitCutoff(2)
 # open_book = OpenGameBook("gather")
@@ -37,5 +35,4 @@ mix = PlayerFactory.get_type_factory(Player)(
     game_type=Game
 )
 
-
-red, green, blue = mix, pp, mn
+red, green, blue = mix, RandomPlayer, RandomPlayer,
