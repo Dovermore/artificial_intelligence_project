@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>Python</ID>
+  <OriginalElement>#/Users/Dovermore/Documents/2019t1/COMP30024-AritificialIntelligence/ArtificialIdiotProject/artificial_idiot/artificial_idiot/player.py</OriginalElement>
+  <nodes>
+    <node x="-3.0" y="105.5">artificial_idiot.player.GreedyPlayer</node>
+    <node x="938.5" y="105.5">artificial_idiot.player.Player</node>
+    <node x="913.0" y="-14.5">artificial_idiot.player.RandomPlayer</node>
+    <node x="321.5" y="225.5">artificial_idiot.player.ParanoidPlayer_Advance</node>
+    <node x="804.5" y="185.5">object</node>
+    <node x="330.5" y="-14.5">artificial_idiot.player.ParanoidPlayer_Naive</node>
+    <node x="640.5" y="425.5">artificial_idiot.player.MaxNPlayer</node>
+    <node x="1229.5" y="345.5">artificial_idiot.player.BasicUCTPlayer</node>
+    <node x="351.5" y="105.5">artificial_idiot.player.ParanoidAgent</node>
+    <node x="1251.0" y="225.5">artificial_idiot.player.RLPlayer</node>
+    <node x="715.5" y="305.5">artificial_idiot.player.PlayerFactory</node>
+    <node x="1235.5" y="105.5">artificial_idiot.player.ArtificialIdiot</node>
+    <node x="920.5" y="425.5">artificial_idiot.player.MaxNAgent</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="artificial_idiot.player.Player" target="object">
+      <point x="-40.0" y="14.5" />
+      <point x="1000.0" y="200.0" />
+      <point x="35.5" y="0.0" />
+    </edge>
+    <edge source="artificial_idiot.player.PlayerFactory" target="object">
+      <point x="0.0" y="-14.5" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="artificial_idiot.player.MaxNAgent" target="artificial_idiot.player.Player">
+      <point x="0.0" y="-14.5" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="artificial_idiot.player.RLPlayer" target="artificial_idiot.player.Player">
+      <point x="-109.0" y="0.0" />
+      <point x="1120.0" y="240.0" />
+      <point x="80.0" y="14.5" />
+    </edge>
+    <edge source="artificial_idiot.player.ParanoidPlayer_Advance" target="artificial_idiot.player.ParanoidAgent">
+      <point x="0.0" y="-14.5" />
+      <point x="0.0" y="14.5" />
+    </edge>
+    <edge source="artificial_idiot.player.RandomPlayer" target="artificial_idiot.player.Player">
+      <point x="0.0" y="14.5" />
+      <point x="0.0" y="-14.5" />
+    </edge>
+    <edge source="artificial_idiot.player.BasicUCTPlayer" target="artificial_idiot.player.Player">
+      <point x="-130.5" y="0.0" />
+      <point x="1080.0" y="360.0" />
+      <point x="40.0" y="14.5" />
+    </edge>
+    <edge source="artificial_idiot.player.GreedyPlayer" target="artificial_idiot.player.ParanoidAgent">
+      <point x="123.0" y="0.0" />
+      <point x="-128.5" y="0.0" />
+    </edge>
+    <edge source="artificial_idiot.player.ArtificialIdiot" target="artificial_idiot.player.Player">
+      <point x="-124.5" y="0.0" />
+      <point x="101.5" y="0.0" />
+    </edge>
+    <edge source="artificial_idiot.player.MaxNPlayer" target="artificial_idiot.player.MaxNAgent">
+      <point x="119.5" y="0.0" />
+      <point x="-119.5" y="0.0" />
+    </edge>
+    <edge source="artificial_idiot.player.ParanoidAgent" target="artificial_idiot.player.Player">
+      <point x="128.5" y="0.0" />
+      <point x="-101.5" y="0.0" />
+    </edge>
+    <edge source="artificial_idiot.player.ParanoidPlayer_Naive" target="artificial_idiot.player.ParanoidAgent">
+      <point x="0.0" y="14.5" />
+      <point x="0.0" y="-14.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.6145077720207254" x="942.0" y="186.28246205733558" />
+  <SelectedNodes>
+    <node>artificial_idiot.player.GreedyPlayer</node>
+    <node>artificial_idiot.player.RandomPlayer</node>
+    <node>artificial_idiot.player.Player</node>
+    <node>artificial_idiot.player.PlayerFactory</node>
+    <node>artificial_idiot.player.ParanoidPlayer_Naive</node>
+    <node>artificial_idiot.player.RLPlayer</node>
+    <node>artificial_idiot.player.ParanoidPlayer_Advance</node>
+    <node>artificial_idiot.player.MaxNAgent</node>
+    <node>artificial_idiot.player.MaxNPlayer</node>
+    <node>artificial_idiot.player.ArtificialIdiot</node>
+    <node>artificial_idiot.player.BasicUCTPlayer</node>
+    <node>artificial_idiot.player.ParanoidAgent</node>
+    <node>object</node>
+  </SelectedNodes>
+  <Categories />
+</Diagram>
+

@@ -141,8 +141,6 @@ def excess_piece_negative_sum_distance(state, player):
     return -sum(distances.values())
 
 
-
-
 def sum_number_needed_pieces(state, player):
     return min(num_board_piece(state, player) +
                num_exited_piece(state, player), 4)
@@ -362,3 +360,5 @@ class MinimaxEvaluator(EvaluatorGenerator):
     # returns an evaluator for that state
     def __call__(self, state, *args, **kwargs):
         return self._eval(state)
+
+# TODO winning should also be taken into consideration
