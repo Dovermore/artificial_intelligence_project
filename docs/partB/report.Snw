@@ -1,0 +1,10 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\author{Calvin Zhuoqun Huang, Chuanyuan Liu}
+\begin{document}
+    
+\end{document}

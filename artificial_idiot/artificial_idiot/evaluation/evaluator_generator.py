@@ -364,3 +364,5 @@ class MinimaxEvaluator(EvaluatorGenerator):
     # returns an evaluator for that state
     def __call__(self, state, *args, **kwargs):
         return self._eval(state)
+
+# TODO winning should also be taken into consideration

@@ -17,10 +17,13 @@ An evaluator that considers
 7. (max) number of excess piece
 """
 weights = [100, -7, 2, -10, 1, 10, 20]
+# weights = [100, -20, 15, -50, 15, 14, 80]
+weights = [100, -10, 6, -60, 5, 1000]
 evaluator_generator = MinimaxEvaluator(weights)
 cutoff = DepthLimitCutoff(2)
 # open_book = OpenGameBook("gather")
-open_book = None
+open_book = OpenGameBook("edge")
+# open_book = None
 search = AlphaBetaSearch(evaluator_generator, cutoff)
 
 three_player = MultiPlayerSearch(book=open_book, search_algorithm=search)

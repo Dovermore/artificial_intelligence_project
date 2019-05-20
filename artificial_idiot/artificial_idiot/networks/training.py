@@ -47,8 +47,9 @@ debug = 0
 
 # explore = 0
 # explore = 0.1
-explore = 0.2
+# explore = 0.2
 # explore = 0.5
+explore = 1
 
 # theta = 0.05
 # theta = 0.01
