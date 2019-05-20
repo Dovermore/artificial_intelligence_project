@@ -16,7 +16,7 @@ An evaluator that considers
 6. (max) number of completed piece
 7. (max) number of excess piece
 """
-weights = [100, -0, 0, -0, 1, 10, 0]
+weights = [100, -7, 2, -10, 1, 10, 20]
 evaluator_generator = MinimaxEvaluator(weights)
 cutoff = DepthLimitCutoff(2)
 # open_book = OpenGameBook("gather")
