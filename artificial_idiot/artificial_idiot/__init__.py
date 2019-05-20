@@ -2,7 +2,7 @@ from artificial_idiot.player import *
 
 print("======================")
 red = ParanoidPlayer_Naive
-green = ParanoidPlayer_Naive
+# green = ParanoidPlayer_Naive
 # green = MaxNPlayer
 blue = MaxNPlayer
 
@@ -23,7 +23,7 @@ one_player = AStar()
 
 composite_search = CompositionSearch(three_player, two_player, one_player)
 
-# green = PlayerFactory.get_type_factory(Player)(
-#     search_algorithm=composite_search,
-#     game_type=Game
-# )
+green = PlayerFactory.get_type_factory(Player)(
+    search_algorithm=composite_search,
+    game_type=Game
+)

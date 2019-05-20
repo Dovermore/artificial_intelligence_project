@@ -58,8 +58,7 @@ class AlphaBetaSearch(Search):
         actions = game.actions(state)
         states = map(lambda x: game.result(state, x), actions)
         states = sorted(states,
-                        key=lambda x: self.utility_generator(x)("red"),
-                        reverse=True)
+                        key=lambda x: self.utility_generator(x)("red"))
 
         for action, state in zip(actions, states):
             if self.debug:
