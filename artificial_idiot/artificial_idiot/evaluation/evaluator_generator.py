@@ -79,9 +79,10 @@ def sum_number_pieces(state, player):
 def sum_completed_piece(state, player):
     exited = num_exited_piece(state, player)
     if exited < NEEDED:
-        return exited
+        return -exited
     else:
-        return 99999
+        return exited
+
 
 def other_player_piece_worth(state, player):
     numbers = []
@@ -141,11 +142,10 @@ def excess_piece_negative_sum_distance(state, player):
     return -sum(distances.values())
 
 
-
-
 def sum_number_needed_pieces(state, player):
     return min(num_board_piece(state, player) +
                num_exited_piece(state, player), 4)
+
 
 def excess_pieces(state, player):
     return sum_number_pieces(state, player) - 4
@@ -339,13 +339,12 @@ class MinimaxEvaluator(EvaluatorGenerator):
     """
     def __init__(self, weights,  *args, **kwargs):
         func = [
-            sum_number_needed_pieces,
+            sum_number_pieces,
             leading_opponent_negative_distance,
             excess_piece_negative_sum_distance,
             other_player_piece_worth,
             modified_negative_sum_distance,
             sum_completed_piece,
-            excess_pieces,
         ]
         assert len(weights) != func
         self._weights = weights
