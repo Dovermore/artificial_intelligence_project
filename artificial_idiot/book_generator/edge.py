@@ -1,7 +1,7 @@
 from artificial_idiot.search.action_book.action_book import SimpleActionBook
 
 
-name = "gather"
+name = "edge"
 
 action_book = SimpleActionBook(name)
 action_book.put_action(None, ((-3, 0), (-2, 0), "MOVE"))

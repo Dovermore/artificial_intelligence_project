@@ -27,7 +27,9 @@ else:
     # agent = ParametrisedRL(*architectures["simple_two_sig"])
     # agent = ParametrisedRL(*architectures["full_four_lkrl"])
     # agent = ParametrisedRL(*architectures["full_four_sig"])
-    agent = ParametrisedRL(*architectures["full_three_layer_sigmoid_network"])
+    # agent = ParametrisedRL(*architectures["full_three_layer_sigmoid_network"])
+    # agent = ParametrisedRL(*architectures["full_linear"])
+    agent = ParametrisedRL(*architectures["full_two_sig"])
     pass
 
 
@@ -36,8 +38,8 @@ else:
 # node_type = SimpleRLNode
 node_type = SimpleRLNode2
 
-# policy = "greedy"
-policy = "choice"
+policy = "greedy"
+# policy = "choice"
 
 # debug = 0.001
 # debug = 0.1
@@ -48,14 +50,14 @@ debug = 0
 explore = 0.2
 # explore = 0.5
 
-theta = 0.05
+# theta = 0.05
 # theta = 0.01
-# theta = 0.005
+theta = 0.005
 # theta = 0.001
 # theta = 0.0005
 
-# gamma = 1
-gamma = 0.99
+gamma = 1
+# gamma = 0.99
 
 initial_state = State(Player.start_config, "red")
 game = Game("red", initial_state)

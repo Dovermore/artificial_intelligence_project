@@ -68,8 +68,10 @@ def num_board_piece(state, player):
     n_pieces = len(piece_to_pos[player])
     return n_pieces
 
+
 def total_number_pieces(state, player):
         return num_board_piece(state, player) + num_exited_piece(state, player)
+
 
 class EvaluatorGenerator(abc.ABC):
     """
