@@ -26,9 +26,8 @@ class TestParnoidPlayer(TestCase):
     4. (max neg) net worth of other players' pieces
     5. (max) negative sum distance to goal
     6. (max) number of completed piece
-    7. (max) number of excess piece
     """
-    weights = [100, -0, 0, -0, 1, 10, 0]
+    weights = [100, -10, 6, -60, 5, 1000]
     evaluator_generator = MinimaxEvaluator(weights)
     cutoff = DepthLimitCutoff(2)
     search = AlphaBetaSearch(evaluator_generator, cutoff)
@@ -120,14 +119,6 @@ class TestParnoidPlayer(TestCase):
     def test_exit(self):
         search = self.search
         state = parse_state("../../tests/please_exit.json")
-        print(state)
-        game = Game('red', state)
-        best_action = search.search(game, state)
-        print(best_action)
-        self.assertEqual('EXIT', best_action[-1])
-
-        search = self.search
-        state = parse_state("../../tests/please_exit1.json")
         print(state)
         game = Game('red', state)
         best_action = search.search(game, state)
