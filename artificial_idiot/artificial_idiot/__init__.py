@@ -2,7 +2,7 @@ from artificial_idiot.player import *
 
 print("======================")
 red = ParanoidPlayer_Naive
-green = ParanoidPlayer_Naive
+# green = ParanoidPlayer_Naive
 # green = MaxNPlayer
 blue = MaxNPlayer
 
@@ -11,7 +11,7 @@ blue = MaxNPlayer
 #     search_algorithm=OpenGameBook("gather"), game_type=Game,
 #     evaluator=player_evaluator)
 
-weights = [10, -2, 4, -0.5, -1, -1]
+weights = [10, -2, 4, -0.5, 2, 0.5]
 evaluator_generator = MinimaxEvaluator(weights)
 cutoff = DepthLimitCutoff(2)
 open_book = OpenGameBook("gather")
@@ -23,7 +23,7 @@ one_player = AStar()
 
 composite_search = CompositionSearch(three_player, two_player, one_player)
 
-# green = PlayerFactory.get_type_factory(Player)(
-#     search_algorithm=composite_search,
-#     game_type=Game
-# )
+green = PlayerFactory.get_type_factory(Player)(
+    search_algorithm=composite_search,
+    game_type=Game
+)
