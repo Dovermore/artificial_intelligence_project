@@ -24,7 +24,7 @@ search = AlphaBetaSearch(evaluator_generator, cutoff)
 
 three_player = MultiPlayerSearch(book=open_book, search_algorithm=search)
 two_player = MultiPlayerSearch(search_algorithm=search)
-one_player = MultiPlayerSearch(search_algorithm=search)
+one_player = AStar()
 
 composite_search = CompositionSearch(three_player, two_player, one_player)
 
