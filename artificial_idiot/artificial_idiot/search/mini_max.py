@@ -19,7 +19,7 @@ class AlphaBetaSearch(Search):
         if self.terminal_test(state, depth):
             return self.utility_generator(state)("red"), None
         depth += 1
-        utility = +inf
+        value = +inf
 
         actions = game.actions(state)
         states = map(lambda x: game.result(state, x), actions)
@@ -37,22 +37,22 @@ class AlphaBetaSearch(Search):
                             reverse=True)
 
             for blue_action, state_2 in zip(actions, states):
-                v_, opponent_action = self.max_value(game, state_2,
-                                                     depth, a, b)
+                new_value, opponent_action = self.max_value(game, state_2,
+                                                            depth, a, b)
                 if self.debug:
                     print(f'{depth} {green_action} {blue_action} '
-                          f'{float(v_):.3}')
-                utility = min(utility, v_)
-                if utility <= a:
-                    return utility, None
-                b = min(b, utility)
-        return utility, None
+                          f'{float(new_value):.3}')
+                value = min(value, new_value)
+                if value <= a:
+                    return value, None
+                b = min(b, value)
+        return value, None
 
     def max_value(self, game, state, depth, a, b):
         if self.terminal_test(state, depth):
             return self.utility_generator(state)("red"), None
         depth += 1
-        utility = -inf
+        value = -inf
         best_action = None
 
         actions = game.actions(state)
@@ -64,18 +64,18 @@ class AlphaBetaSearch(Search):
         for action, state in zip(actions, states):
             if self.debug:
                 print(action)
-            new_utility, opponent_action = self.min_value(game, state,
+            new_value, opponent_action = self.min_value(game, state,
                                                           depth, a, b)
             if self.debug:
-                print(f'{depth} {action} {float(new_utility):.3}')
-            if new_utility > utility:
+                print(f'{depth} {action} {float(new_value):.3}')
+            if new_value > value:
                 best_action = action
-                utility = new_utility
+                value = new_value
             # opponent won't allow you to chose a better move
-            if utility >= b:
-                return utility, best_action
-            a = max(a, utility)
-        return utility, best_action
+            if value >= b:
+                return value, best_action
+            a = max(a, value)
+        return value, best_action
 
     def search(self, game, state, depth=0):
         best_v, best_action = self.max_value(game, state, depth, -inf, inf)
