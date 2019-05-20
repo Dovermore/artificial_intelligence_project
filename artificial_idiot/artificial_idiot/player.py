@@ -1,4 +1,4 @@
-from artificial_idiot.search.random import Random
+from artificial_idiot.search.randomsearch import RandomSearch
 from artificial_idiot.search.uct import UCTSearch
 from artificial_idiot.search.max_n import MaxN
 from artificial_idiot.search.open_game_book import OpenGameBook
@@ -208,7 +208,7 @@ class RandomPlayer(Player):
         if seed is None:
             seed = random.random()
         print("* seed is:", seed)
-        super().__init__(colour, search_algorithm=Random(seed),
+        super().__init__(colour, search_algorithm=RandomSearch(seed),
                          initial_state=initial_state)
 
 
@@ -223,13 +223,7 @@ class ParanoidAgent(Player):
         return self.convert_action(player_action, 'referee')
 
 
-class MaxNAgent(Player):
-    def __init__(self, colour, initial_state, evaluator, cutoff):
-        search_algorithm = MaxN(evaluator, cutoff, n_player=3)
-        super().__init__(colour, search_algorithm=search_algorithm,
-                         initial_state=initial_state)
-
-class MaxNPlayer(MaxNAgent):
+class MaxNPlayer(Player):
     """
     A wrapper class for referee that uses interface given by referee
     Here we use best hyperparameter
@@ -240,9 +234,9 @@ class MaxNPlayer(MaxNAgent):
         weights = [10, 100, 1]
         evaluator_generator = NaiveEvaluatorGenerator(weights)
         cutoff = DepthLimitCutoff(3)
-        super().__init__(color, cutoff=cutoff, evaluator=evaluator_generator,
+        search_algorithm = MaxN(evaluator_generator, cutoff, n_player=3)
+        super().__init__(color, search_algorithm=search_algorithm,
                          initial_state=None)
-
 
 
 class ParanoidPlayer_Advance(ParanoidAgent):
@@ -252,6 +246,7 @@ class ParanoidPlayer_Advance(ParanoidAgent):
         evaluator_generator = NaiveEvaluatorGenerator(weights)
         cutoff = DepthLimitCutoff(4)
         super().__init__(color, evaluator_generator, cutoff)
+
 
 
 class ParanoidPlayer_Naive(ParanoidAgent):
@@ -265,8 +260,7 @@ class ParanoidPlayer_Naive(ParanoidAgent):
 
 class GreedyPlayer(ParanoidAgent):
     """
-    A wrapper class for referee that uses interface given by referee
-    Here we use best hyperparameter
+    A greedy player is Parnoid Agent with with 0 layer look a head
     """
     def __init__(self, color):
         # self.utility_pieces, num_exited_piece, self.utility_distance

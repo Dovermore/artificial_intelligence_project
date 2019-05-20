@@ -3,7 +3,7 @@ import random
 from artificial_idiot.search.search import Search
 
 
-class Random(Search):
+class RandomSearch(Search):
     def __init__(self, seed):
         self.seed = seed
         random.seed(seed)

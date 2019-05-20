@@ -18,7 +18,7 @@ class TestParnoidPlayer(TestCase):
     # num_exited_piece, total_number_pieces, utility_distance
     weights = [10, 100, 1]
     evaluator_generator = NaiveEvaluatorGenerator(weights)
-    cutoff = DepthLimitCutoff(2)
+    cutoff = DepthLimitCutoff(4)
     search = AlphaBetaSearch(evaluator_generator, cutoff)
 
     def test_initial(self):
