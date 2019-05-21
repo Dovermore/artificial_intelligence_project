@@ -344,10 +344,6 @@ class FunctionalEvaluator:
                       0 for i, fn in enumerate(self._funcs)])
         X = X.T
         value = np.dot(X, self._weights)
-        print("--------------------")
-        print(X)
-        print(self._weights)
-        print(value)
         self._value[player] = value
         return value
 

@@ -7,7 +7,7 @@ class OpenGameBook(Search):
     This class defines the open game search strategy
     """
 
-    STRATEGIES = {"gather", "edge"}
+    STRATEGIES = {"gather", "edge", "edge2"}
 
     def __init__(self, strategy="gather"):
         """

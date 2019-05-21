@@ -134,11 +134,8 @@ class AlphaBetaSearch(Search):
             else:
                 depth = self.terminal_test.max_depth - 1
             for _, _, action, child in actions_states:
-                print("========================================")
-                print(action)
                 new_value, opponent_action = self.min_value(game, child,
                                                             depth, a, b)
-                print(new_value)
                 if self.debug:
                     print(f'{depth} {action} {float(new_value):.3}')
                 if new_value > value:
@@ -200,5 +197,4 @@ class AlphaBetaSearch(Search):
         best_v, best_action = self.max_value(game, state, depth, -inf, inf)
         if (self.debug):
             print('Best utility is', best_v)
-        # print(f'Move: {best_action}, Value: {best_v}')
         return best_action

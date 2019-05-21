@@ -1,9 +1,5 @@
 from artificial_idiot.player import *
 
-print("======================")
-pp = ParanoidPlayer_Naive
-mn = MaxNPlayer
-
 """
 * weights are defined beforehand
 An evaluator that considers
@@ -20,19 +16,13 @@ An evaluator that considers
 10. (min) piece in edge of enemy exit
 """
 # open_book = OpenGameBook("gather")
-open_book = OpenGameBook("edge")
-# open_book = None
+# open_book = OpenGameBook("edge")
+open_book = None
 
-# weights = [100, -7, 2, -10, 1, 10, 20]
-# weights = [100, -20, 15, -50, 15, 14, 80]
-# defensive_weights = [100, -10, 6, -60, 5, 1000]
 cutoff = DepthLimitCutoff(4)
 
-# weights = [10, 100, 1]
-# evaluator_generator = NaiveEvaluatorGenerator(weights)
-
 # Help aggressively take over pieces
-aggressive_weights = [1000, -10, 80, -500, 10, 0, 1000, 40, 200, -19]
+aggressive_weights = [1000, -10, 40, -500, 10, 0, 1000, 15, 100, -19]
 evaluator_generator = MinimaxEvaluator(aggressive_weights)
 aggressive_search = AlphaBetaSearch(evaluator_generator, cutoff)
 
@@ -43,6 +33,7 @@ defensive_search = AlphaBetaSearch(evaluator_generator, cutoff)
 
 
 cutoff = DepthLimitCutoff(2)
+# When time runs out, reduce the depth
 # Help aggressively take over pieces
 evaluator_generator = MinimaxEvaluator(aggressive_weights)
 simple_aggressive_search = AlphaBetaSearch(evaluator_generator, cutoff)
@@ -62,8 +53,7 @@ mix = PlayerFactory.get_type_factory(Player)(
     game_type=Game
 )
 
-# red, green, blue = mix, RandomPlayer, RandomPlayer
-# red, green, blue = pp, GreedyPlayer, GreedyPlayer
-# red, green, blue = mix, GreedyPlayer, GreedyPlayer
-# red, green, blue = mix, pp, pp
-red, green, blue = mix, pp, mn
+pp = ParanoidPlayer_Naive
+mn = MaxNPlayer
+
+player = mix

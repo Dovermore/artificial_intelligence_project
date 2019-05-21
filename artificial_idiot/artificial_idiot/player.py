@@ -1,10 +1,9 @@
 from artificial_idiot.search.randomsearch import RandomSearch
 from artificial_idiot.search.uct import UCTSearch
 from artificial_idiot.search.max_n import MaxN
-from artificial_idiot.search.open_game_book import OpenGameBook
-from artificial_idiot.search.a_star import AStar
 from artificial_idiot.search.RL import ParametrisedRL
 from artificial_idiot.search.mini_max import AlphaBetaSearch
+from artificial_idiot.search.open_game_book import OpenGameBook
 from artificial_idiot.search.composition_strategy import CompositionSearch
 from artificial_idiot.search.multi_player_search import MultiPlayerSearch
 from artificial_idiot.search.search_cutoff.cutoff import DepthLimitCutoff
@@ -254,7 +253,7 @@ class ParanoidPlayer_Naive(ParanoidAgent):
         # utility_pieces, num_exited_piece, total_number_pieces, utility_distance
         weights = [10, 100, 1]
         evaluator_generator = NaiveEvaluatorGenerator(weights)
-        cutoff = DepthLimitCutoff(2)
+        cutoff = DepthLimitCutoff(6)
         super().__init__(color, evaluator_generator, cutoff)
 
 
