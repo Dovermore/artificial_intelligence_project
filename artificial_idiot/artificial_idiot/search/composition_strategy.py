@@ -38,7 +38,6 @@ class CompositionSearch(Search):
             aggressive = self.simple_aggressive
             defensive = self.simple_defensive
 
-        print(f"Aggressive: {self.should_aggressive(game, state)}")
         if self.should_aggressive(game, state):
             action = aggressive.search(game, state, **kwargs)
         else:
