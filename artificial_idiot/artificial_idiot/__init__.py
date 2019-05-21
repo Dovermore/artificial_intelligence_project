@@ -14,20 +14,24 @@ An evaluator that considers
 4. (max neg) networth of other players' pieces
 5. (max) negative sum distance to goal
 6. (max) number of completed piece
+7. (max) excess pieces
+8. (max) negative corner distance (very low weight, only triggered when
+        not enough piece)
 """
 # weights = [100, -7, 2, -10, 1, 10, 20]
 # weights = [100, -20, 15, -50, 15, 14, 80]
-weights = [100, -10, 6, -60, 5, 1000]
+# weights = [100, -10, 6, -60, 5, 1000]
+weights = [100, -5, 10, 0, 3, 20, 50, 0.5]
 evaluator_generator = MinimaxEvaluator(weights)
 cutoff = DepthLimitCutoff(2)
-# open_book = OpenGameBook("gather")
-open_book = OpenGameBook("edge")
+open_book = OpenGameBook("gather")
+# open_book = OpenGameBook("edge")
 # open_book = None
 search = AlphaBetaSearch(evaluator_generator, cutoff)
 three_player = MultiPlayerSearch(book=open_book, search_algorithm=search)
 two_player = MultiPlayerSearch(search_algorithm=search)
-# one_player = MultiPlayerSearch(search_algorithm=search)
-one_player = AStar()
+one_player = MultiPlayerSearch(search_algorithm=search)
+# one_player = AStar()
 
 composite_search = CompositionSearch(three_player, two_player, one_player)
 
@@ -37,4 +41,5 @@ mix = PlayerFactory.get_type_factory(Player)(
 )
 
 # red, green, blue = mix, RandomPlayer, RandomPlayer
-red, green, blue = ParanoidPlayer_Naive, GreedyPlayer, GreedyPlayer
+# red, green, blue = mix, GreedyPlayer, GreedyPlayer
+red, green, blue = pp, mix, mn

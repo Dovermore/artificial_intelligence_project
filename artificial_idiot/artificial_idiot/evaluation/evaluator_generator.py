@@ -3,11 +3,17 @@ import numpy as np
 from math import log
 
 
-_exit_positions = {
+exit_positions = {
     "red": ((3, -3), (3, -2), (3, -1), (3, 0)),
     "green": ((-3, 3), (-2, 3), (-1, 3), (0, 3)),
     "blue": ((0, -3), (-1, -2), (-2, -1), (-3, 0))
 }
+exit_corner = {
+    "red": ((3, -3), (3, 0)),
+    "green": ((-3, 3), (0, 3)),
+    "blue": ((0, -3), (-3, 0))
+}
+
 NEEDED = 4
 
 
@@ -34,11 +40,11 @@ def grid_dist(pos1, pos2):
 
 def shortest_exit_distance(piece, state, player):
     pieces = state.piece_to_pos[player]
-    exit_positions = [pos for pos in _exit_positions[player]
-                      if ((not state.occupied(pos)) or (pos in pieces))]
+    _exit_positions = [pos for pos in exit_positions[player]
+                       if ((not state.occupied(pos)) or (pos in pieces))]
     # return 1000000 all exit position is blocked
     distance = 1000000
-    for exit_pos in exit_positions:
+    for exit_pos in _exit_positions:
         distance = min(grid_dist(piece, exit_pos), distance)
     return distance
 
@@ -50,6 +56,30 @@ def exit_distance(piece, state, player):
         return 3 - piece[1]
     if player == 'blue':
         return 3 + piece[0]
+
+
+def exit_corner_distance(piece, state, players):
+    """
+    Compute the distance from a piece to corner of some players.
+    """
+    dists = []
+    occupied_dists = []
+    pos_to_piece = state.pos_to_piece
+    # For all players you want to block
+    for player in players:
+        for corner in exit_corner[player]:
+            # If not occupied, or occupied by others try go for it
+            if corner not in state.pos_to_piece or \
+                    pos_to_piece[corner] != pos_to_piece[corner]:
+                dists.append(grid_dist(corner, piece))
+            # Else
+            else:
+                occupied_dists.append(grid_dist(corner, piece))
+    if dists:
+        return min(dists)
+    # Didn't find any place
+    else:
+        return min(occupied_dists)
 
 
 def sum_exit_distance(state, player):
@@ -78,7 +108,7 @@ def sum_number_pieces(state, player):
 
 def sum_completed_piece(state, player):
     exited = num_exited_piece(state, player)
-    return exited
+    return exited if exited < 4 else 999999
 
 
 def other_player_piece_worth(state, player):
@@ -91,7 +121,7 @@ def other_player_piece_worth(state, player):
     return sum(numbers) + difference
 
 
-def leading_opponent_and_distance(state, player):
+def leading_opponent_and_neg_distance(state, player):
     numbers = {}
     for other_player in state.code_map:
         if other_player == player:
@@ -102,7 +132,7 @@ def leading_opponent_and_distance(state, player):
 
 
 def leading_opponent_negative_distance(state, player):
-    return -leading_opponent_and_distance(state, player)[1]
+    return leading_opponent_and_neg_distance(state, player)[1]
 
 
 def modified_negative_sum_distance(state, player):
@@ -111,10 +141,10 @@ def modified_negative_sum_distance(state, player):
     distances = {}
     for piece in pieces:
         distances[piece] = exit_distance(piece, state, player)
-    if not len(distances) >= NEEDED - n_completed:
+    if not len(pieces) + n_completed >= NEEDED:
         # 28 is the max distance for 4 piece, when less than 4 should
         # try to compete for more pieces
-        return -NEEDED * 7
+        return -28
     sorted_distance = sorted(distances.values())
     # Only consider the top 4 when have more
     return -sum(sorted_distance[:NEEDED - n_completed])
@@ -126,7 +156,7 @@ def excess_piece_negative_sum_distance(state, player):
     # No spare pieces
     if NEEDED > len(pieces) + n_completed:
         return 0
-    opponent = leading_opponent_and_distance(state, player)[0]
+    first_opponent = leading_opponent_and_neg_distance(state, player)[0]
     distances = {}
     for piece in pieces:
         distances[piece] = exit_distance(piece, state, player)
@@ -134,8 +164,17 @@ def excess_piece_negative_sum_distance(state, player):
     excess_pieces = sorted_distance[NEEDED:]
     distances = {}
     for piece, _ in excess_pieces:
-        distances[piece] = exit_distance(piece, state, opponent)
+        distances[piece] = exit_corner_distance(piece, state, [first_opponent])
     # Only consider the top 4 when have more
+    return -sum(distances.values())
+
+
+def regular_neg_corner_distance(state, player):
+    pieces = state.piece_to_pos[player]
+    opponents = [i for i in state.code_map if i != player]
+    distances = {}
+    for piece in pieces:
+        distances[piece] = exit_corner_distance(piece, state, opponents)
     return -sum(distances.values())
 
 
@@ -343,17 +382,18 @@ class MinimaxEvaluator(EvaluatorGenerator):
     4. (max neg) net worth of other players' pieces
     5. (max) negative sum distance to goal
     6. (max) number of completed piece
-    7. (max) number of excess piece
     """
 
     def __init__(self, weights,  *args, **kwargs):
         func = [
-            sum_number_pieces,
+            sum_number_needed_pieces,
             leading_opponent_negative_distance,
             excess_piece_negative_sum_distance,
             other_player_piece_worth,
             modified_negative_sum_distance,
             sum_completed_piece,
+            excess_pieces,
+            regular_neg_corner_distance
         ]
         print('the weights are:', weights)
         assert len(weights) != func
@@ -365,4 +405,3 @@ class MinimaxEvaluator(EvaluatorGenerator):
     def __call__(self, state, *args, **kwargs):
         return self._eval(state)
 
-# TODO winning should also be taken into consideration

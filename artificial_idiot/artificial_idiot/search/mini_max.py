@@ -1,6 +1,7 @@
 from math import inf
 from artificial_idiot.search.search import Search
 from random import random
+from itertools import groupby
 
 
 # Alpha - Beta search
@@ -28,8 +29,6 @@ class AlphaBetaSearch(Search):
                              (self.state_value(x[1]),
                               random(), x[0], x[1]), zip(actions, states))
         actions_states = sorted(actions_states)
-        # actions_states = sorted(actions_states, reverse=True)
-
         for _, _, green_action, state_1 in actions_states:
             actions = game.actions(state_1)
             states = map(lambda x: game.result(state_1, x), actions)
@@ -37,7 +36,6 @@ class AlphaBetaSearch(Search):
                                  (self.state_value(x[1]),
                                   random(), x[0], x[1]), zip(actions, states))
             actions_states = sorted(actions_states)
-            # actions_states = sorted(actions_states, reverse=True)
 
             for _, _, blue_action, state_2 in actions_states:
                 new_value, opponent_action = self.max_value(game, state_2,
@@ -65,11 +63,8 @@ class AlphaBetaSearch(Search):
                               random(), x[0], x[1]), zip(actions, states))
 
         actions_states = sorted(actions_states, reverse=True)
-        # actions_states = sorted(actions_states)
 
         for _, _, action, child in actions_states:
-            # if self.debug:
-            #     print(action)
             new_value, opponent_action = self.min_value(game, child,
                                                         depth, a, b)
             if self.debug:
@@ -87,4 +82,5 @@ class AlphaBetaSearch(Search):
         best_v, best_action = self.max_value(game, state, depth, -inf, inf)
         if (self.debug):
             print('Best utility is', best_v)
+        # print(f'Move: {best_action}, Value: {best_v}')
         return best_action
