@@ -2,7 +2,8 @@ from artificial_idiot.search.action_book.action_book \
     import FunctionalActionBook
 
 
-def can_eat_
+def can_take_piece():
+    pass
 
 
 if __name__ == "__main__":

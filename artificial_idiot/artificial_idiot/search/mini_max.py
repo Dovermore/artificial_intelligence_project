@@ -134,8 +134,11 @@ class AlphaBetaSearch(Search):
             else:
                 depth = self.terminal_test.max_depth - 1
             for _, _, action, child in actions_states:
+                print("========================================")
+                print(action)
                 new_value, opponent_action = self.min_value(game, child,
                                                             depth, a, b)
+                print(new_value)
                 if self.debug:
                     print(f'{depth} {action} {float(new_value):.3}')
                 if new_value > value:
@@ -162,37 +165,40 @@ class AlphaBetaSearch(Search):
                     a = max(a, value)
         return value, best_action
 
-    def max_value(self, game, state, depth, a, b):
-        if self.terminal_test(state, depth):
-            return self.utility_generator(state)("red"), None
-        depth += 1
-        value = -inf
-        best_action = None
-
-        actions = game.actions(state)
-        states = list(map(lambda x: game.result(state, x), actions))
-        actions_states = map(lambda x:
-                             (self.state_value(x[1]),
-                              random(), x[0], x[1]), zip(actions, states))
-        actions_states = sorted(actions_states, reverse=True)
-
-        for _, _, action, child in actions_states:
-            new_value, opponent_action = self.min_value(game, child,
-                                                        depth, a, b)
-            if self.debug:
-                print(f'{depth} {action} {float(new_value):.3}')
-            if new_value > value:
-                best_action = action
-                value = new_value
-            # opponent won't allow you to chose a better move
-            if value >= b:
-                return value, best_action
-            a = max(a, value)
-        return value, best_action
+    # def max_value(self, game, state, depth, a, b):
+    #     if self.terminal_test(state, depth):
+    #         return self.utility_generator(state)("red"), None
+    #     depth += 1
+    #     value = -inf
+    #     best_action = None
+    #
+    #     actions = game.actions(state)
+    #     states = list(map(lambda x: game.result(state, x), actions))
+    #     actions_states = map(lambda x:
+    #                          (self.state_value(x[1]),
+    #                           random(), x[0], x[1]), zip(actions, states))
+    #     actions_states = sorted(actions_states, reverse=True)
+    #
+    #     for _, _, action, child in actions_states:
+    #         # print("============================================================")
+    #         # print(action)
+    #         new_value, opponent_action = self.min_value(game, child,
+    #                                                     depth, a, b)
+    #         # print(new_value)
+    #         if self.debug:
+    #             print(f'{depth} {action} {float(new_value):.3}')
+    #         if new_value > value:
+    #             best_action = action
+    #             value = new_value
+    #         # opponent won't allow you to chose a better move
+    #         if value >= b:
+    #             return value, best_action
+    #         a = max(a, value)
+    #     return value, best_action
 
     def search(self, game, state, depth=0):
         best_v, best_action = self.max_value(game, state, depth, -inf, inf)
         if (self.debug):
             print('Best utility is', best_v)
-        print(f'Move: {best_action}, Value: {best_v}')
+        # print(f'Move: {best_action}, Value: {best_v}')
         return best_action
