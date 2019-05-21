@@ -22,7 +22,7 @@ open_book = None
 cutoff = DepthLimitCutoff(4)
 
 # Help aggressively take over pieces
-aggressive_weights = [1000, -10, 40, -1000, 5, 0, 1000, 40, 100, -10]
+aggressive_weights = [1000, -10, 40, -1000, 10, 0, 1000, 10, 50, -10]
 evaluator_generator = MinimaxEvaluator(aggressive_weights)
 aggressive_search = AlphaBetaSearch(evaluator_generator, cutoff)
 
@@ -53,9 +53,4 @@ mix = PlayerFactory.get_type_factory(Player)(
     game_type=Game
 )
 
-pp = ParanoidPlayer_Naive
-mn = MaxNPlayer
-
-Player = mix
-
-red, green, blue = Player, GreedyPlayer, GreedyPlayer
+Player = ParanoidPlayer_Naive
