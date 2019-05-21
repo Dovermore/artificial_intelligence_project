@@ -243,7 +243,7 @@ class ParanoidPlayer_Advance(ParanoidAgent):
         # utility_pieces, num_exited_piece, total_number_pieces, utility_distance
         weights = [10, 100, 1]
         evaluator_generator = NaiveEvaluatorGenerator(weights)
-        cutoff = DepthLimitCutoff(4)
+        cutoff = DepthLimitCutoff(2)
         super().__init__(color, evaluator_generator, cutoff)
 
 
@@ -253,7 +253,7 @@ class ParanoidPlayer_Naive(ParanoidAgent):
         # utility_pieces, num_exited_piece, total_number_pieces, utility_distance
         weights = [10, 100, 1]
         evaluator_generator = NaiveEvaluatorGenerator(weights)
-        cutoff = DepthLimitCutoff(6)
+        cutoff = DepthLimitCutoff(2)
         super().__init__(color, evaluator_generator, cutoff)
 
 

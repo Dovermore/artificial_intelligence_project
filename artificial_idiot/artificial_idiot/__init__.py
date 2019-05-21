@@ -57,3 +57,5 @@ pp = ParanoidPlayer_Naive
 mn = MaxNPlayer
 
 player = mix
+
+# red, green, blue = ParanoidPlayer_Naive, GreedyPlayer, GreedyPlayer

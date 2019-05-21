@@ -53,7 +53,6 @@ class AlphaBetaSearch(Search):
             return self.utility_generator(state)("red"), None
         depth += 1
         value = +inf
-
         actions = game.actions(state)
         states = list(map(lambda x: game.result(state, x), actions))
 
@@ -177,8 +176,6 @@ class AlphaBetaSearch(Search):
     #     actions_states = sorted(actions_states, reverse=True)
     #
     #     for _, _, action, child in actions_states:
-    #         # print("============================================================")
-    #         # print(action)
     #         new_value, opponent_action = self.min_value(game, child,
     #                                                     depth, a, b)
     #         # print(new_value)
