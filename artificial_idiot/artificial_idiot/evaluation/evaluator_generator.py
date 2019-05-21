@@ -1,6 +1,7 @@
 import abc
 import numpy as np
 from math import log
+from functools import lru_cache
 
 
 exit_positions = {
@@ -17,6 +18,7 @@ exit_corner = {
 NEEDED = 4
 
 
+@lru_cache(maxsize=10)
 def grid_dist(pos1, pos2):
     """
     Get the grid distance between two different grid locations
@@ -38,6 +40,7 @@ def grid_dist(pos1, pos2):
         return abs(dy + dx)
 
 
+@lru_cache(maxsize=10)
 def shortest_exit_distance(piece, state, player):
     pieces = state.piece_to_pos[player]
     _exit_positions = [pos for pos in exit_positions[player]
@@ -49,6 +52,7 @@ def shortest_exit_distance(piece, state, player):
     return distance
 
 
+@lru_cache(maxsize=10)
 def exit_distance(piece, state, player):
     if player == 'red':
         return 3 - piece[0]
@@ -58,6 +62,7 @@ def exit_distance(piece, state, player):
         return 3 + piece[0]
 
 
+@lru_cache(maxsize=10)
 def exit_corner_distance(piece, state, players):
     """
     Compute the distance from a piece to corner of some players.
@@ -70,11 +75,14 @@ def exit_corner_distance(piece, state, players):
         for corner in exit_corner[player]:
             # If not occupied, or occupied by others try go for it
             if corner not in state.pos_to_piece or \
-                    pos_to_piece[corner] != pos_to_piece[corner]:
+                    pos_to_piece[corner] != pos_to_piece[corner] \
+                    or corner == piece:
                 dists.append(grid_dist(corner, piece))
             # Else
             else:
                 occupied_dists.append(grid_dist(corner, piece))
+        if dists:
+            return min(dists)
     if dists:
         return min(dists)
     # Didn't find any place
@@ -82,6 +90,7 @@ def exit_corner_distance(piece, state, players):
         return min(occupied_dists)
 
 
+@lru_cache(maxsize=10)
 def sum_exit_distance(state, player):
     pieces = state.piece_to_pos[player]
     distances = {}
@@ -90,27 +99,32 @@ def sum_exit_distance(state, player):
     return sum(distances.values())
 
 
+@lru_cache(maxsize=10)
 def num_exited_piece(state, player):
     completed = state.completed
     n_exited_pieces = completed[player]
     return n_exited_pieces
 
 
+@lru_cache(maxsize=10)
 def num_board_piece(state, player):
     piece_to_pos = state.piece_to_pos
     n_pieces = len(piece_to_pos[player])
     return n_pieces
 
 
+@lru_cache(maxsize=10)
 def sum_number_pieces(state, player):
     return num_board_piece(state, player) + num_exited_piece(state, player)
 
 
+@lru_cache(maxsize=10)
 def sum_completed_piece(state, player):
-    exited = num_exited_piece(state, player)
-    return exited if exited < 4 else 999999
+    n_complete = state.completed[player]
+    return n_complete
 
 
+@lru_cache(maxsize=10)
 def other_player_piece_worth(state, player):
     numbers = []
     for other_player in state.code_map:
@@ -121,6 +135,7 @@ def other_player_piece_worth(state, player):
     return sum(numbers) + difference
 
 
+@lru_cache(maxsize=10)
 def leading_opponent_and_neg_distance(state, player):
     numbers = {}
     for other_player in state.code_map:
@@ -131,18 +146,24 @@ def leading_opponent_and_neg_distance(state, player):
     return min(numbers.items(), key=lambda x: x[1])
 
 
+@lru_cache(maxsize=10)
 def leading_opponent_negative_distance(state, player):
-    return leading_opponent_and_neg_distance(state, player)[1]
+    opponent, opponent_neg_dist = \
+        leading_opponent_and_neg_distance(state, player)
+    return opponent_neg_dist
 
 
+@lru_cache(maxsize=10)
 def modified_negative_sum_distance(state, player):
     pieces = state.piece_to_pos[player]
+    # print(len(pieces), pieces, player, state.piece_to_pos)
     n_completed = state.completed[player]
+    if n_completed >= 4:
+        return 10000000
     distances = {}
     for piece in pieces:
         distances[piece] = exit_distance(piece, state, player)
-    if not len(pieces) + n_completed >= NEEDED:
-        # 28 is the max distance for 4 piece, when less than 4 should
+    if len(pieces) + n_completed < NEEDED:
         # try to compete for more pieces
         return -28
     sorted_distance = sorted(distances.values())
@@ -150,43 +171,50 @@ def modified_negative_sum_distance(state, player):
     return -sum(sorted_distance[:NEEDED - n_completed])
 
 
-def excess_piece_negative_sum_distance(state, player):
+@lru_cache(maxsize=10)
+def excess_piece_negative_sum_distance(state, player, offset=7):
     pieces = state.piece_to_pos[player]
     n_completed = state.completed[player]
     # No spare pieces
-    if NEEDED > len(pieces) + n_completed:
+    if NEEDED >= len(pieces) + n_completed:
         return 0
-    first_opponent = leading_opponent_and_neg_distance(state, player)[0]
+    first_opponent, opponent_neg_dist = \
+        leading_opponent_and_neg_distance(state, player)
     distances = {}
     for piece in pieces:
         distances[piece] = exit_distance(piece, state, player)
     sorted_distance = sorted(distances.items(), key=lambda x: x[1])
-    excess_pieces = sorted_distance[NEEDED:]
+    excess_pieces = sorted_distance[NEEDED-n_completed:]
     distances = {}
     for piece, _ in excess_pieces:
-        distances[piece] = exit_corner_distance(piece, state, [first_opponent])
+        distances[piece] = exit_corner_distance(piece, state,
+                                                (first_opponent,))
     # Only consider the top 4 when have more
-    return -sum(distances.values())
+    return -sum(distances.values()) + offset * len(distances)
 
 
+@lru_cache(maxsize=10)
 def regular_neg_corner_distance(state, player):
     pieces = state.piece_to_pos[player]
-    opponents = [i for i in state.code_map if i != player]
+    opponents = tuple(i for i in state.code_map if i != player)
     distances = {}
     for piece in pieces:
         distances[piece] = exit_corner_distance(piece, state, opponents)
     return -sum(distances.values())
 
 
+@lru_cache(maxsize=10)
 def sum_number_needed_pieces(state, player):
     return min(num_board_piece(state, player) +
                num_exited_piece(state, player), 4)
 
 
+@lru_cache(maxsize=10)
 def excess_pieces(state, player):
     return sum_number_pieces(state, player) - 4
 
 
+@lru_cache(maxsize=10)
 def utility_completed_piece(state, player):
     # if there not enough pieces to exit to win
     # then player is punished if choose to exit
@@ -259,10 +287,13 @@ class FunctionalEvaluator:
         self._value = dict()
 
     def __call__(self, player):
+        # print(f"evaluating for {player}")
         if player in self._value:
             return self._value[player]
-        X = np.array([fn(self._state, player) for fn in self._funcs])
+        X = np.array([fn(self._state, player) if self._weights[i] != 0 else
+                      0 for i, fn in enumerate(self._funcs)])
         X = X.T
+        # print(X)
         value = np.dot(X, self._weights)
         self._value[player] = value
         return value
@@ -362,7 +393,8 @@ class AdvanceEG(EvaluatorGenerator):
     def __init__(self, weights,  *args, **kwargs):
         self._weights = weights
 
-        func = [self.utility_pieces, self.utility_completed_piece, self.utility_distance]
+        func = [self.utility_pieces, self.utility_completed_piece,
+                self.utility_distance]
         self._eval = FunctionalEvaluatorGenerator(self._weights, func)
         super().__init__(*args, **kwargs)
 
@@ -395,7 +427,7 @@ class MinimaxEvaluator(EvaluatorGenerator):
             excess_pieces,
             regular_neg_corner_distance
         ]
-        print('the weights are:', weights)
+        # print('the weights are:', weights)
         assert len(weights) != func
         self._weights = weights
         self._eval = FunctionalEvaluatorGenerator(self._weights, func)

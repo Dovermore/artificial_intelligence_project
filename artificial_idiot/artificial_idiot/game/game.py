@@ -189,8 +189,15 @@ class Game(BoardProblem):
         """
         self.initial_state = self.result(self.initial_state, action)
 
-    # def value(self, state, *args, **kwargs):
-    #     return self.evaluator(state, *args, **kwargs)
+    @staticmethod
+    def jump_action_classification(state, action):
+        fr, to, type = action
+        if type != "JUMP":
+            return None
+        pos_to_piece = state.pos_to_piece
+        jumping_colour = pos_to_piece[fr]
+        jumpedover_colour = pos_to_piece[((fr[0]+to[0])//2, (fr[1]+to[1])//2)]
+        return jumping_colour, jumpedover_colour
 
     @staticmethod
     def terminal_state(state):
