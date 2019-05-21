@@ -1,7 +1,7 @@
 from artificial_idiot.search.randomsearch import RandomSearch
 from artificial_idiot.search.uct import UCTSearch
 from artificial_idiot.search.max_n import MaxN
-from artificial_idiot.search.RL import ParametrisedRL
+# from artificial_idiot.search.RL import ParametrisedRL
 from artificial_idiot.search.mini_max import AlphaBetaSearch
 from artificial_idiot.search.open_game_book import OpenGameBook
 from artificial_idiot.search.composition_strategy import CompositionSearch
@@ -282,16 +282,6 @@ class BasicUCTPlayer(Player):
         state = self.game.initial_state
         self.game = game_type(colour="red",
                               state=node_type(state))
-
-
-class RLPlayer(Player):
-    """
-    Basic TD learning agent
-    """
-    def __init__(self, colour, search_algorithm=ParametrisedRL, game_type=Game,
-                 evaluator=player_evaluator, initial_state=None):
-        super().__init__(colour, search_algorithm, game_type, evaluator,
-                         initial_state)
 
 
 class PlayerFactory:
