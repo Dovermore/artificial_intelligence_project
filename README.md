@@ -2,6 +2,8 @@
 
 ## This is the repo for collaborating between Chuan and Calvin for Artificial Intelligence (unimelb 2019 sem1)
 
+Total Score: 20.5/22
+
 ### Special Attribution to
 - "Python code for the book Artificial Intelligence: A Modern Approach" by Various Contributors is licensed under MIT LICENCE
 
